@@ -1,14 +1,36 @@
 package com.msp.playlist.dto;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class PlaylistRequestDto {
-    private String name;
+    public static String name;
     private String description;
     private Long userID;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public void setId(Object id) {
+    }
+
+    public void setName(Object name) {
+    }
+
+    public void setUserId(Object userId) {
+    }
+
     public Object getName() {
+        return null;
+    }
+
+    public Object getUserId() {
+        return null;
+    }
+
+/*    public Object getName() {
         return null;
     }
 
@@ -20,12 +42,6 @@ public class PlaylistRequestDto {
         return null;
     }
 
-    public void setId(Object id) {
-    }
-
-    public void setName(Object name) {
-    }
-
     public void setDescription(Object description) {
     }
 
@@ -34,9 +50,7 @@ public class PlaylistRequestDto {
 
     public void setUpdatedAt(Object updatedAt) {
     }
-
-    public void setUserId(Object userId) {
-    }
+}*/
 
     //Getters and Setters
 }

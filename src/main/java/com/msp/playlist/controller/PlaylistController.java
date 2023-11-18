@@ -19,30 +19,30 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public ResponseEntity<Playlist> createPlaylist(@RequestBody PlaylistRequestDto playlistRequestDto){
-        Playlist createdPlaylist = playlistService.createPlaylist(playlistRequestDto);
-        return ResponseEntity.ok(createdPlaylist);
+    public Playlist createPlaylist(@RequestBody PlaylistRequestDto playlistRequestDto){
+        return playlistService.createPlaylist(playlistRequestDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<PlaylistRequestDto>> getAllPlaylists() {
-        List<PlaylistRequestDto> playlists = playlistService.getAllPlaylists();
-        return ResponseEntity.ok(playlists);
+    public List<PlaylistRequestDto> getAllPlaylists() {
+        return playlistService.getAllPlaylists();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Playlist> updatePlaylist(@PathVariable Long id, @RequestBody PlaylistUpdateDto updateDto) {
+    public Playlist updatePlaylist(@PathVariable Long id, @RequestBody PlaylistUpdateDto updateDto) {
         Playlist updatedPlaylist = playlistService.updatePlaylist(id, updateDto);
-        if (updatedPlaylist != null) {
-            return ResponseEntity.ok(updatedPlaylist);
-        }
+        return updatedPlaylist;
+        // TODO ~ 예외처리 후 코드 작성
+        /*if (updatedPlaylist != null) {
+
+        }*/
         // 적절한 예외 처리 필요
-        return ResponseEntity.notFound().build();
+        //return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePlaylist(@PathVariable Long id) {
+    public String deletePlaylist(@PathVariable Long id) {
         playlistService.deletePlaylist(id);
-        return ResponseEntity.ok().build();
+        return "ok";
     }
 }

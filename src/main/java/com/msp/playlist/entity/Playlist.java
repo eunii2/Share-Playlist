@@ -1,9 +1,16 @@
 package com.msp.playlist.entity;
 
+import com.msp.playlist.dto.PlaylistRequestDto;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+// GETTER SETTER 다 없애줘라 ~ LOMBOK
 @Entity
+@Getter //member 변수들이 전부 private 밖으로 가져오기 위해]
+@Setter
 @Table(name="playlist")
 public class Playlist {
     @Id
@@ -25,17 +32,25 @@ public class Playlist {
     @Column(name = "userid")
     private Long userId;
 
-    public void setUpdatedAt(LocalDateTime now) {
+    public Playlist(){
+        this.name = PlaylistRequestDto.name;
     }
 
-    public void setCreatedAt(LocalDateTime now) {
+/*
+    public void setUpdatedAt(LocalDateTime now) {
     }
+*/
+
+/*    public void setCreatedAt(LocalDateTime now) {
+    }*/
 
     public void setUserId(Object userId) {
     }
 
+/*
     public void setDescription(Object description) {
     }
+*/
 
     public void setName(Object name) {
     }
@@ -62,6 +77,12 @@ public class Playlist {
 
     public Object getUserId() {
         return null;
+    }
+
+    public void setDescription(String description) {
+    }
+
+    public void setUpdatedAt(LocalDateTime now) {
     }
 
     //Getters and Setters

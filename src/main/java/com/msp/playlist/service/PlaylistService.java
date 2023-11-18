@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// 생성자 만들어주고
+
 @Service
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
@@ -37,9 +39,9 @@ public class PlaylistService {
         PlaylistRequestDto dto = new PlaylistRequestDto();
         dto.setId(playlist.getId());
         dto.setName(playlist.getName());
-        dto.setDescription(playlist.getDescription());
-        dto.setCreatedAt(playlist.getCreatedAt());
-        dto.setUpdatedAt(playlist.getUpdatedAt());
+        dto.setDescription((String) playlist.getDescription());
+        dto.setCreatedAt((LocalDateTime) playlist.getCreatedAt());
+        dto.setUpdatedAt((LocalDateTime) playlist.getUpdatedAt());
         dto.setUserId(playlist.getUserId());
         return dto;
     }
