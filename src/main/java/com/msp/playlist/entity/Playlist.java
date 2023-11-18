@@ -2,7 +2,6 @@ package com.msp.playlist.entity;
 
 import com.msp.playlist.dto.PlaylistRequestDto;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 // GETTER SETTER 다 없애줘라 ~ LOMBOK
 @Entity
 @Getter //member 변수들이 전부 private 밖으로 가져오기 위해]
-@Setter
 @Table(name="playlist")
 public class Playlist {
     @Id
@@ -32,58 +30,28 @@ public class Playlist {
     @Column(name = "userid")
     private Long userId;
 
-    public Playlist(){
-        this.name = PlaylistRequestDto.name;
+    public Playlist(PlaylistRequestDto playlistRequestDto){
+        this.name = playlistRequestDto.getName();
+        this.description = playlistRequestDto.getDescription();
+        this.createdAt = playlistRequestDto.getCreatedAt();
+        this.updatedAt = playlistRequestDto.getUpdatedAt();
+        this.userId = playlistRequestDto.getUserID();
     }
 
-/*
-    public void setUpdatedAt(LocalDateTime now) {
-    }
-*/
+    public Playlist() {
 
-/*    public void setCreatedAt(LocalDateTime now) {
-    }*/
-
-    public void setUserId(Object userId) {
     }
 
-/*
-    public void setDescription(Object description) {
-    }
-*/
-
-    public void setName(Object name) {
-    }
-
-    public Object getId() {
-        return null;
-    }
-
-    public Object getName() {
-        return null;
-    }
-
-    public Object getDescription() {
-        return null;
-    }
-
-    public Object getCreatedAt() {
-        return null;
-    }
-
-    public Object getUpdatedAt() {
-        return null;
-    }
-
-    public Object getUserId() {
-        return null;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setUpdatedAt(LocalDateTime now) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
-
     //Getters and Setters
 }

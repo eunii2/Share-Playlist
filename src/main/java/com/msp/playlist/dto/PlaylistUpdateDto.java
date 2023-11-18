@@ -3,7 +3,6 @@ package com.msp.playlist.dto;
 import lombok.Getter;
 
 @Getter
-
 public class PlaylistUpdateDto {
 
     private String name;

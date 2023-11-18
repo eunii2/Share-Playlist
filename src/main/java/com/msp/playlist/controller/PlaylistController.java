@@ -4,11 +4,12 @@ import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
 import com.msp.playlist.service.PlaylistService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/playlist")
 public class PlaylistController {
 

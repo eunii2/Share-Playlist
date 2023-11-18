@@ -22,12 +22,7 @@ public class PlaylistService {
     }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
-        Playlist playlist = new Playlist();
-        playlist.setName(playlistRequestDto.getName());
-        playlist.setDescription(playlistRequestDto.getDescription());
-        playlist.setUserId(playlistRequestDto.getUserId());
-        playlist.setCreatedAt(LocalDateTime.now());
-        playlist.setUpdatedAt(LocalDateTime.now());
+        Playlist playlist = new Playlist(playlistRequestDto);
         return playlistRepository.save(playlist);
     }
 
@@ -36,13 +31,7 @@ public class PlaylistService {
     }
 
     private PlaylistRequestDto convertEntityToDto(Playlist playlist) {
-        PlaylistRequestDto dto = new PlaylistRequestDto();
-        dto.setId(playlist.getId());
-        dto.setName(playlist.getName());
-        dto.setDescription((String) playlist.getDescription());
-        dto.setCreatedAt((LocalDateTime) playlist.getCreatedAt());
-        dto.setUpdatedAt((LocalDateTime) playlist.getUpdatedAt());
-        dto.setUserId(playlist.getUserId());
+        PlaylistRequestDto dto = new PlaylistRequestDto(playlist);
         return dto;
     }
 
