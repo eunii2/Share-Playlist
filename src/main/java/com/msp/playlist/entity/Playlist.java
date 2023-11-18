@@ -40,5 +40,29 @@ public class Playlist {
     public void setName(Object name) {
     }
 
+    public Object getId() {
+        return null;
+    }
+
+    public Object getName() {
+        return null;
+    }
+
+    public Object getDescription() {
+        return null;
+    }
+
+    public Object getCreatedAt() {
+        return null;
+    }
+
+    public Object getUpdatedAt() {
+        return null;
+    }
+
+    public Object getUserId() {
+        return null;
+    }
+
     //Getters and Setters
 }
