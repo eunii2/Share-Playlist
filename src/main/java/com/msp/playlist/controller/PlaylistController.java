@@ -4,6 +4,7 @@ import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
 import com.msp.playlist.service.PlaylistService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,9 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public Playlist createPlaylist(@RequestBody PlaylistRequestDto playlistRequestDto){
-        return playlistService.createPlaylist(playlistRequestDto);
+    public ResponseEntity<Long> createPlaylist(@RequestBody PlaylistRequestDto playlistRequestDto){
+        Long id = playlistService.createPlaylist(playlistRequestDto).getId();
+        return ResponseEntity.ok(id);
     }
 
     @GetMapping

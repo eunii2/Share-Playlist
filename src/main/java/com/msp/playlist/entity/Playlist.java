@@ -33,8 +33,8 @@ public class Playlist {
     public Playlist(PlaylistRequestDto playlistRequestDto){
         this.name = playlistRequestDto.getName();
         this.description = playlistRequestDto.getDescription();
-        this.createdAt = playlistRequestDto.getCreatedAt();
-        this.updatedAt = playlistRequestDto.getUpdatedAt();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
         this.userId = playlistRequestDto.getUserID();
     }
 
