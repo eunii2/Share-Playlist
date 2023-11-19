@@ -8,9 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/playlist")
 public class PlaylistController {
 
@@ -21,7 +22,7 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createPlaylist(@RequestBody PlaylistRequestDto playlistRequestDto){
+    public ResponseEntity<Long> createPlaylist(@RequestBody @Valid PlaylistRequestDto playlistRequestDto){
         Long id = playlistService.createPlaylist(playlistRequestDto).getId();
         return ResponseEntity.ok(id);
     }
@@ -32,9 +33,8 @@ public class PlaylistController {
     }
 
     @PutMapping("/{id}")
-    public Playlist updatePlaylist(@PathVariable Long id, @RequestBody PlaylistUpdateDto updateDto) {
-        Playlist updatedPlaylist = playlistService.updatePlaylist(id, updateDto);
-        return updatedPlaylist;
+    public Playlist updatePlaylist(@PathVariable Long id, @RequestBody @Valid PlaylistUpdateDto updateDto) {
+        return playlistService.updatePlaylist(id, updateDto);
         // TODO ~ 예외처리 후 코드 작성
         /*if (updatedPlaylist != null) {
 

@@ -1,9 +1,11 @@
 package com.msp.playlist.entity;
 
 import com.msp.playlist.dto.PlaylistRequestDto;
+import com.msp.playlist.dto.PlaylistUpdateDto;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 // GETTER SETTER 다 없애줘라 ~ LOMBOK
@@ -42,16 +44,14 @@ public class Playlist {
 
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void changeNameAndDescription(PlaylistUpdateDto playlistUpdateDto) {
+        if (playlistUpdateDto.getName() != null) {
+            this.name = playlistUpdateDto.getName();
+        }
+        if (playlistUpdateDto.getDescription() != null) {
+            this.description = playlistUpdateDto.getDescription();
+        }
+        this.updatedAt = LocalDateTime.now();
     }
     //Getters and Setters
 }

@@ -21,11 +21,11 @@ public class MemberDTO {    //회원 정보의 필요한 내용들을 필드로 
     public static MemberDTO toMemberDTO(MemberEntity memberEntity){
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setId(memberEntity.getId());
-        memberDTO.setUserid(memberEntity.getUserid());
-        memberDTO.setUserpw(memberEntity.getUserpw());
+        memberDTO.setUserid(memberEntity.getUserId());
+        memberDTO.setUserpw(memberEntity.getUserPw());
         memberDTO.setUsername(memberEntity.getUsername());
-        memberDTO.setUserphone(memberEntity.getUserphone());
-        memberDTO.setUseremail(memberEntity.getUseremail());
+        memberDTO.setUserphone(memberEntity.getUserPhone());
+        memberDTO.setUseremail(memberEntity.getUserEmail());
         return memberDTO;
     }
 }

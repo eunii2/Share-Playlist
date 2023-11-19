@@ -4,12 +4,14 @@ import com.msp.membership.dto.MemberDTO;
 import com.msp.membership.entity.MemberEntity;
 import com.msp.membership.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
     private final MemberRepository memberRepository;
 
@@ -26,24 +28,19 @@ public class MemberService {
             1. 회원이 입력한 아이디로 DB에서 조회를 함
             2. DB에서 조회한 비밀번호와 사용자가 입력한 비밀번호가 일치하는지 판단
          */
-        Optional<MemberEntity> byUserid = memberRepository.findByUserid(memberDTO.getUserid()); //Optional 객체로 감쌈
-        if (byUserid.isPresent()) {
-            // 조회 결과가 있다.(해당 이메일을 가진 회원 정보가 있다.)
-            MemberEntity memberEntity = byUserid.get();
-            if (memberEntity.getUserpw().equals(memberDTO.getUserpw())) {
-                //entity -> dto
-                MemberDTO dto = MemberDTO.toMemberDTO(memberEntity);
-                return dto;
-            } else {
-                return null;
-            }
+        MemberEntity memberEntity = memberRepository.findByUserId(memberDTO.getUserid())
+                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다. id: " + memberDTO.getUserid()));
+
+        if (!memberEntity.getUserPw().equals(memberDTO.getUserpw())) {
+            log.error(" 유저의 비밀번호가 일치하지 않습니다. userId: {}", memberDTO.getUserpw());
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        else {
-            return null;
-        }
+
+        return MemberDTO.toMemberDTO(memberEntity);
     }
+
     public String idCheck(String userid){
-        Optional<MemberEntity> byUserid = memberRepository.findByUserid(userid);
+        Optional<MemberEntity> byUserid = memberRepository.findByUserId(userid);
         if(byUserid.isPresent()){ //이미 존재
             return null;
         }

@@ -16,27 +16,27 @@ public class MemberEntity { // 일종의 테이블 역할을 함
     private Long id;
 
     @Column(unique = true)
-    private  String userid;
+    private  String userId;
 
     @Column
-    private  String userpw;
+    private  String userPw;
 
     @Column
     private String username;
 
     @Column
-    private String userphone;
+    private String userPhone;
 
     @Column
-    private String useremail;
+    private String userEmail;
 
     public static MemberEntity toMemberEntity(MemberDTO memberDTO){
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setUserid(memberDTO.getUserid());
-        memberEntity.setUserpw(memberDTO.getUserpw());
+        memberEntity.setUserId(memberDTO.getUserid());
+        memberEntity.setUserPw(memberDTO.getUserpw());
         memberEntity.setUsername(memberDTO.getUsername());
-        memberEntity.setUserphone(memberDTO.getUserphone());
-        memberEntity.setUseremail(memberDTO.getUseremail());
+        memberEntity.setUserPhone(memberDTO.getUserphone());
+        memberEntity.setUserEmail(memberDTO.getUseremail());
         return memberEntity;
     }
 }
