@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+# database 연동 설정
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    각자 PC에 만들어놓은 Database의 스키마 이름(db_member)
+    url: jdbc:mysql://localhost:3306/db_member?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    #    mysql에 생성한 사용자 계정 정보
+    username: jSeonmi
+    password: pp3818
+  thymeleaf:
+    cache: false
+
+  # spring data jpa 설정
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update #테이블을 새로 만드는게 아니라 테이블 유지 및 업데이트 되도록 하는 옵션션
