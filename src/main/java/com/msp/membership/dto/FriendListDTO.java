@@ -1,4 +1,4 @@
-package com.MusicSharing.member.dto;
+package com.msp.membership.dto;
 
 
 import lombok.AllArgsConstructor;

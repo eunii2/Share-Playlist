@@ -1,4 +1,4 @@
-package com.MusicSharing.member.entity;
+package com.msp.membership.entity;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.MusicSharing.member.dto.MemberDTO;
+import com.msp.membership.dto.MemberDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

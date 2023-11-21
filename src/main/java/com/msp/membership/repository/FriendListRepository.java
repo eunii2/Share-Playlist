@@ -1,4 +1,4 @@
-package com.MusicSharing.member.repository;
+package com.msp.membership.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.MusicSharing.member.entity.MemberEntity;
-import com.MusicSharing.member.entity.FriendListEntity;
+import com.msp.membership.entity.MemberEntity;
+import com.msp.membership.entity.FriendListEntity;
 
 @Repository
 public interface FriendListRepository extends JpaRepository<FriendListEntity, Integer>{

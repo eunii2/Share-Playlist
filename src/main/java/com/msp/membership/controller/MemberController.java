@@ -1,28 +1,16 @@
-<<<<<<< HEAD
 package com.msp.membership.controller;
 
-import com.msp.membership.dto.MemberDTO;
-import com.msp.membership.service.MemberService;
-=======
-package com.MusicSharing.member.controller;
-
->>>>>>> 6269fa28bc8a7b9bd05f1810657f8226645249e9
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-<<<<<<< HEAD
-@Controller
-@RequiredArgsConstructor
-=======
-import com.MusicSharing.member.dto.MemberDTO;
-import com.MusicSharing.member.service.MemberService;
+import com.msp.membership.dto.MemberDTO;
+import com.msp.membership.service.MemberService;
 
 @RestController
 @RequiredArgsConstructor //@NonNull 필드만을 파라미터로 받는 생성자를 자동으로 생성, MemberService를 주입받기 위해 사용됨
->>>>>>> 6269fa28bc8a7b9bd05f1810657f8226645249e9
 public class MemberController {
     // 생성자 주입
     private final MemberService memberService; //매서드를 사용할 수 있게하는 권한을 줌
@@ -34,11 +22,7 @@ public class MemberController {
 
     @PostMapping("/member/join")
     public String join( //파라미터를 스트링 변수로 받아서 서비스클래스 -> 레파지토 -> 데이터베이스 (웹 페이지의 회원가입 중 회원 정보가 데이터 베이스에 저장됨)
-<<<<<<< HEAD
-                        @ModelAttribute MemberDTO memberDTO)
-=======
                         @RequestBody MemberDTO memberDTO)
->>>>>>> 6269fa28bc8a7b9bd05f1810657f8226645249e9
     {//네임 값을 String userid에 옮겨 담는다.
         System.out.println("MemberController.save");
         System.out.println("memberDTO = " + memberDTO); //전달 받은 값을 db로 보
@@ -65,11 +49,7 @@ public class MemberController {
         }
     }
 
-<<<<<<< HEAD
-    @PostMapping("/member/id-check")
-=======
     @PostMapping("/member/id-check")    // 아이디 중복 처리
->>>>>>> 6269fa28bc8a7b9bd05f1810657f8226645249e9
     public @ResponseBody String idCheck(@RequestParam("userid") String userid){
         System.out.println("userid = " + userid);
         String checkResult = memberService.idCheck(userid);
@@ -80,10 +60,7 @@ public class MemberController {
             return "no";
         }
     }
-<<<<<<< HEAD
-=======
 
     //@GetMapping("/member/mypage/{category}")
     //public String mypage()
->>>>>>> 6269fa28bc8a7b9bd05f1810657f8226645249e9
 }

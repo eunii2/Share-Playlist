@@ -1,9 +1,9 @@
-package com.MusicSharing.member.service;
+package com.msp.membership.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.MusicSharing.member.dto.FriendListDTO;
+import com.msp.membership.dto.FriendListDTO;
 
 public interface FriendListService {
     ArrayList<FriendListDTO> findAll();

@@ -2,15 +2,18 @@ package com.msp.playlist.entity;
 
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
+import com.msp.song.entity.Song;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 // GETTER SETTER 다 없애줘라 ~ LOMBOK
 @Entity
-@Getter //member 변수들이 전부 private 밖으로 가져오기 위해]
+@Getter //member 변수들이 전부 private 밖으로 가져오기 위해
 @Table(name="playlist")
 public class Playlist {
     @Id
@@ -31,6 +34,9 @@ public class Playlist {
 
     @Column(name = "userid")
     private Long userId;
+
+    @OneToMany(mappedBy = "playlist")
+    private List<Song> songs = new ArrayList<>();
 
     public Playlist(PlaylistRequestDto playlistRequestDto){
         this.name = playlistRequestDto.getName();

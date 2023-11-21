@@ -1,4 +1,4 @@
-package com.MusicSharing.member.service;
+package com.msp.membership.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,14 +6,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
-import com.MusicSharing.member.entity.MemberEntity;
-import com.MusicSharing.member.repository.MemberRepository;
-import com.MusicSharing.member.repository.FriendListRepository;
-import com.MusicSharing.member.repository.FriendRequestRepository;
-import com.MusicSharing.member.dto.MemberDTO;
-import com.MusicSharing.member.dto.FriendListDTO;
-import com.MusicSharing.member.entity.FriendListEntity;
-import com.MusicSharing.member.entity.FriendRequestEntity;
+import com.msp.membership.entity.MemberEntity;
+import com.msp.membership.repository.MemberRepository;
+import com.msp.membership.repository.FriendListRepository;
+import com.msp.membership.repository.FriendRequestRepository;
+import com.msp.membership.dto.MemberDTO;
+import com.msp.membership.dto.FriendListDTO;
+import com.msp.membership.entity.FriendListEntity;
+import com.msp.membership.entity.FriendRequestEntity;
 
 
 

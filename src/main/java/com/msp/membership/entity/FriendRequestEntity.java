@@ -1,4 +1,4 @@
-package com.MusicSharing.member.entity;
+package com.msp.membership.entity;
 
 import java.io.Serializable;
 

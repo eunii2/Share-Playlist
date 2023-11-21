@@ -1,4 +1,4 @@
-package com.MusicSharing.member.entity;
+package com.msp.membership.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.MusicSharing.member.controller;
+package com.msp.membership.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.MusicSharing.member.repository.FriendListRepository;
-import com.MusicSharing.member.dto.FriendListDTO;
-import com.MusicSharing.member.entity.MemberEntity;
-import com.MusicSharing.member.entity.FriendListEntity;
-import com.MusicSharing.member.service.FriendListServiceImpl;
+import com.msp.membership.repository.FriendListRepository;
+import com.msp.membership.dto.FriendListDTO;
+import com.msp.membership.entity.MemberEntity;
+import com.msp.membership.entity.FriendListEntity;
+import com.msp.membership.service.FriendListServiceImpl;
 
 @RestController
 @RequestMapping("friendlist") // 컨트롤러의 기본 URL 설정
