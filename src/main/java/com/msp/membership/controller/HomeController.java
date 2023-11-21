@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package com.msp.membership.controller;
+=======
+package com.MusicSharing.member.controller;
+>>>>>>> 6269fa28bc8a7b9bd05f1810657f8226645249e9
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
