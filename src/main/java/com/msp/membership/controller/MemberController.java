@@ -1,6 +1,9 @@
 package com.msp.membership.controller;
 
+import com.msp.membership.service.FriendListServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,7 @@ public class MemberController {
     // 생성자 주입
     private final MemberService memberService; //매서드를 사용할 수 있게하는 권한을 줌
     // 회원 가입 페이지 출력 요청
+    private static final Logger log = LoggerFactory.getLogger(MemberController.class); // log 출력을 위함
     @GetMapping("/member/join")
     public String joinForm(){
         return "/login/join";
@@ -24,8 +28,8 @@ public class MemberController {
     public String join( //파라미터를 스트링 변수로 받아서 서비스클래스 -> 레파지토 -> 데이터베이스 (웹 페이지의 회원가입 중 회원 정보가 데이터 베이스에 저장됨)
                         @RequestBody MemberDTO memberDTO)
     {//네임 값을 String userid에 옮겨 담는다.
-        System.out.println("MemberController.save");
-        System.out.println("memberDTO = " + memberDTO); //전달 받은 값을 db로 보
+        log.info("MemberController.save");
+        log.info("memberDTO = " + memberDTO); //전달 받은 값을 db로 보
         memberService.join(memberDTO);
         return "/login/login";
     }
@@ -51,7 +55,7 @@ public class MemberController {
 
     @PostMapping("/member/id-check")    // 아이디 중복 처리
     public @ResponseBody String idCheck(@RequestParam("userid") String userid){
-        System.out.println("userid = " + userid);
+        log.info("userid = " + userid);
         String checkResult = memberService.idCheck(userid);
         if(checkResult != null) {
             return "ok";
@@ -60,7 +64,4 @@ public class MemberController {
             return "no";
         }
     }
-
-    //@GetMapping("/member/mypage/{category}")
-    //public String mypage()
 }
