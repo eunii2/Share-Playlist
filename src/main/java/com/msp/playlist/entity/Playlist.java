@@ -38,6 +38,13 @@ public class Playlist {
     @OneToMany(mappedBy = "playlist")
     private List<Song> songs = new ArrayList<>();
 
+    @OneToOne
+    @JoinColumn(name = "genre_id")
+    private TagGenre tagGenre;
+
+    @OneToMany(mappedBy = "playlist")
+    private List<TagMood> tagMoods = new ArrayList<>();
+
     public Playlist(PlaylistRequestDto playlistRequestDto){
         this.name = playlistRequestDto.getName();
         this.description = playlistRequestDto.getDescription();
@@ -59,5 +66,8 @@ public class Playlist {
         }
         this.updatedAt = LocalDateTime.now();
     }
-    //Getters and Setters
+
+    public void setTagGenre(TagGenre tagGenre) {
+    }
+
 }

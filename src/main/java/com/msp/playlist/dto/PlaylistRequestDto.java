@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,9 +24,27 @@ public class PlaylistRequestDto {
     @Min(value = 1, message = "최소 1 이상하셈 ㅋ")
     private Long userID;
 
+    private Long tagGenreId;
+    private List<Long> tagMoodIds;
     public PlaylistRequestDto(Playlist playlist){
         this.name = playlist.getName();
         this.description = playlist.getDescription();
         this.userID = playlist.getUserId();
+    }
+
+    public Long getTagGenreId() {
+        return tagGenreId;
+    }
+
+    public void setTagGenreId(Long tagGenreId) {
+        this.tagGenreId = tagGenreId;
+    }
+
+    public List<Long> getTagMoodIds() {
+        return tagMoodIds;
+    }
+
+    public void setTagMoodIds(List<Long> tagMoodIds) {
+        this.tagMoodIds = tagMoodIds;
     }
 }

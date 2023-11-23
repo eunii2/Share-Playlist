@@ -14,6 +14,7 @@ public class TagMood {
     @JoinColumn(name = "playlist_id")
     private Playlist playlist;
 
-    public void setPlaylsit(Playlist playlist) {
+public void setPlaylsit(Playlist playlist) {
     }
+
 }
