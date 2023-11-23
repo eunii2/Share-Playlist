@@ -9,7 +9,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // GETTER SETTER 다 없애줘라 ~ LOMBOK
 @Entity
@@ -38,6 +40,18 @@ public class Playlist {
     @OneToMany(mappedBy = "playlist")
     private List<Song> songs = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private TagGenre tagGenre;
+
+/*    @ManyToMany
+    @JoinTable(
+            name = "playlist_mood",
+            joinColumns = @JoinColumn(name = "playlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "mood_id")
+    )
+    private Set<TagMood> tagMoodSet = new HashSet<>();*/
+
     public Playlist(PlaylistRequestDto playlistRequestDto){
         this.name = playlistRequestDto.getName();
         this.description = playlistRequestDto.getDescription();
@@ -59,5 +73,5 @@ public class Playlist {
         }
         this.updatedAt = LocalDateTime.now();
     }
-    //Getters and Setters
+
 }

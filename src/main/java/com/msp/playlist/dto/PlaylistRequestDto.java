@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class PlaylistRequestDto {
     @NotBlank
@@ -27,5 +26,13 @@ public class PlaylistRequestDto {
         this.name = playlist.getName();
         this.description = playlist.getDescription();
         this.userID = playlist.getUserId();
+    }
+
+    public Long getTagGenreId() {
+        return null;
+    }
+
+    public Iterable<? extends Long> getTagMoodIds() {
+        return null;
     }
 }
