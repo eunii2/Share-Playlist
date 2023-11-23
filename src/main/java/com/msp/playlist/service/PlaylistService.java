@@ -3,15 +3,16 @@ package com.msp.playlist.service;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
+import com.msp.playlist.entity.TagGenre;
+import com.msp.playlist.entity.TagMood;
 import com.msp.playlist.repository.PlaylistRepository;
+import com.msp.playlist.repository.TagGenreRepository;
+import com.msp.playlist.repository.TagMoodRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 // 생성자 만들어주고
 
@@ -19,13 +20,29 @@ import java.util.stream.Collectors;
 @Service
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
+    private final TagGenreRepository tagGenreRepository;
+    private final TagMoodRepository tagMoodRepository;
 
-    public PlaylistService(PlaylistRepository playlistRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository, TagGenreRepository tagGenreRepository1, TagMoodRepository tagMoodRepository) {
         this.playlistRepository = playlistRepository;
+        this.tagGenreRepository = tagGenreRepository;
+        this.tagMoodRepository = tagMoodRepository;
     }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
         Playlist playlist = new Playlist(playlistRequestDto);
+        //밑에서부터 tag 기능 추가
+        if(playlistRequestDto.getTagGenreId() != null){
+            TagGenre tagGenre = tagGenreRepository.findById(playlistRequestDto.getTagGenreId()).orElseThrow();
+            //플레이리스트와 tagGenre 연결 로직 추가
+        }
+        if(playlistRequestDto.getTagMoodIds() != null){
+            for(Long moodId : playlistRequestDto.getTagMoodIds()) {
+                TagMood tagMood = tagMoodRepository.findById(moodId).orElseThrow();
+                tagMood.setPlaylsit(playlist);
+                //태그 무드를 플레이리스트에 추가하는 로직
+            }
+        }
         return playlistRepository.save(playlist);
     }
 
