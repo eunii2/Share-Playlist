@@ -39,7 +39,7 @@ public class Playlist {
     private List<Song> songs = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "genre_id")
+    @JoinColumn(name = "genreid")
     private TagGenre tagGenre;
 
     @OneToMany(mappedBy = "playlist")
