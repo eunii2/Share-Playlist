@@ -41,7 +41,7 @@ public class ImageServiceImpl implements ImageService{
         try {
             file.transferTo(destinationFile);   // 파일을 지정한 경로로 이동
 
-            ImageEntity imageEntity = imageRepository.findByMember(memberEntity);
+            ImageEntity imageEntity = imageRepository.findByMemberEntity(memberEntity);
             if (imageEntity != null) {
                 // 이미지가 이미 존재하면 url 업데이트
                 imageEntity.updateUrl("/profileImages/" + imageFileName);
@@ -62,7 +62,7 @@ public class ImageServiceImpl implements ImageService{
     public ImageResponseDTO findImage(String userid) {
         MemberEntity memberEntity = memberRepository.findByUserid(userid)
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
-        ImageEntity imageEntity = imageRepository.findByMember(memberEntity);
+        ImageEntity imageEntity = imageRepository.findByMemberEntity(memberEntity);
 
         String defaultImageUrl = "/profileImages/cat.png";
 

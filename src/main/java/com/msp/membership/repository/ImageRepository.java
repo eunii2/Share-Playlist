@@ -5,5 +5,5 @@ import com.msp.membership.entity.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
-    ImageEntity findByMember(MemberEntity memberEntity);
+    ImageEntity findByMemberEntity(MemberEntity memberEntity);
 }

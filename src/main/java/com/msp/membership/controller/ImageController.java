@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/imageUpload")
+@RequestMapping("/profile")
 public class ImageController {
     private final ImageService imageService;
     @PostMapping("/upload")
