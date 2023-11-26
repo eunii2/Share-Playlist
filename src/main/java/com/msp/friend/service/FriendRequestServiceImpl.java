@@ -1,4 +1,4 @@
-package com.msp.membership.service;
+package com.msp.friend.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,14 +6,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
-import com.msp.membership.entity.MemberEntity;
+import com.msp.membership.entity.Member;
 import com.msp.membership.repository.MemberRepository;
-import com.msp.membership.repository.FriendListRepository;
-import com.msp.membership.repository.FriendRequestRepository;
+import com.msp.friend.repository.FriendListRepository;
+import com.msp.friend.repository.FriendRequestRepository;
 import com.msp.membership.dto.MemberDTO;
-import com.msp.membership.dto.FriendListDTO;
-import com.msp.membership.entity.FriendListEntity;
-import com.msp.membership.entity.FriendRequestEntity;
+import com.msp.friend.dto.FriendListDTO;
+import com.msp.friend.entity.FriendList;
+import com.msp.friend.entity.FriendRequest;
 
 
 
@@ -42,14 +42,14 @@ public class FriendRequestServiceImpl implements FriendRequestService {
             Integer a = null;
             a = Integer.parseInt(id);
             friendRequestRepository.deleteById(a);
-            List<FriendRequestEntity> aaa = friendRequestRepository.findByRequestIdUseridAndRequestedIdUserid(id2, id1);
+            List<FriendRequest> aaa = friendRequestRepository.findByRequestIdUseridAndRequestedIdUserid(id2, id1);
             if (aaa.size()!=0) {
                 friendRequestRepository.deleteById(Math.toIntExact(aaa.get(0).getId()));
             }
 
             /* 수락 */
-            Optional<MemberEntity> result1 = memberRepository.findById(id1);
-            Optional<MemberEntity> result2 = memberRepository.findById(id2);
+            Optional<Member> result1 = memberRepository.findById(id1);
+            Optional<Member> result2 = memberRepository.findById(id2);
             MemberDTO result3 = null;
             MemberDTO result4 = null;
             if (result1.isPresent()) {
@@ -59,9 +59,9 @@ public class FriendRequestServiceImpl implements FriendRequestService {
                 result4 = modelMapper.map(result2.get(), MemberDTO.class);
             }
             FriendListDTO result = FriendListDTO.builder().id1(result3).id2(result4).build();
-            friendListRepository.save(modelMapper.map(result, FriendListEntity.class));
+            friendListRepository.save(modelMapper.map(result, FriendList.class));
             FriendListDTO resultt = FriendListDTO.builder().id2(result3).id1(result4).build();
-            friendListRepository.save(modelMapper.map(resultt, FriendListEntity.class));
+            friendListRepository.save(modelMapper.map(resultt, FriendList.class));
             return "수락요청";
 
         } catch (Exception e) {

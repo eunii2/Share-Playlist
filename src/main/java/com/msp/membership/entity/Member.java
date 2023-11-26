@@ -3,6 +3,9 @@ package com.msp.membership.entity;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.msp.friend.entity.FriendList;
+import com.msp.friend.entity.FriendRequest;
+import com.msp.friend.entity.Preference;
 import com.msp.membership.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +21,7 @@ import javax.persistence.OneToMany;
 @Setter
 @Getter
 @Table(name = "member_table")   // 테이블이 생성되었을 때의 테이블 이름
-public class MemberEntity { // 일종의 테이블 역할을 함
+public class Member { // 일종의 테이블 역할을 함
     @Id //primary key 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
     private Long Id;
@@ -39,27 +42,27 @@ public class MemberEntity { // 일종의 테이블 역할을 함
     private String useremail;
 
     @OneToMany(mappedBy = "id1")
-    private List<FriendListEntity> friendlist1 = new ArrayList<>();
+    private List<FriendList> friendlist1 = new ArrayList<>();
 
     @OneToMany(mappedBy = "id2")
-    private List<FriendListEntity> friendlist2 = new ArrayList<>();
+    private List<FriendList> friendlist2 = new ArrayList<>();
 
     @OneToMany(mappedBy = "requestId")
-    private List<FriendRequestEntity> friendRequest1 = new ArrayList<>();
+    private List<FriendRequest> friendRequest1 = new ArrayList<>();
 
     @OneToMany(mappedBy = "requestedId")
-    private List<FriendRequestEntity> friendRequest2 = new ArrayList<>();
+    private List<FriendRequest> friendRequest2 = new ArrayList<>();
 
     @OneToMany(mappedBy = "userid")
-    private List<PreferenceEntity> preference = new ArrayList<>();
+    private List<Preference> preference = new ArrayList<>();
 
-    public static MemberEntity toMemberEntity(MemberDTO memberDTO){
-        MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setUserid(memberDTO.getUserid());
-        memberEntity.setUserpw(memberDTO.getUserpw());
-        memberEntity.setUsername(memberDTO.getUsername());
-        memberEntity.setUserphone(memberDTO.getUserphone());
-        memberEntity.setUseremail(memberDTO.getUseremail());
-        return memberEntity;
+    public static Member toMemberEntity(MemberDTO memberDTO){
+        Member member = new Member();
+        member.setUserid(memberDTO.getUserid());
+        member.setUserpw(memberDTO.getUserpw());
+        member.setUsername(memberDTO.getUsername());
+        member.setUserphone(memberDTO.getUserphone());
+        member.setUseremail(memberDTO.getUseremail());
+        return member;
     }
 }

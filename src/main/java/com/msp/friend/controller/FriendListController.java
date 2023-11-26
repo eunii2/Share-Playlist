@@ -1,31 +1,23 @@
-package com.msp.membership.controller;
+package com.msp.friend.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.msp.membership.repository.FriendListRepository;
-import com.msp.membership.dto.FriendListDTO;
-import com.msp.membership.entity.MemberEntity;
-import com.msp.membership.entity.FriendListEntity;
-import com.msp.membership.service.FriendListServiceImpl;
+import com.msp.friend.dto.FriendListDTO;
+import com.msp.friend.service.FriendListServiceImpl;
 
 
 @RestController
-@RequestMapping("friendlist") // 컨트롤러의 기본 URL 설정
+@RequestMapping("/friendlist") // 컨트롤러의 기본 URL 설정
 public class FriendListController {
     @Autowired
     private FriendListServiceImpl friendListService;

@@ -1,5 +1,6 @@
-package com.msp.membership.entity;
+package com.msp.profileImage.entity;
 
+import com.msp.membership.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "imageUpdate")
-public class ImageEntity {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -23,7 +24,7 @@ public class ImageEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid")
-    private MemberEntity memberEntity;
+    private Member member;
 
     public void updateUrl(String url){
         this.url = url;

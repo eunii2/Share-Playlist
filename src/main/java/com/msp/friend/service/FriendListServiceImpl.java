@@ -1,10 +1,7 @@
-package com.msp.membership.service;
+package com.msp.friend.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -12,14 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.msp.membership.repository.MemberRepository;
-import com.msp.membership.repository.FriendListRepository;
-import com.msp.membership.repository.FriendRequestRepository;
+import com.msp.friend.repository.FriendListRepository;
+import com.msp.friend.repository.FriendRequestRepository;
 import com.msp.membership.dto.MemberDTO;
-import com.msp.membership.dto.FriendListDTO;
-import com.msp.membership.dto.FriendRequestDTO;
-import com.msp.membership.entity.MemberEntity;
-import com.msp.membership.entity.FriendListEntity;
-import com.msp.membership.entity.FriendRequestEntity;
+import com.msp.friend.dto.FriendListDTO;
+import com.msp.friend.dto.FriendRequestDTO;
+import com.msp.membership.entity.Member;
+import com.msp.friend.entity.FriendList;
+import com.msp.friend.entity.FriendRequest;
 
 import org.modelmapper.ModelMapper;
 
@@ -32,10 +29,10 @@ public class FriendListServiceImpl implements FriendListService {
     private static ModelMapper modelMapper = new ModelMapper();
     private static final Logger log = LoggerFactory.getLogger(FriendListServiceImpl.class); // log 출력을 위함
     public ArrayList<FriendListDTO> findAll() { // 모든 친구목록 조회
-        Iterable<FriendListEntity> result = friendListRepository.findAll(); // Repository로부터 모든 친구 목록 Entity를 가져옴
+        Iterable<FriendList> result = friendListRepository.findAll(); // Repository로부터 모든 친구 목록 Entity를 가져옴
         ArrayList<FriendListDTO> result2 = new ArrayList<FriendListDTO>();
 
-        for (FriendListEntity friend : result) { // 각 친구 목록 Entity를 DTO로 변환하고, ArrayList에 추가
+        for (FriendList friend : result) { // 각 친구 목록 Entity를 DTO로 변환하고, ArrayList에 추가
             FriendListDTO friend2 = modelMapper.map(friend, FriendListDTO.class);   // modelMapper : 객체를 다른 객체로 변환(매핑)
             result2.add(friend2);
             log.info("Friend2: {}", friend2);
@@ -52,8 +49,8 @@ public class FriendListServiceImpl implements FriendListService {
 
     public String delete(String id1, String id2) {
         try { //예외처리
-            Optional<FriendListEntity> result = friendListRepository.findMyFunction(id1, id2);
-            Optional<FriendListEntity> result2 = friendListRepository.findMyFunction(id2, id1);
+            Optional<FriendList> result = friendListRepository.findMyFunction(id1, id2);
+            Optional<FriendList> result2 = friendListRepository.findMyFunction(id2, id1);
             Integer list1 = null;
             Integer list2 = null;
             if (result.isPresent()) {
@@ -74,8 +71,8 @@ public class FriendListServiceImpl implements FriendListService {
 
     public String post(String id1, String id2) {
         /* 아이디로 해당 유저 검색 */
-        Optional<MemberEntity> result1 = memberRepository.findById(id1);
-        Optional<MemberEntity> result2 = memberRepository.findById(id2);
+        Optional<Member> result1 = memberRepository.findById(id1);
+        Optional<Member> result2 = memberRepository.findById(id2);
         MemberDTO result3 = null;
         MemberDTO result4 = null;
         if (result1.isPresent()) {
@@ -84,14 +81,14 @@ public class FriendListServiceImpl implements FriendListService {
         if (result2.isPresent()) {
             result4 = modelMapper.map(result2.get(), MemberDTO.class);
         }
-        Optional<FriendListEntity> result5 = friendListRepository.findMyFunction(id1, id2);
+        Optional<FriendList> result5 = friendListRepository.findMyFunction(id1, id2);
         log.info("result5: {}", result5);
         if (result5.isPresent()) {
             return "친구상태";
         } else {
             FriendRequestDTO result = FriendRequestDTO.builder().requestId(result3).requestedId(result4).build();
             try {
-                friendRequestRepository.save(modelMapper.map(result, FriendRequestEntity.class));
+                friendRequestRepository.save(modelMapper.map(result, FriendRequest.class));
             } catch (Exception e) {
                 e.printStackTrace();
                 return "친구신청 이미보냄";

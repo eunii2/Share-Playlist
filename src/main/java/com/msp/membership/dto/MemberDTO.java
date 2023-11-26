@@ -1,6 +1,6 @@
 package com.msp.membership.dto;
 
-import com.msp.membership.entity.MemberEntity;
+import com.msp.membership.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,14 +18,14 @@ public class MemberDTO {    //회원 정보의 필요한 내용들을 필드로 
     private String userphone;
     private String useremail;
 
-    public static MemberDTO toMemberDTO(MemberEntity memberEntity){
+    public static MemberDTO toMemberDTO(Member member){
         MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(memberEntity.getId());
-        memberDTO.setUserid(memberEntity.getUserid());
-        memberDTO.setUserpw(memberEntity.getUserpw());
-        memberDTO.setUsername(memberEntity.getUsername());
-        memberDTO.setUserphone(memberEntity.getUserphone());
-        memberDTO.setUseremail(memberEntity.getUseremail());
+        memberDTO.setId(member.getId());
+        memberDTO.setUserid(member.getUserid());
+        memberDTO.setUserpw(member.getUserpw());
+        memberDTO.setUsername(member.getUsername());
+        memberDTO.setUserphone(member.getUserphone());
+        memberDTO.setUseremail(member.getUseremail());
         return memberDTO;
     }
 }

@@ -1,9 +1,9 @@
-package com.msp.membership.service;
+package com.msp.friend.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.msp.membership.dto.FriendListDTO;
+import com.msp.friend.dto.FriendListDTO;
 
 public interface FriendListService {
     ArrayList<FriendListDTO> findAll();

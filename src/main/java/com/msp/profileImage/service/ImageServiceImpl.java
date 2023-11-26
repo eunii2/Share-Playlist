@@ -1,10 +1,10 @@
-package com.msp.membership.service;
+package com.msp.profileImage.service;
 
-import com.msp.membership.entity.ImageEntity;
-import com.msp.membership.entity.MemberEntity;
-import com.msp.membership.dto.ImageResponseDTO;
-import com.msp.membership.dto.ImageUploadDTO;
-import com.msp.membership.repository.ImageRepository;
+import com.msp.profileImage.entity.Image;
+import com.msp.membership.entity.Member;
+import com.msp.profileImage.dto.ImageResponseDTO;
+import com.msp.profileImage.dto.ImageUploadDTO;
+import com.msp.profileImage.repository.ImageRepository;
 import com.msp.membership.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;  // final 또는 @NonNull 인 필드들만을 인자로 받는 생성자를 자동으로 생성
@@ -19,7 +19,7 @@ import java.util.UUID;  // Universally Unique Identifier 생성 클래스
 
 @Service
 @RequiredArgsConstructor
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
     private final MemberRepository memberRepository;
@@ -29,7 +29,7 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     public void upload(ImageUploadDTO imageUploadDTO, String userid) {  // 이미지와 사용자 ID를 받아 이미지를 업로드
-        MemberEntity memberEntity = memberRepository.findByUserid(userid)
+        Member member = memberRepository.findByUserid(userid)
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
         MultipartFile file = imageUploadDTO.getFile();
 
@@ -41,18 +41,18 @@ public class ImageServiceImpl implements ImageService{
         try {
             file.transferTo(destinationFile);   // 파일을 지정한 경로로 이동
 
-            ImageEntity imageEntity = imageRepository.findByMemberEntity(memberEntity);
-            if (imageEntity != null) {
+            Image image = imageRepository.findByMember(member);
+            if (image != null) {
                 // 이미지가 이미 존재하면 url 업데이트
-                imageEntity.updateUrl("/profileImages/" + imageFileName);
+                image.updateUrl("/profileImages/" + imageFileName);
             } else {
                 // 이미지가 없으면 객체 생성 후 저장
-                imageEntity = ImageEntity.builder()
-                        .memberEntity(memberEntity)
+                image = Image.builder()
+                        .member(member)
                         .url("/profileImages/" + imageFileName)
                         .build();
             }
-            imageRepository.save(imageEntity);
+            imageRepository.save(image);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -60,19 +60,19 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     public ImageResponseDTO findImage(String userid) {
-        MemberEntity memberEntity = memberRepository.findByUserid(userid)
+        Member member = memberRepository.findByUserid(userid)
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
-        ImageEntity imageEntity = imageRepository.findByMemberEntity(memberEntity);
+        Image image = imageRepository.findByMember(member);
 
         String defaultImageUrl = "/profileImages/cat.png";
 
-        if (imageEntity == null) {
+        if (image == null) {
             return ImageResponseDTO.builder() // 이미지가 없으면 기본 이미지 반환
                     .url(defaultImageUrl)
                     .build();
         } else {
             return ImageResponseDTO.builder() // 이미지 있으면 해당 이미지 정보 반환
-                    .url(imageEntity.getUrl())
+                    .url(image.getUrl())
                     .build();
         }
     }

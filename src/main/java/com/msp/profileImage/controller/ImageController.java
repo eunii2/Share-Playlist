@@ -1,7 +1,7 @@
-package com.msp.membership.controller;
+package com.msp.profileImage.controller;
 
-import com.msp.membership.dto.ImageUploadDTO;
-import com.msp.membership.service.ImageService;
+import com.msp.profileImage.dto.ImageUploadDTO;
+import com.msp.profileImage.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,7 @@
-package com.msp.membership.service;
+package com.msp.profileImage.service;
 
-import com.msp.membership.dto.ImageResponseDTO;
-import com.msp.membership.dto.ImageUploadDTO;
+import com.msp.profileImage.dto.ImageResponseDTO;
+import com.msp.profileImage.dto.ImageUploadDTO;
 
 public interface ImageService {
 
