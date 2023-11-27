@@ -14,6 +14,7 @@ import javax.persistence.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -24,22 +25,22 @@ import javax.persistence.OneToMany;
 public class Member { // 일종의 테이블 역할을 함
     @Id //primary key 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
-    private Long Id;
+    private Long id;
 
     @Column(unique = true)
     private  String userid;
 
-    @Column
+    @Column(nullable = false)
     private  String userpw;
 
-    @Column
     private String username;
 
-    @Column
     private String userphone;
 
-    @Column
     private String useremail;
+
+    @Column
+    private String profileImage;
 
     @OneToMany(mappedBy = "id1")
     private List<FriendList> friendlist1 = new ArrayList<>();
@@ -64,5 +65,9 @@ public class Member { // 일종의 테이블 역할을 함
         member.setUserphone(memberDTO.getUserphone());
         member.setUseremail(memberDTO.getUseremail());
         return member;
+    }
+
+    public void updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

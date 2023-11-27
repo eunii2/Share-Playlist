@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @Column(nullable = false)
     private String url;
@@ -29,7 +29,5 @@ public class Image {
     public void updateUrl(String url){
         this.url = url;
     }
-
-
 
 }

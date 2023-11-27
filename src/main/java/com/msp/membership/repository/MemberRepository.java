@@ -13,4 +13,10 @@ public interface MemberRepository extends JpaRepository<Member, String> { // <En
     Optional<Member> findByUserid(String Userid); // 레파지토리에서 주고받는 객체는 모두 Entitiy 객체
     public List<Member> findByUsernameContainingAndUseridNot(String searching, String id);
 
+    boolean existsByUserid(String userid);
+
+    static Member findById(Long id) {
+        return null;
+    }
+
 }

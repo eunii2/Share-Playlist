@@ -19,41 +19,41 @@ import com.msp.friend.service.FriendListServiceImpl;
 @RestController
 @RequestMapping("/friendlist") // 컨트롤러의 기본 URL 설정
 public class FriendListController {
-    @Autowired
+    @Autowired  // 의존성 자동 주입
     private FriendListServiceImpl friendListService;
     private static final Logger log = LoggerFactory.getLogger(FriendListController.class); // log 출력을 위함
-    @GetMapping("findAll")
-    public ArrayList<FriendListDTO> findAll() {
+    @GetMapping("findAll")  //friendlist/findAll로 오는 GET 요청을 처리하는 메서드
+    public ArrayList<FriendListDTO> findAll() { // 친구 목록을 모두 가져오는 메서드
         log.info("friendlist/findAll() 실행");
-        ArrayList<FriendListDTO> result = null;
-        result = friendListService.findAll();
+        ArrayList<FriendListDTO> result = null; // 결과를 저장할 ArrayList 선언
+        result = friendListService.findAll();   // 모든 친구 목록을 가져와서 result에 저장
         return result;
     }
 
-    @GetMapping("findFriendListId1")
+    @GetMapping("findFriendListId1")    // /friendlist/findFriendListId1로 오는 GET 요청을 처리하는 메서드
     public List<List<String>> findFriendListId1(String id1) { // 주어진 ID를 가진 사용자의 친구목록을 가져옴
         log.info("friendlist/findFriendListId1() 실행");
-        List<List<String>> result = null;
-        result = friendListService.findFriendListId1(id1);
+        List<List<String>> result = null;   // 결과를 저장할 List 선언
+        result = friendListService.findFriendListId1(id1);  // 주어진 ID를 가진 사용자의 친구목록을 가져와서 result에 저장
         return result;
     }
 
     @DeleteMapping("delete") // 친구 관계를 삭제하는 메소드
     public String delete(String id1,String id2) {
         log.info("friendlist/delete() 실행");
-        String result = null;
+        String result = null;   //결과를 저장할 string 선언
         result = friendListService.delete(id1,id2); // 서비스에 두 사용자의 친구 관계 삭제를 요청하고, 결과를 반환
         return result;
     }
 
-    @PostMapping("post")
-    public String post(String id1, String id2) {
+    @PostMapping("post")    // /friendlist/post로 오는 POST 요청을 처리하는 메서드
+    public String post(String id1, String id2) { // 친구 요청을 전달하는 메서드
         log.info("friendlist/post() 실행");
         String result = null;
         result = friendListService.post(id1,id2); // 서비스에 친구 요청을 전달하고, 결과를 반환
-        if (result.equals("친구상태")) {
+        if (result.equals("친구상태")) {    // 만약 결과가 "친구 상태라면"
             return "이미 친구 목록에 존재합니다";
-        }else if(result.equals("친구신청 이미보냄")) {
+        }else if(result.equals("친구신청 이미보냄")) {  // 만약 친구신청을 보낸 상태라면
             return "이미 친구신청을 보냈습니다";
         }return "친구요청 성공";
     }

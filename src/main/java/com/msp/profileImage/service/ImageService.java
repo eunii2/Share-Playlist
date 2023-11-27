@@ -6,6 +6,5 @@ import com.msp.profileImage.dto.ImageUploadDTO;
 public interface ImageService {
 
     void upload(ImageUploadDTO imageUploadDTO, String userid);
-
     ImageResponseDTO findImage(String userid);
 }

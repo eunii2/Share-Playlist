@@ -24,15 +24,14 @@ import lombok.Setter;
 public class FriendList implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본 키 생성을 DB에 위임함을 선언
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id1")
+    @ManyToOne(fetch = FetchType.EAGER) // Member 엔티티와 다대일 관계임을 선언, 즉시 로딩을 설정
+    @JoinColumn(name = "id1")   // 이 필드를 외래 키로 사용하고 외래 키의 이름을 "id1"로 함을 선언
     private Member id1;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id2")
     private Member id2;
-
 }

@@ -53,7 +53,7 @@ public class ImageServiceImpl implements ImageService {
                         .build();
             }
             imageRepository.save(image);
-        } catch (IOException e) {
+        } catch (IOException e) { // 예외 발생
             throw new RuntimeException(e);
         }
     }
@@ -64,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
         Image image = imageRepository.findByMember(member);
 
-        String defaultImageUrl = "/profileImages/cat.png";
+        String defaultImageUrl = "/profileImages/cat.png";  // 디폴트 이미지를 이미 선언
 
         if (image == null) {
             return ImageResponseDTO.builder() // 이미지가 없으면 기본 이미지 반환
