@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.msp.friend.entity.FriendList;
-import com.msp.friend.entity.FriendRequest;
 import com.msp.friend.entity.Preference;
 import com.msp.membership.dto.MemberDTO;
 import lombok.Getter;

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.msp.friend.dto.FriendListDTO;
 import com.msp.friend.service.FriendListServiceImpl;
 
-
 @RestController
 @RequestMapping("/friendlist") // 컨트롤러의 기본 URL 설정
 public class FriendListController {
@@ -50,12 +49,11 @@ public class FriendListController {
     public String post(String id1, String id2) { // 친구 요청을 전달하는 메서드
         log.info("friendlist/post() 실행");
         String result = null;
-        result = friendListService.post(id1,id2); // 서비스에 친구 요청을 전달하고, 결과를 반환
+        result = friendListService.addFriend(id1,id2); // 서비스에 친구 요청을 전달하고, 결과를 반환
         if (result.equals("친구상태")) {    // 만약 결과가 "친구 상태라면"
-            return "이미 친구 목록에 존재합니다";
-        }else if(result.equals("친구신청 이미보냄")) {  // 만약 친구신청을 보낸 상태라면
-            return "이미 친구신청을 보냈습니다";
-        }return "친구요청 성공";
+            return "이미 친구 상태입니다.";
+        }
+        return "친구요청 성공";
     }
 }
 
