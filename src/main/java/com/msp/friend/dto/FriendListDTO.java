@@ -1,6 +1,7 @@
-package com.msp.membership.dto;
+package com.msp.friend.dto;
 
 
+import com.msp.membership.dto.MemberDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 public class FriendListDTO {
-    private Long Id;
+    private Long id;
     private MemberDTO id1;
     private MemberDTO id2;
 }

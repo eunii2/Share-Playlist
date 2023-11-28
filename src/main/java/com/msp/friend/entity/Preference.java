@@ -1,4 +1,4 @@
-package com.msp.membership.entity;
+package com.msp.friend.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.msp.membership.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PreferenceEntity {
+public class Preference {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +31,6 @@ public class PreferenceEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "UserId")
-    private MemberEntity member;
+    private Member member;
 
 }

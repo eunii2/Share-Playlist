@@ -4,6 +4,7 @@ import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.song.entity.Song;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Getter //member 변수들이 전부 private 밖으로 가져오기 위해
 @Table(name="playlist")
+@NoArgsConstructor
 public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,10 +55,6 @@ public class Playlist {
         this.userId = playlistRequestDto.getUserID();
     }
 
-    public Playlist() {
-
-    }
-
     public void changeNameAndDescription(PlaylistUpdateDto playlistUpdateDto) {
         if (playlistUpdateDto.getName() != null) {
             this.name = playlistUpdateDto.getName();
@@ -68,6 +66,7 @@ public class Playlist {
     }
 
     public void setTagGenre(TagGenre tagGenre) {
+
     }
 
 }

@@ -59,7 +59,6 @@ public class PlaylistService {
         Playlist playlist = playlistRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("this id not exists id: " + id));
         playlist.changeNameAndDescription(updateDto);
-
         // 예외 처리 또는 null 반환 등의 처리 필요
         return playlist;
     }
