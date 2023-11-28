@@ -34,13 +34,14 @@ public class PlaylistService {
         //밑에서부터 tag 기능 추가
         if(playlistRequestDto.getTagGenreId() != null){
             TagGenre tagGenre = tagGenreRepository.findById(playlistRequestDto.getTagGenreId()).orElseThrow();
-            //플레이리스트와 tagGenre 연결 로직 추가
+            playlist.setTagGenre(tagGenre);
         }
+
         if(playlistRequestDto.getTagMoodIds() != null){
             for(Long moodId : playlistRequestDto.getTagMoodIds()) {
                 TagMood tagMood = tagMoodRepository.findById(moodId).orElseThrow();
                 tagMood.setPlaylsit(playlist);
-                //태그 무드를 플레이리스트에 추가하는 로직
+                playlist.getTagMoods().add(tagMood);
             }
         }
         return playlistRepository.save(playlist);
@@ -58,7 +59,6 @@ public class PlaylistService {
         Playlist playlist = playlistRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("this id not exists id: " + id));
         playlist.changeNameAndDescription(updateDto);
-
         // 예외 처리 또는 null 반환 등의 처리 필요
         return playlist;
     }

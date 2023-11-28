@@ -9,6 +9,10 @@ spring:
     password: pp3818
   thymeleaf:
     cache: false
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 100MB # 프로필 이미지 크기 설정
 
   # spring data jpa 설정
   jpa:

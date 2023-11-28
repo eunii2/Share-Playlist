@@ -15,5 +15,6 @@ public class TagMood {
     private Playlist playlist;
 
     public void setPlaylsit(Playlist playlist) {
+        this.playlist = playlist;
     }
 }
