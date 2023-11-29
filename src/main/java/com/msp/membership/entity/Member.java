@@ -47,12 +47,6 @@ public class Member { // 일종의 테이블 역할을 함
     @OneToMany(mappedBy = "id2")
     private List<FriendList> friendlist2 = new ArrayList<>();
 
-    @OneToMany(mappedBy = "requestId")
-    private List<FriendRequest> friendRequest1 = new ArrayList<>();
-
-    @OneToMany(mappedBy = "requestedId")
-    private List<FriendRequest> friendRequest2 = new ArrayList<>();
-
     @OneToMany(mappedBy = "userid")
     private List<Preference> preference = new ArrayList<>();
 

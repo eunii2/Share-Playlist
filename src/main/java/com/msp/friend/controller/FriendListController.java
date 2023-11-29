@@ -40,12 +40,12 @@ public class FriendListController {
     @DeleteMapping("delete") // 친구 관계를 삭제하는 메소드
     public String delete(String id1,String id2) {
         log.info("friendlist/delete() 실행");
-        String result = null;   //결과를 저장할 string 선언
+        String result = null;  //결과를 저장할 string 선언
         result = friendListService.delete(id1,id2); // 서비스에 두 사용자의 친구 관계 삭제를 요청하고, 결과를 반환
         return result;
     }
 
-    @PostMapping("post")    // /friendlist/post로 오는 POST 요청을 처리하는 메서드
+    @PostMapping("post")   // /friendlist/post로 오는 POST 요청을 처리하는 메서드
     public String post(String id1, String id2) { // 친구 요청을 전달하는 메서드
         log.info("friendlist/post() 실행");
         String result = null;
@@ -56,4 +56,3 @@ public class FriendListController {
         return "친구요청 성공";
     }
 }
-

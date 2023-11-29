@@ -69,7 +69,7 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/user/update/{id}")
+    @GetMapping("/user/update/{id}")    // 프로필 수정 페이지(로그인 한 사람만 수정 가능)
     public String updateForm(@PathVariable int id, HttpSession session, Model model) {
 
         MemberDTO user = (MemberDTO) session.getAttribute("user"); // 세션에서 사용자 정보를 조회
@@ -84,17 +84,19 @@ public class MemberController {
         return "user/update";
     }
 
-    @GetMapping("user/profile")
+    @GetMapping("user/profile")     // 본인 프로필 조회기능
     public String profileDefault(HttpSession session, Model model) {
         MemberDTO user = (MemberDTO) session.getAttribute("user"); // 세션에서 사용자 정보를 조회
         if (user != null) {
-            profile(user.getId(), model);
+            profile(user.getId(), model);   // 세션에 저장된 사용자 정보를 확인해서 로그인 여부 판단
         }
-        // TODO: 사용자가 로그인하지 않은 경우의 처리
+        else if(user == null){
+            // TODO: 사용자가 로그인하지 않은 경우의 처리
+        }
         return "user/profile";
     }
 
-    @GetMapping("user/profile/{id}")
+    @GetMapping("user/profile/{id}")    // 특정 사용자의 프로필 조회 기능
     public String profile(@PathVariable Long id, Model model) {
         UserProfileDTO profileDTO = MemberService.findById(id);
         model.addAttribute("profileDto",profileDTO);
