@@ -12,5 +12,5 @@ public interface FriendListService {
 
     public String delete(String id1, String id2);
 
-    public String post(String id1, String id2);
+    public String addFriend(String id1, String id2);
 }
