@@ -4,17 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.msp.friend.dto.FriendListDTO;
-import com.msp.friend.dto.FriendRequestDTO;
-import com.msp.friend.entity.FriendRequest;
-import com.msp.friend.repository.FriendListRepository;
-import com.msp.friend.repository.FriendRequestRepository;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.msp.membership.repository.MemberRepository;
+import com.msp.friend.repository.FriendListRepository;
 import com.msp.membership.dto.MemberDTO;
+import com.msp.friend.dto.FriendListDTO;
 import com.msp.membership.entity.Member;
 import com.msp.friend.entity.FriendList;
 
@@ -24,7 +21,6 @@ import org.modelmapper.ModelMapper;
 public class FriendListServiceImpl implements FriendListService {
     private FriendListRepository friendListRepository;
     private MemberRepository memberRepository;
-    private FriendRequestRepository friendRequestRepository;
 
     private static ModelMapper modelMapper = new ModelMapper(); // 객체 맵핑을 위한 인스턴스 생성, modelMapper : 객체를 다른 객체로 변환(매핑)
     private static final Logger log = LoggerFactory.getLogger(FriendListServiceImpl.class); // log 출력을 위함
@@ -69,32 +65,27 @@ public class FriendListServiceImpl implements FriendListService {
         }
     }
 
-    public String post(String id1, String id2){ // 친구 요청을 처리하는 메소드
-        /* 아이디로 해당 유저 검색 */
-        Optional<Member> result1 = memberRepository.findById(id1); // 첫 번째 사용자를 찾음
-        Optional<Member> result2 = memberRepository.findById(id2);  // 두 번째 사용자를 찾음
-        MemberDTO result3 = null;
-        MemberDTO result4 = null;
-        if (result1.isPresent()) {
-            result3 = modelMapper.map(result1.get(), MemberDTO.class);  // 결과가 존재하면 DTO로 변환
-        }
-        if (result2.isPresent()) {
-            result4 = modelMapper.map(result2.get(), MemberDTO.class);  // 결과가 존재하면 DTO로 변환
-        }
-        Optional<FriendList> result5 = friendListRepository.findMyFunction(id1, id2);   // 두 사용자의 친구 관계를 찾음
-        log.info("result5: {}", result5);
-        if (result5.isPresent()) {
-            return "친구상태";
-        } else {
-            FriendRequestDTO result = FriendRequestDTO.builder().requestId(result3).requestedId(result4).build();
-            try {
-                friendRequestRepository.save(modelMapper.map(result, FriendRequest.class)); // 친구 요청을 저장
-            } catch (Exception e) { // 예외 발생시
-                e.printStackTrace();    // 예외 내용 출력
-                return "친구신청 이미보냄";
-            }
-        }   
-        return "친구요청 성공"; // 성공 메세지 반환
-    }   
+    public String addFriend(String id1, String id2) {
+        try {
+            Optional<Member> result1 = memberRepository.findById(id1);
+            Optional<Member> result2 = memberRepository.findById(id2);
 
-}
+            if (result1.isPresent() && result2.isPresent()) {
+                MemberDTO result3 = modelMapper.map(result1.get(), MemberDTO.class);
+                MemberDTO result4 = modelMapper.map(result2.get(), MemberDTO.class);
+
+                // 친구 관계 생성
+                FriendListDTO result = FriendListDTO.builder().id1(result3).id2(result4).build();
+                friendListRepository.save(modelMapper.map(result, FriendList.class));
+                FriendListDTO resultt = FriendListDTO.builder().id2(result3).id1(result4).build();
+                friendListRepository.save(modelMapper.map(resultt, FriendList.class));
+
+                return "친구 추가 완료";
+            } else {
+                return "친구 추가에 실패하였습니다. 유효한 회원 정보가 아닙니다.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "친구 추가 중 오류가 발생했습니다";
+        }
+    }}
