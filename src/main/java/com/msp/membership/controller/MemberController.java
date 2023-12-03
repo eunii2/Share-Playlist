@@ -1,63 +1,44 @@
 package com.msp.membership.controller;
 
-import com.msp.membership.entity.Member;
+import com.msp.membership.dto.MemberDTO;
+import com.msp.membership.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
-
-import com.msp.membership.dto.MemberDTO;
-import com.msp.membership.service.MemberService;
-import com.msp.membership.dto.UserProfileDTO;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/member")
 public class MemberController {
-    // 생성자 주입
+
     private final MemberService memberService;
-    // 회원 가입 페이지 출력 요청
+
     private static final Logger log = LoggerFactory.getLogger(MemberController.class);
-    @GetMapping("/member/join")
+    @GetMapping("/join")
     public String joinForm(){
         return "/login/join";
     }
 
-    @PostMapping("/member/join")
-    public String join(@RequestBody MemberDTO memberDTO)
-    {
-        log.info("MemberController.save");
-        log.info("memberDTO = " + memberDTO);
-        memberService.join(memberDTO);
-        return "/login/login";
+    @PostMapping("/join")
+    public ResponseEntity<MemberDTO> signup(
+            @Valid @RequestBody MemberDTO memberDTO
+    ) {
+        return ResponseEntity.ok(memberService.join(memberDTO));
     }
 
-    @GetMapping("/user/login")
+    @GetMapping("/login")
     public String loginForm() {
         return "login/login";
     }
 
-    @PostMapping("/user/login")
-    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){
-        MemberDTO loginResult = memberService.login(memberDTO);
-        if(loginResult != null) {
-            session.setAttribute("loginId", loginResult.getUserid());
-            return "main";
-        }
-        else{
-            //로그인 실패
-            return "login/login";   //html 파일
-        }
-    }
-
-    @PostMapping("/user/id-check")    // 아이디 중복 처리
+    @PostMapping("/id-check")    // 아이디 중복 처리
     public @ResponseBody String idCheck(@RequestParam("userid") String userid){
         log.info("userid = " + userid);
         String checkResult = memberService.idCheck(userid);
@@ -69,7 +50,8 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/user/update/{id}")    // 프로필 수정 페이지(로그인 한 사람만 수정 가능)
+    /*
+    @GetMapping("/update/{id}")    // 프로필 수정 페이지(로그인 한 사람만 수정 가능)
     public String updateForm(@PathVariable int id, HttpSession session, Model model) {
 
         MemberDTO user = (MemberDTO) session.getAttribute("user"); // 세션에서 사용자 정보를 조회
@@ -81,25 +63,34 @@ public class MemberController {
         Member member = memberService.findByUserid(user.getUserid());
         model.addAttribute("user", member);
 
-        return "user/update";
+        return "update";
+    }
+    */
+
+    @GetMapping("/profile")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<MemberDTO> getMyUserInfo(HttpServletRequest request) {
+        return ResponseEntity.ok(memberService.getMyUserWithAuthorities());
     }
 
-    @GetMapping("user/profile")     // 본인 프로필 조회기능
-    public String profileDefault(HttpSession session, Model model) {
-        MemberDTO user = (MemberDTO) session.getAttribute("user"); // 세션에서 사용자 정보를 조회
-        if (user != null) {
-            profile(user.getId(), model);   // 세션에 저장된 사용자 정보를 확인해서 로그인 여부 판단
-        }
-        else if(user == null){
-            // TODO: 사용자가 로그인하지 않은 경우의 처리
-        }
-        return "user/profile";
+    @GetMapping("/profile/{userid}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<MemberDTO> getUserInfo(@PathVariable String userid) {
+        return ResponseEntity.ok(memberService.getUserWithAuthorities(userid));
     }
 
-    @GetMapping("user/profile/{id}")    // 특정 사용자의 프로필 조회 기능
-    public String profile(@PathVariable Long id, Model model) {
-        UserProfileDTO profileDTO = MemberService.findById(id);
-        model.addAttribute("profileDto",profileDTO);
-        return "user/profile";
+    @PutMapping("/profile/Image/{id}")
+    public ResponseEntity<String> updateProfileImage(@PathVariable int id, MultipartFile profileImageFile){
+
+
+        if(memberService.updateProfileImage(id, profileImageFile)) {
+            return ResponseEntity.ok().body("프로필 사진 수정에 성공하였습니다");
+        }
+
+        else {
+            return ResponseEntity.badRequest().body("프로필 사진 수정에 실패하였습니다");
+        }
+
+
     }
 }

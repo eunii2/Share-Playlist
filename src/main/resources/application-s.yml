@@ -1,4 +1,7 @@
 # database 연동 설정
+file:
+  profileImagePath: classpath:/
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

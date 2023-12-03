@@ -1,66 +1,51 @@
 package com.msp.membership.entity;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import com.msp.friend.entity.FriendList;
-import com.msp.friend.entity.Preference;
-import com.msp.membership.dto.MemberDTO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Entity
-@Setter
 @Getter
-@Table(name = "member_table")   // 테이블이 생성되었을 때의 테이블 이름
-public class Member { // 일종의 테이블 역할을 함
-    @Id //primary key 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
-    private Long id;
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "member")
+public class Member {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(unique = true)
+    @Column(name = "user_id", unique = true)
     private  String userid;
 
-    @Column(nullable = false)
+    @Column(name = "user_pw", nullable = false)
     private  String userpw;
 
+    @Column(name = "user_name")
     private String username;
 
+    @Column(name = "user_phone")
     private String userphone;
 
+    @Column(name = "user_email")
     private String useremail;
+
+    @Column(name = "activated")
+    private boolean activated;
 
     @Column
     private String profileImage;
 
-    @OneToMany(mappedBy = "id1")
-    private List<FriendList> friendlist1 = new ArrayList<>();
-
-    @OneToMany(mappedBy = "id2")
-    private List<FriendList> friendlist2 = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userid")
-    private List<Preference> preference = new ArrayList<>();
-
-    public static Member toMemberEntity(MemberDTO memberDTO){
-        Member member = new Member();
-        member.setUserid(memberDTO.getUserid());
-        member.setUserpw(memberDTO.getUserpw());
-        member.setUsername(memberDTO.getUsername());
-        member.setUserphone(memberDTO.getUserphone());
-        member.setUseremail(memberDTO.getUseremail());
-        return member;
-    }
-
     public void updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
 }

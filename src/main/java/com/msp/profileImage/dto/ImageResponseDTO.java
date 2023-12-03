@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ImageResponseDTO {
     private String url;  // 이미지 url
 
+
     public ImageResponseDTO(String url){
         this.url = url;
     }
