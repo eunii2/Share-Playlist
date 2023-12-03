@@ -5,6 +5,7 @@ import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
 import com.msp.playlist.entity.TagGenre;
 import com.msp.playlist.entity.TagMood;
+import com.msp.playlist.repository.PlaylistMemberRepository;
 import com.msp.playlist.repository.PlaylistRepository;
 import com.msp.playlist.repository.TagGenreRepository;
 import com.msp.playlist.repository.TagMoodRepository;
@@ -14,19 +15,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-// 생성자 만들어주고
-
 @Slf4j
 @Service
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final TagGenreRepository tagGenreRepository;
     private final TagMoodRepository tagMoodRepository;
+    private final PlaylistMemberRepository playlistMemberRepository;
 
-    public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository, TagGenreRepository tagGenreRepository1, TagMoodRepository tagMoodRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository, TagGenreRepository tagGenreRepository1, TagMoodRepository tagMoodRepository, PlaylistMemberRepository playlistMemberRepository, PlaylistMemberRepository playlistMemberRepository1) {
         this.playlistRepository = playlistRepository;
         this.tagGenreRepository = tagGenreRepository;
         this.tagMoodRepository = tagMoodRepository;
+        this.playlistMemberRepository = playlistMemberRepository1;
+    }
+
+    public boolean checkUserAccessToPlaylist(Long member_tableId, Long playlistId) {
+        return playlistMemberRepository.existsByMemberIdAndPlaylistId(member_tableId, playlistId);
     }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){

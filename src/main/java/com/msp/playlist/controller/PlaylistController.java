@@ -5,7 +5,6 @@ import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
 import com.msp.playlist.service.PlaylistService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +18,11 @@ public class PlaylistController {
 
     public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
+    }
+
+    @GetMapping("/{playlistId}/access/{member_tableId}")
+    public boolean checkAccess(@PathVariable Long playlistId, @PathVariable Long member_tableId) {
+        return playlistService.checkUserAccessToPlaylist(member_tableId, playlistId);
     }
 
     @PostMapping
@@ -36,11 +40,6 @@ public class PlaylistController {
     public Playlist updatePlaylist(@PathVariable Long id, @RequestBody @Valid PlaylistUpdateDto updateDto) {
         return playlistService.updatePlaylist(id, updateDto);
         // TODO ~ 예외처리 후 코드 작성
-        /*if (updatedPlaylist != null) {
-
-        }*/
-        // 적절한 예외 처리 필요
-        //return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

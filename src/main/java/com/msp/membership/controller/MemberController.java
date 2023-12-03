@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,13 +67,11 @@ public class MemberController {
     */
 
     @GetMapping("/profile")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<MemberDTO> getMyUserInfo(HttpServletRequest request) {
         return ResponseEntity.ok(memberService.getMyUserWithAuthorities());
     }
 
     @GetMapping("/profile/{userid}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<MemberDTO> getUserInfo(@PathVariable String userid) {
         return ResponseEntity.ok(memberService.getUserWithAuthorities(userid));
     }
