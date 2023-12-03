@@ -15,4 +15,16 @@ public class PlaylistMember {
 
     @Column(name = "member_table_id")
     private Long memberId;
+
+    @Column(name = "can_edit")
+    private boolean canEdit;
+
+    public void setPlaylistId(Long playlistId) {
+    }
+
+    public void setMemberId(Long memberId) {
+    }
+
+    public void setCanEdit(boolean canEdit) {
+    }
 }

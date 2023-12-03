@@ -1,5 +1,6 @@
 package com.msp.playlist.controller;
 
+import com.msp.playlist.dto.GrantAccessRequestDto;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
@@ -23,6 +24,12 @@ public class PlaylistController {
     @GetMapping("/{playlistId}/access/{member_tableId}")
     public boolean checkAccess(@PathVariable Long playlistId, @PathVariable Long member_tableId) {
         return playlistService.checkUserAccessToPlaylist(member_tableId, playlistId);
+    }
+
+    @PostMapping("/{playlistId}/grant-access")
+    public ResponseEntity<?> grantAccess(@PathVariable Long playlistId, @RequestBody GrantAccessRequestDto request) {
+        playlistService.grantAccess(playlistId, request.getMemberId(), request.isCanEdit());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping

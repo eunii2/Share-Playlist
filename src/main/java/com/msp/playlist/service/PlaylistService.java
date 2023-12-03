@@ -3,6 +3,7 @@ package com.msp.playlist.service;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
+import com.msp.playlist.entity.PlaylistMember;
 import com.msp.playlist.entity.TagGenre;
 import com.msp.playlist.entity.TagMood;
 import com.msp.playlist.repository.PlaylistMemberRepository;
@@ -32,6 +33,14 @@ public class PlaylistService {
 
     public boolean checkUserAccessToPlaylist(Long member_tableId, Long playlistId) {
         return playlistMemberRepository.existsByMemberIdAndPlaylistId(member_tableId, playlistId);
+    }
+
+    public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
+        PlaylistMember playlistMember = new PlaylistMember();
+        playlistMember.setPlaylistId(playlistId);
+        playlistMember.setMemberId(memberId);
+        playlistMember.setCanEdit(canEdit);
+        playlistMemberRepository.save(playlistMember);
     }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
