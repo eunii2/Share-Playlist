@@ -24,22 +24,22 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final MemberRepository memberRepository;
 
-    @Value("${file.profileImagePath}")  // application.properties 파일에서 file.profileImagePath 값을 가져옴
-    private String uploadFolder;    // 업로드된 이미지를 저장할 디렉토리 경로를 저장하는 변수
+    @Value("${file.profileImagePath}")
+    private String uploadFolder;
 
     @Override
-    public void upload(ImageUploadDTO imageUploadDTO, String userid) {  // 이미지와 사용자 ID를 받아 이미지를 업로드
+    public void upload(ImageUploadDTO imageUploadDTO, String userid) {
         Member member = memberRepository.findByUserid(userid)
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
         MultipartFile file = imageUploadDTO.getFile();
 
-        UUID uuid = UUID.randomUUID();  // 파일 이름 곂치지 않도록 UUID 생성
+        UUID uuid = UUID.randomUUID();
         String imageFileName = uuid + "_" + file.getOriginalFilename();
 
-        File destinationFile = new File(uploadFolder + imageFileName);  // 이미지 파일의 이름을 생성하고 저장할 경로 생성
+        File destinationFile = new File(uploadFolder + imageFileName);
 
         try {
-            file.transferTo(destinationFile);   // 파일을 지정한 경로로 이동
+            file.transferTo(destinationFile);
 
             Image image = imageRepository.findByMember(member);
             if (image != null) {
@@ -53,7 +53,7 @@ public class ImageServiceImpl implements ImageService {
                         .build();
             }
             imageRepository.save(image);
-        } catch (IOException e) { // 예외 발생
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -64,14 +64,14 @@ public class ImageServiceImpl implements ImageService {
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
         Image image = imageRepository.findByMember(member);
 
-        String defaultImageUrl = "/profileImages/cat.png";  // 디폴트 이미지를 이미 선언
+        String defaultImageUrl = "/profileImages/cat.png";
 
         if (image == null) {
-            return ImageResponseDTO.builder() // 이미지가 없으면 기본 이미지 반환
+            return ImageResponseDTO.builder()
                     .url(defaultImageUrl)
                     .build();
         } else {
-            return ImageResponseDTO.builder() // 이미지 있으면 해당 이미지 정보 반환
+            return ImageResponseDTO.builder()
                     .url(image.getUrl())
                     .build();
         }

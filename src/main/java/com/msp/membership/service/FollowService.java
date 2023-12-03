@@ -12,7 +12,6 @@ public class FollowService {
     @Autowired
     FollowRepository followRepository;
 
-
     @Transactional
     public void saveFollow(int toUserId, int fromUserId) {
         followRepository.saveFollow(toUserId, fromUserId);

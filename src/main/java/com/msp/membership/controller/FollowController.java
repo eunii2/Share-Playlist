@@ -20,14 +20,14 @@ public class FollowController{
     @Autowired
     MemberService memberService;
 
-    @PostMapping("/api/subscribe/{toUserId}")
+    @PostMapping("/follow/{toUserId}")
     public ResponseEntity<String> follow(@PathVariable int toUserId, @AuthenticationPrincipal CustomUserDetails principal){
 
         followService.saveFollow(toUserId, principal.getId());
         return ResponseEntity.ok().body("친구추가 완료");
     }
 
-    @DeleteMapping("/api/subscribe/{toUserId}")
+    @DeleteMapping("/follow/{toUserId}")
     public ResponseEntity<String> unfollow(@PathVariable int toUserId, @AuthenticationPrincipal CustomUserDetails principal){
 
         followService.deleteFollow(toUserId, principal.getId());

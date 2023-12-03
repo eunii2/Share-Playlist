@@ -13,8 +13,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "member")
 public class Member {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "user_id", unique = true)
@@ -42,7 +44,7 @@ public class Member {
         this.profileImage = profileImage;
     }
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},

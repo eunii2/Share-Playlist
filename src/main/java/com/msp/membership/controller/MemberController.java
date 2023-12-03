@@ -27,7 +27,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<MemberDTO> signup(
+    public ResponseEntity<MemberDTO> join(
             @Valid @RequestBody MemberDTO memberDTO
     ) {
         return ResponseEntity.ok(memberService.join(memberDTO));
@@ -35,7 +35,7 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginForm() {
-        return "login/login";
+        return "login";
     }
 
     @PostMapping("/id-check")    // 아이디 중복 처리
@@ -82,7 +82,6 @@ public class MemberController {
     @PutMapping("/profile/Image/{id}")
     public ResponseEntity<String> updateProfileImage(@PathVariable int id, MultipartFile profileImageFile){
 
-
         if(memberService.updateProfileImage(id, profileImageFile)) {
             return ResponseEntity.ok().body("프로필 사진 수정에 성공하였습니다");
         }
@@ -90,7 +89,6 @@ public class MemberController {
         else {
             return ResponseEntity.badRequest().body("프로필 사진 수정에 실패하였습니다");
         }
-
 
     }
 }

@@ -32,7 +32,7 @@ public class AuthController {
     public ResponseEntity<TokenDTO> authorize(@Valid @RequestBody LoginDTO loginDTO) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getUserid(), loginDTO.getUserpw());
+                new UsernamePasswordAuthenticationToken(loginDTO.getUserid(), loginDTO.getUserpw());    //입력받은 정보 인증
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
