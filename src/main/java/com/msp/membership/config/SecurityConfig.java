@@ -1,29 +1,27 @@
-package com.msp.config;
+package com.msp.membership.config;
 
-import com.msp.jwt.JwtAccessDeniedHandler;
-import com.msp.jwt.JwtAuthenticationEntryPoint;
-import com.msp.jwt.JwtSecurityConfig;
-import com.msp.jwt.TokenProvider;
+import com.msp.membership.jwt.JwtAccessDeniedHandler;
+import com.msp.membership.jwt.JwtAuthenticationEntryPoint;
+import com.msp.membership.jwt.JwtSecurityConfig;
+import com.msp.membership.jwt.TokenProvider;
+
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration
-class SecurityConfig {
+public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -49,7 +47,7 @@ class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.disable())
 
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -57,23 +55,18 @@ class SecurityConfig {
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
 
-                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests   // 모든 사용자가 사용할 수 있는 부분
-                        .requestMatchers(new AntPathRequestMatcher("/index"),
-                                new AntPathRequestMatcher("/join"),
-                                new AntPathRequestMatcher("/login"))
-                        .permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .antMatchers("/index", "/authenticate", "/member/join").permitAll()
                         .anyRequest().authenticated()
                 )
-
-                // 세션을 사용하지 않기 때문에 STATELESS로 설정
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // enable h2-console
                 .headers(headers ->
-                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin
+                        headers.frameOptions(options ->
+                                options.sameOrigin()
                         )
                 )
 

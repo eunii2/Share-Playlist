@@ -1,4 +1,4 @@
-package com.msp.token;
+package com.msp.membership.jwt.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

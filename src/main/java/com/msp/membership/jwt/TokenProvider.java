@@ -1,4 +1,4 @@
-package com.msp.jwt;
+package com.msp.membership.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

@@ -1,4 +1,4 @@
-package com.msp.jwt;
+package com.msp.membership.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

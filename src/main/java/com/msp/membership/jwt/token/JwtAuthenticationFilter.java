@@ -1,4 +1,4 @@
-package com.msp.token;
+package com.msp.membership.jwt.token;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

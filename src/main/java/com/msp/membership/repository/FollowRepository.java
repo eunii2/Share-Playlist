@@ -10,15 +10,15 @@ import org.springframework.data.repository.query.Param;
 public interface FollowRepository extends JpaRepository<Follow, Integer> {
 
         @Modifying
-        @Query(value= "insert into Subscribe(toUserId, fromUserId, createDate) VALUES(:toUserId, :fromUserId, now())", nativeQuery = true)
+        @Query(value = "INSERT INTO Follow(toUserId, fromUserId, createDate) VALUES (:toUserId, :fromUserId, NOW())", nativeQuery = true)
         void saveFollow(@Param("toUserId") int toUserId, @Param("fromUserId") int fromUserId);
 
         @Modifying
-        @Query("delete from Subscribe where toUserId = :toUserId and fromUserId = :fromUserId")
+        @Query("DELETE FROM Follow WHERE toUserId = :toUserId AND fromUserId = :fromUserId")
         void deleteByToUserIdAndFromUserId(@Param("toUserId") int toUserId, @Param("fromUserId") int fromUserId);
 
         int countByToUserId(int toUserId);
 
         boolean existsByToUserIdAndFromUserId(int toUserId, int fromUserId);
-
 }
+

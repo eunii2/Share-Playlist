@@ -11,13 +11,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfileDTO {
-    private Long id;
+    private int id;
+    private String userid;
     private String username;
     private String profileImage;
+
+    private boolean subscribeState;
+    private int subscribeCount;
 
     public UserProfileDTO EntityToDto(Member member) {
         return UserProfileDTO.builder()
                 .id(member.getId())
+                .userid(member.getUserid())
                 .username(member.getUsername())
                 .profileImage(member.getProfileImage())
                 .build();

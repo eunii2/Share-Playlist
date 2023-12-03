@@ -1,4 +1,4 @@
-package com.msp.jwt;
+package com.msp.membership.jwt;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

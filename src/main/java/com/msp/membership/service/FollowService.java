@@ -1,15 +1,17 @@
 package com.msp.membership.service;
-import javax.transaction.Transactional;
 
 import com.msp.membership.repository.FollowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class FollowService {
 
     @Autowired
     FollowRepository followRepository;
+
 
     @Transactional
     public void saveFollow(int toUserId, int fromUserId) {
