@@ -1,19 +1,16 @@
 package com.msp.membership.controller;
 
 import com.msp.membership.dto.MemberDTO;
-import com.msp.membership.entity.Member;
 import com.msp.membership.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
@@ -41,20 +38,6 @@ public class MemberController {
         return "login/login";
     }
 
-    /*
-    @PostMapping("/login")
-    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){
-        MemberDTO loginResult = memberService.login(memberDTO);
-        if(loginResult != null) {
-            session.setAttribute("loginId", loginResult.getUserid());
-            return "main";
-        }
-        else{
-            //로그인 실패
-            return "login/login";   //html 파일
-        }
-    }
-*/
     @PostMapping("/id-check")    // 아이디 중복 처리
     public @ResponseBody String idCheck(@RequestParam("userid") String userid){
         log.info("userid = " + userid);
@@ -67,6 +50,7 @@ public class MemberController {
         }
     }
 
+    /*
     @GetMapping("/update/{id}")    // 프로필 수정 페이지(로그인 한 사람만 수정 가능)
     public String updateForm(@PathVariable int id, HttpSession session, Model model) {
 
@@ -81,6 +65,7 @@ public class MemberController {
 
         return "update";
     }
+    */
 
     @GetMapping("/profile")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
