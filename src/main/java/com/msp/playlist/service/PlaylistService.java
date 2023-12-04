@@ -3,10 +3,8 @@ package com.msp.playlist.service;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
-import com.msp.playlist.entity.PlaylistMember;
 import com.msp.playlist.entity.TagGenre;
 import com.msp.playlist.entity.TagMood;
-import com.msp.playlist.repository.PlaylistMemberRepository;
 import com.msp.playlist.repository.PlaylistRepository;
 import com.msp.playlist.repository.TagGenreRepository;
 import com.msp.playlist.repository.TagMoodRepository;
@@ -22,25 +20,11 @@ public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final TagGenreRepository tagGenreRepository;
     private final TagMoodRepository tagMoodRepository;
-    private final PlaylistMemberRepository playlistMemberRepository;
 
-    public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository, TagGenreRepository tagGenreRepository1, TagMoodRepository tagMoodRepository, PlaylistMemberRepository playlistMemberRepository, PlaylistMemberRepository playlistMemberRepository1) {
+    public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository, TagGenreRepository tagGenreRepository1, TagMoodRepository tagMoodRepository) {
         this.playlistRepository = playlistRepository;
         this.tagGenreRepository = tagGenreRepository;
         this.tagMoodRepository = tagMoodRepository;
-        this.playlistMemberRepository = playlistMemberRepository1;
-    }
-
-    public boolean checkUserAccessToPlaylist(Long member_tableId, Long playlistId) {
-        return playlistMemberRepository.existsByMemberIdAndPlaylistId(member_tableId, playlistId);
-    }
-
-    public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
-        PlaylistMember playlistMember = new PlaylistMember();
-        playlistMember.setPlaylistId(playlistId);
-        playlistMember.setMemberId(memberId);
-        playlistMember.setCanEdit(canEdit);
-        playlistMemberRepository.save(playlistMember);
     }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
