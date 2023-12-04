@@ -2,27 +2,22 @@ package com.msp.membership.service;
 
 import com.msp.membership.entity.Member;
 import com.msp.membership.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
-    public CustomUserDetailsService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
-
-    @Override
-    @Transactional
     public UserDetails loadUserByUsername(final String userid) {
         return memberRepository.findOneWithAuthoritiesByUserid(userid)
                 .map(member -> createMember(userid, member))

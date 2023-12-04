@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
 @Getter
 @Setter
@@ -12,26 +13,26 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "member")
-public class Member {
+public class Member{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_id", unique = true)
+    @Column(name = "userid", unique = true)
     private  String userid;
 
-    @Column(name = "user_pw", nullable = false)
+    @Column(name = "userpw", nullable = false)
     private  String userpw;
 
-    @Column(name = "user_name")
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "user_phone")
+    @Column(name = "userphone")
     private String userphone;
 
-    @Column(name = "user_email")
+    @Column(name = "useremail")
     private String useremail;
 
     @Column(name = "activated")
@@ -47,7 +48,7 @@ public class Member {
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
             name = "user_authority",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 }

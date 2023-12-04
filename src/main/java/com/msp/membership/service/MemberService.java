@@ -5,6 +5,7 @@ import com.msp.membership.dto.MemberDTO;
 import com.msp.membership.dto.UserProfileDTO;
 import com.msp.membership.entity.Authority;
 import com.msp.membership.entity.Member;
+import com.msp.membership.exception.DuplicateMemberException;
 import com.msp.membership.jwt.util.SecurityUtil;
 import com.msp.membership.repository.FollowRepository;
 import com.msp.membership.repository.MemberRepository;
@@ -39,6 +40,9 @@ public class MemberService {
 
     @Transactional
     public MemberDTO join(MemberDTO memberDTO) {
+        if (memberRepository.findOneWithAuthoritiesByUserid(memberDTO.getUserid()).orElse(null) != null) {
+            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+        }
 
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
@@ -75,39 +79,10 @@ public class MemberService {
         );
     }
 
-    public MemberDTO login(MemberDTO memberDTO) {
-
-        Optional<Member> byUserid = memberRepository.findByUserid(memberDTO.getUserid());
-        if (byUserid.isPresent()) {
-            Member member = byUserid.get();
-            if (member.getUserpw().equals(memberDTO.getUserpw())) {
-                MemberDTO dto = MemberDTO.toMemberDTO(member);
-                return dto;
-            } else {
-                return null;
-            }
-        } else {
-            return null;    //!. 로그인 실패 만들기
-        }
-    }
-
-    public String idCheck(String userid) {
-        Optional<Member> byUserid = memberRepository.findByUserid(userid);
-        if (byUserid.isPresent()) { //이미 존재
-            return null;
-        } else {
-            return "true";
-        }
-    }
 
     public Member findByUserid(String userid) {
         Optional<Member> byUserid = memberRepository.findByUserid(userid);
         return byUserid.orElse(null);
-    }
-
-    @Transactional
-    public boolean findUser(String userid) {
-        return memberRepository.existsByUserid(userid);
     }
 
 

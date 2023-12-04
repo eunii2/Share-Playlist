@@ -2,7 +2,6 @@ package com.msp.membership.controller;
 
 import com.msp.membership.dto.MemberDTO;
 import com.msp.membership.service.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
 
     private static final Logger log = LoggerFactory.getLogger(MemberController.class);
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
+
     @GetMapping("/join")
     public String joinForm(){
         return "/login/join";
@@ -32,23 +35,12 @@ public class MemberController {
     ) {
         return ResponseEntity.ok(memberService.join(memberDTO));
     }
-
+    
     @GetMapping("/login")
     public String loginForm() {
         return "login";
     }
 
-    @PostMapping("/id-check")    // 아이디 중복 처리
-    public @ResponseBody String idCheck(@RequestParam("userid") String userid){
-        log.info("userid = " + userid);
-        String checkResult = memberService.idCheck(userid);
-        if(checkResult != null) {
-            return "ok";
-        }
-        else{
-            return "no";
-        }
-    }
 
     /*
     @GetMapping("/update/{id}")    // 프로필 수정 페이지(로그인 한 사람만 수정 가능)

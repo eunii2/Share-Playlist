@@ -57,7 +57,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .antMatchers("/index", "/member/login", "/member/join").permitAll()
+                        .antMatchers( "/index", "/member/login", "/member/join").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->

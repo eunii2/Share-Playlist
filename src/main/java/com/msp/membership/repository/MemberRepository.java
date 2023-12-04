@@ -11,10 +11,9 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     Optional<Member> findByUserid(String Userid);
 
-    boolean existsByUserid(String userid);
-
     Member findById(int id);
 
     @EntityGraph(attributePaths = "authorities")
     Optional<Member> findOneWithAuthoritiesByUserid(String userid);
+
 }

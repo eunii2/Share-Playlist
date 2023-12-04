@@ -1,8 +1,10 @@
 package com.msp.membership.controller;
+
 import com.msp.membership.dto.LoginDTO;
 import com.msp.membership.dto.TokenDTO;
 import com.msp.membership.jwt.JwtFilter;
 import com.msp.membership.jwt.TokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/member")
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-        this.tokenProvider = tokenProvider;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> authorize(@Valid @RequestBody LoginDTO loginDTO) {
