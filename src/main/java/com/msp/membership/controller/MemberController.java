@@ -1,28 +1,22 @@
 package com.msp.membership.controller;
 
 import com.msp.membership.dto.MemberDTO;
+import com.msp.membership.entity.Member;
 import com.msp.membership.service.MemberService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
-
-    private static final Logger log = LoggerFactory.getLogger(MemberController.class);
-
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     @GetMapping("/join")
     public String joinForm(){
@@ -30,9 +24,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<MemberDTO> join(
-            @Valid @RequestBody MemberDTO memberDTO
-    ) {
+    public ResponseEntity<Member> join(@Valid @RequestBody MemberDTO memberDTO){
         return ResponseEntity.ok(memberService.join(memberDTO));
     }
     
@@ -57,19 +49,34 @@ public class MemberController {
 
         return "update";
     }
-    */
-
-    @GetMapping("/profile")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<MemberDTO> getMyUserInfo(HttpServletRequest request) {
-        return ResponseEntity.ok(memberService.getMyUserWithAuthorities());
-    }
 
     @GetMapping("/profile/{userid}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<MemberDTO> getUserInfo(@PathVariable String userid) {
-        return ResponseEntity.ok(memberService.getUserWithAuthorities(userid));
+    public ResponseEntity<Member> getUserInfo(@PathVariable String userid){
+        return ResponseEntity.ok(memberService.getUserWithAuthorities(userid).get());
     }
+    */
+
+    @GetMapping("/myinfo")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Member> getMyUserInfo(){
+        return ResponseEntity.ok(memberService.getMyUserWithAuthorities().get());
+    }
+/*
+    @GetMapping("user/profile")
+    public void profileDefault(@AuthenticationPrincipal CustomUserDetails customUser, Model model) {
+
+        profile(customUser.getId(),model);
+    }
+
+    @GetMapping("/user/profile/{id}")
+    public String profile(@PathVariable int id, Model model) {
+
+        UserProfileDTO userprofileDTO = MemberService.findById(id);
+        model.addAttribute("profileDto", userprofileDTO);
+        return "user/profile";
+    }
+    */
 
     @PutMapping("/profile/Image/{id}")
     public ResponseEntity<String> updateProfileImage(@PathVariable int id, MultipartFile profileImageFile){
@@ -83,4 +90,5 @@ public class MemberController {
         }
 
     }
+
 }
