@@ -18,7 +18,9 @@ public class UserProfileDTO {
 
     private boolean subscribeState;
     private int subscribeCount;
-
+    
+    // 플레이 리스트 목록 추가 해야함
+    
     public UserProfileDTO EntityToDto(Member member) {
         return UserProfileDTO.builder()
                 .id(member.getId())
@@ -27,4 +29,5 @@ public class UserProfileDTO {
                 .profileImage(member.getProfileImage())
                 .build();
     }
+
 }

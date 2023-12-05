@@ -41,7 +41,11 @@ public class Member{
     @Column
     private String profileImage;
 
-    public void updateProfileImage(String profileImage) {
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfile_photo(String profile_photo) {
         this.profileImage = profileImage;
     }
 

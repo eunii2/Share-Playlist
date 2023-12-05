@@ -29,7 +29,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void upload(ImageUploadDTO imageUploadDTO, String userid) {
-        Member member = memberRepository.findByUserid(userid)
+        Member member = memberRepository.findOptionalByUserid(userid)
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
         MultipartFile file = imageUploadDTO.getFile();
 
@@ -60,7 +60,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public ImageResponseDTO findImage(String userid) {
-        Member member = memberRepository.findByUserid(userid)
+        Member member = memberRepository.findOptionalByUserid(userid)
                 .orElseThrow(() -> new IllegalArgumentException("아이디가 존재하지 않습니다."));
         Image image = imageRepository.findByMember(member);
 

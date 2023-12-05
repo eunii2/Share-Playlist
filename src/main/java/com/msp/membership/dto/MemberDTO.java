@@ -26,16 +26,6 @@ public class MemberDTO {
     private String userphone;
     private String useremail;
 
-    public Member toEntity() {
-        return Member.builder()
-                .userid(userid)
-                .userpw(userpw)
-                .useremail(useremail)
-                .username(username)
-                .userphone(userphone)
-                .activated(true)
-                .build();
-    }
 
     private Set<AuthorityDTO> authorityDTOSet;
 

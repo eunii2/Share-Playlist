@@ -1,38 +1,44 @@
 package com.msp.membership.entity;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
-@Getter
+
+@Data
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
-@Table(
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name="follow_uk",
-                        columnNames = {"toUserId", "fromUserId"}
-                )
-        }
-)
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int toUserId;
-
-    @JoinColumn(name = "fromUserId")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name="fromUserId")
     private Member fromUser;
 
-    private LocalDateTime createDate;
+    @ManyToOne
+    @JoinColumn(name="toUserId")
+    private Member toUser;
 
-    @PrePersist
-    public void createDate() {
-        this.createDate = LocalDateTime.now();
+    @CreationTimestamp
+    @JoinColumn(name="createDate")
+    private Timestamp follow_date;
+
+    public void setFollowing(Member fromUser) {
+        this.fromUser = fromUser;
     }
 
+    public void setFollower(Member toUser) {
+        this.toUser = toUser;
+    }
+
+    public void setFollow_date(Timestamp follow_date) {
+        this.follow_date = follow_date;
+    }
 }
