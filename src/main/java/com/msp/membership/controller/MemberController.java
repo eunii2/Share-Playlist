@@ -6,89 +6,90 @@ import com.msp.membership.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/join")
+    @GetMapping("/main/join")
     public String joinForm(){
         return "/login/join";
     }
 
-    @PostMapping("/join")
+    @PostMapping("/main/join")
     public ResponseEntity<Member> join(@Valid @RequestBody MemberDTO memberDTO){
         return ResponseEntity.ok(memberService.join(memberDTO));
     }
     
-    @GetMapping("/login")
+    @GetMapping("/main/login")
     public String loginForm() {
         return "login";
     }
 
-
-    /*
-    @GetMapping("/update/{id}")    // 프로필 수정 페이지(로그인 한 사람만 수정 가능)
-    public String updateForm(@PathVariable int id, HttpSession session, Model model) {
-
-        MemberDTO user = (MemberDTO) session.getAttribute("user"); // 세션에서 사용자 정보를 조회
-
-        if(user == null || id != user.getId()) {
-            log.info("잘못된 접근입니다");
-            return "redirect:/user/profile"; // 사용자 프로필 페이지로 리다이렉트
-        }
-        Member member = memberService.findByUserid(user.getUserid());
-        model.addAttribute("user", member);
-
-        return "update";
-    }
-
-    @GetMapping("/profile/{userid}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<Member> getUserInfo(@PathVariable String userid){
-        return ResponseEntity.ok(memberService.getUserWithAuthorities(userid).get());
-    }
-    */
 
     @GetMapping("/myinfo")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Member> getMyUserInfo(){
         return ResponseEntity.ok(memberService.getMyUserWithAuthorities().get());
     }
-/*
-    @GetMapping("user/profile")
-    public void profileDefault(@AuthenticationPrincipal CustomUserDetails customUser, Model model) {
 
-        profile(customUser.getId(),model);
+
+    /* 유저페이지 */
+    @RequestMapping("/main/user/{id}")
+    public String main_user(@PathVariable("id") int id, Model model) throws Exception {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("member", memberService.findById(id));
+
+        return "/main/user";
     }
+/*
+    @RequestMapping("/main/user/{id}")
+    public String main_user(@PathVariable("id") int id, Model model) throws Exception {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    @GetMapping("/user/profile/{id}")
-    public String profile(@PathVariable int id, Model model) {
-
-        UserProfileDTO userprofileDTO = MemberService.findById(id);
-        model.addAttribute("profileDto", userprofileDTO);
-        return "user/profile";
+        model.addAttribute("page_id", id); // PathVariable로 넘어온 id - 이 페이지의 id
+        model.addAttribute("follow", followService.find(id, userId)); // false or true
     }
     */
 
-    @PutMapping("/profile/Image/{id}")
-    public ResponseEntity<String> updateProfileImage(@PathVariable int id, MultipartFile profileImageFile){
+    /* 프로필 수정 */
+    @RequestMapping(value = "/main/user/update/{id}", method = RequestMethod.GET)
+    public String update_user(@PathVariable("id") int id, Model model) throws Exception {
+        String userid = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if(memberService.updateProfileImage(id, profileImageFile)) {
-            return ResponseEntity.ok().body("프로필 사진 수정에 성공하였습니다");
-        }
-
-        else {
-            return ResponseEntity.badRequest().body("프로필 사진 수정에 실패하였습니다");
-        }
-
+        model.addAttribute("member", memberService.findByUserid(userid));
+        return "/main/user/update";
     }
 
+    @RequestMapping(value = "/main/user/image_insert")
+    public String image_insert(HttpServletRequest request, @RequestParam("filename") MultipartFile mFile, Model model) throws Exception {
+        String upload_path = "D:/OutStagram/Instagram/outstagram/src/main/resources/static/images/profile/"; // 프로필 사진들 모아두는 폴더
+        String userid = SecurityContextHolder.getContext().getAuthentication().getName();
+        Member member = memberService.findByUserid(userid);
+        String redirect_url = "redirect:/main/user/update/" + member.getId(); // 사진업로드 이후 redirect될 url
+
+        try {
+            if (member.getProfileImage() != null) { // 이미 프로필 사진이 있을경우
+                File file = new File(upload_path + member.getProfileImage()); // 경로 + 유저 프로필사진 이름을 가져와서
+                file.delete(); // 원래파일 삭제
+            }
+            mFile.transferTo(new File(upload_path + mFile.getOriginalFilename()));  // 경로에 업로드
+        } catch (IllegalStateException | IOException e) {
+            e.printStackTrace();
+        }
+
+        memberService.img_update(userid, mFile.getOriginalFilename()); // 프로필 사진이름 db에 update
+        return redirect_url;
+    }
 }
