@@ -1,5 +1,6 @@
 package com.msp.membership.entity;
 
+import com.msp.playlist.entity.PlaylistMember;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,6 +39,9 @@ public class Member {
     @Column
     private String profileImage;
 
+    @OneToMany(mappedBy = "member")
+    private Set<PlaylistMember> playlists;
+
     public void updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
@@ -48,4 +52,8 @@ public class Member {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
+
+    public Member orElseThrow() {
+        return orElseThrow();
+    }
 }

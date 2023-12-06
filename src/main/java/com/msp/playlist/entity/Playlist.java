@@ -5,12 +5,11 @@ import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.song.entity.Song;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 // GETTER SETTER 다 없애줘라 ~ LOMBOK
 @Entity
@@ -47,6 +46,9 @@ public class Playlist {
     @OneToMany(mappedBy = "playlist")
     private List<TagMood> tagMoods = new ArrayList<>();
 
+    @OneToMany(mappedBy = "playlist")
+    private Set<PlaylistMember> members;
+
     public Playlist(PlaylistRequestDto playlistRequestDto){
         this.name = playlistRequestDto.getName();
         this.description = playlistRequestDto.getDescription();
@@ -66,7 +68,6 @@ public class Playlist {
     }
 
     public void setTagGenre(TagGenre tagGenre) {
-
+        this.tagGenre = tagGenre;
     }
-
 }

@@ -3,7 +3,6 @@ package com.msp.playlist.dto;
 import com.msp.playlist.entity.Playlist;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -11,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class PlaylistRequestDto {
     @NotBlank

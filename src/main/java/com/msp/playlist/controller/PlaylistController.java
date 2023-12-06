@@ -1,5 +1,6 @@
 package com.msp.playlist.controller;
 
+import com.msp.playlist.dto.GrantAccessRequestDto;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
@@ -18,6 +19,18 @@ public class PlaylistController {
 
     public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
+    }
+
+    @PostMapping("/{playlistId}/grant-access")
+    public ResponseEntity<?> grantAccess(@PathVariable Long playlistId, @RequestBody GrantAccessRequestDto request) {
+        playlistService.grantAccess(playlistId, request.getMemberId(), request.isCanEdit());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{playlistId}/can-edit/{memberId}")
+    public ResponseEntity<Boolean> canEdit(@PathVariable Long playlistId, @PathVariable Long memberId) {
+        boolean canEdit = playlistService.canEditPlaylist(playlistId, memberId);
+        return ResponseEntity.ok(canEdit);
     }
 
     @PostMapping
