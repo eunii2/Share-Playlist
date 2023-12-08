@@ -36,4 +36,9 @@ public class FollowService {
             return false; // 팔로우 안되어있음
         return true; // 되어있음
     }
+/*
+    public List<Follow> findByFollowingId(int id) {
+        return followRepository.findByFollowingId(id);
+    }
+    */
 }
