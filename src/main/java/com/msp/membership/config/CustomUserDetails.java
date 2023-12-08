@@ -15,7 +15,7 @@ public abstract class CustomUserDetails implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private int id;
+    private Long id;
     private String userid;
     private String userpw;
     private String role;
@@ -27,7 +27,7 @@ public abstract class CustomUserDetails implements UserDetails {
         return Collections.singletonList(new SimpleGrantedAuthority(this.role));
     }
 
-    public int getId(){
+    public Long getId(){
         return this.id;
     }
     public String getUserid() {

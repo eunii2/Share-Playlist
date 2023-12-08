@@ -19,7 +19,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
         @Query("delete from Follow where toUserId = :toUserId and fromUserId = :fromUserId")
         void deleteFollow(@Param("toUserId") Long toUserId, @Param("fromUserId") Long fromUserId);
 
-        int countByFromUserIdAndToUserId(Long id, String userid);
+        Long countByFromUserIdAndToUserId(Long id, String userid);
 
         @Modifying
         @Transactional
