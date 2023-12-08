@@ -1,31 +1,73 @@
 package com.msp.playlist.service;
 
+import com.msp.membership.entity.Member;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.entity.Playlist;
+import com.msp.playlist.entity.PlaylistMember;
+import com.msp.playlist.entity.TagGenre;
+import com.msp.playlist.entity.TagMood;
+import com.msp.playlist.repository.PlaylistMemberRepository;
 import com.msp.playlist.repository.PlaylistRepository;
+import com.msp.playlist.repository.TagGenreRepository;
+import com.msp.playlist.repository.TagMoodRepository;
+import com.msp.membership.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-// 생성자 만들어주고
 
 @Slf4j
 @Service
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
+    private final TagGenreRepository tagGenreRepository;
+    private final TagMoodRepository tagMoodRepository;
+    private final PlaylistMemberRepository playlistMemberRepository;
+    private final MemberRepository memberRepository;
 
-    public PlaylistService(PlaylistRepository playlistRepository) {
+
+    public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository,
+                           TagMoodRepository tagMoodRepository, PlaylistMemberRepository playlistMemberRepository, MemberRepository memberRepository) {
         this.playlistRepository = playlistRepository;
+        this.tagGenreRepository = tagGenreRepository;
+        this.tagMoodRepository = tagMoodRepository;
+        this.memberRepository = memberRepository;
+        this.playlistMemberRepository = playlistMemberRepository;
+    }
+
+    public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
+        Playlist playlist = playlistRepository.findById(playlistId).orElseThrow(/* 예외 처리 */);
+        Member member = memberRepository.findById(Math.toIntExact(memberId)).orElseThrow(/* 예외 처리 */);
+
+        PlaylistMember playlistMember = new PlaylistMember();
+        playlistMember.setPlaylist(playlist);
+        playlistMember.setMember(member);
+        playlistMember.setCanEdit(canEdit);
+        playlistMemberRepository.save(playlistMember);
+    }
+
+    public boolean canEditPlaylist(Long playlistId, Long memberId) {
+        return (boolean) playlistMemberRepository.findByPlaylistIdAndMemberId(playlistId, Math.toIntExact(memberId))
+                .map(PlaylistMember::isCanEdit)
+                .orElse(false);
     }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
         Playlist playlist = new Playlist(playlistRequestDto);
+        //밑에서부터 tag 기능 추가
+        if(playlistRequestDto.getTagGenreId() != null){
+            TagGenre tagGenre = tagGenreRepository.findById(playlistRequestDto.getTagGenreId()).orElseThrow();
+            playlist.setTagGenre(tagGenre);
+        }
+
+        if(playlistRequestDto.getTagMoodIds() != null){
+            for(Long moodId : playlistRequestDto.getTagMoodIds()) {
+                TagMood tagMood = tagMoodRepository.findById(moodId).orElseThrow();
+                tagMood.setPlaylsit(playlist);
+                playlist.getTagMoods().add(tagMood);
+            }
+        }
         return playlistRepository.save(playlist);
     }
 
@@ -41,7 +83,6 @@ public class PlaylistService {
         Playlist playlist = playlistRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("this id not exists id: " + id));
         playlist.changeNameAndDescription(updateDto);
-
         // 예외 처리 또는 null 반환 등의 처리 필요
         return playlist;
     }

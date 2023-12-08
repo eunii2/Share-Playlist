@@ -1,12 +1,13 @@
 package com.msp.playlist.repository;
 
 import com.msp.playlist.entity.Playlist;
-import com.msp.playlist.entity.PlaylistMember;
+import com.msp.playlist.entity.TagMood;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
-    //필요한 경우 추가 메소드 정의
-}
+import java.util.List;
 
+@Repository
+public interface TagMoodRepository extends JpaRepository<TagMood, Long> {
+    public List<TagMood> findByPlaylist(Playlist playlist);
+}

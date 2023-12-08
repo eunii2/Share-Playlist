@@ -4,17 +4,18 @@ import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.song.entity.Song;
 import lombok.Getter;
-
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 // GETTER SETTER 다 없애줘라 ~ LOMBOK
 @Entity
 @Getter //member 변수들이 전부 private 밖으로 가져오기 위해
 @Table(name="playlist")
+@NoArgsConstructor
 public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,16 +39,22 @@ public class Playlist {
     @OneToMany(mappedBy = "playlist")
     private List<Song> songs = new ArrayList<>();
 
+    @OneToOne
+    @JoinColumn(name = "genreid")
+    private TagGenre tagGenre;
+
+    @OneToMany(mappedBy = "playlist")
+    private List<TagMood> tagMoods = new ArrayList<>();
+
+    @OneToMany(mappedBy = "playlist")
+    private Set<PlaylistMember> members;
+
     public Playlist(PlaylistRequestDto playlistRequestDto){
         this.name = playlistRequestDto.getName();
         this.description = playlistRequestDto.getDescription();
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.userId = playlistRequestDto.getUserID();
-    }
-
-    public Playlist() {
-
     }
 
     public void changeNameAndDescription(PlaylistUpdateDto playlistUpdateDto) {
@@ -59,5 +66,8 @@ public class Playlist {
         }
         this.updatedAt = LocalDateTime.now();
     }
-    //Getters and Setters
+
+    public void setTagGenre(TagGenre tagGenre) {
+        this.tagGenre = tagGenre;
+    }
 }
