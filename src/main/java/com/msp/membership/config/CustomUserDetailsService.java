@@ -1,4 +1,4 @@
-package com.msp.membership.service;
+package com.msp.membership.config;
 
 import com.msp.membership.entity.Member;
 import com.msp.membership.repository.MemberRepository;

@@ -47,7 +47,7 @@ public class MemberController {
 
     /* 유저페이지 */
     @RequestMapping("/main/user/{id}")
-    public String main_user(@PathVariable("id") int id, Model model) throws Exception {
+    public String main_user(@PathVariable("id") Long id, Model model) throws Exception {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("member", memberService.findById(id));
 
@@ -55,7 +55,7 @@ public class MemberController {
     }
 /*
     @RequestMapping("/main/user/{id}")
-    public String main_user(@PathVariable("id") int id, Model model) throws Exception {
+    public String main_user(@PathVariable("id") Long id, Model model) throws Exception {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         model.addAttribute("page_id", id); // PathVariable로 넘어온 id - 이 페이지의 id
@@ -65,7 +65,7 @@ public class MemberController {
 
     /* 프로필 수정 */
     @RequestMapping(value = "/main/user/update/{id}", method = RequestMethod.GET)
-    public String update_user(@PathVariable("id") int id, Model model) throws Exception {
+    public String update_user(@PathVariable("id") Long id, Model model) throws Exception {
         String userid = SecurityContextHolder.getContext().getAuthentication().getName();
 
         model.addAttribute("member", memberService.findByUserid(userid));

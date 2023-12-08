@@ -8,22 +8,22 @@ import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 
-public interface FollowRepository extends JpaRepository<Follow, Integer> {
+public interface FollowRepository extends JpaRepository<Follow, Long> {
 
 
         @Modifying
         @Query(value= "insert into Follow(toUserId, fromUserId, createDate) VALUES(:toUserId, :fromUserId, createDate)", nativeQuery = true)
-        void saveFollow(@Param("toUserId") int toUserId, @Param("fromUserId") int fromUserId);
+        void saveFollow(@Param("toUserId") Long toUserId, @Param("fromUserId") Long fromUserId);
 
         @Modifying
         @Query("delete from Follow where toUserId = :toUserId and fromUserId = :fromUserId")
-        void deleteFollow(@Param("toUserId") int toUserId, @Param("fromUserId") int fromUserId);
+        void deleteFollow(@Param("toUserId") Long toUserId, @Param("fromUserId") Long fromUserId);
 
-        int countByFromUserIdAndToUserId(int id, String userid);
+        int countByFromUserIdAndToUserId(Long id, String userid);
 
         @Modifying
         @Transactional
-        void deleteByFromUserIdAndToUserId(int id1, int id2);
+        void deleteByFromUserIdAndToUserId(Long id1, Long id2);
 
         /* List<Follow> findByFollowingId(int id); */
 

@@ -18,7 +18,7 @@ public class PlaylistRequestDto {
     private String description;
     @NotNull
     @Min(value = 1, message = "최소 1 이상하셈 ㅋ")
-    private Long userID;
+    private String userID;
 
     private Long tagGenreId;
     private List<Long> tagMoodIds;

@@ -3,12 +3,15 @@ package com.msp.playlist.controller;
 import com.msp.playlist.dto.GrantAccessRequestDto;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
+import com.msp.playlist.dto.SimplePlaylistDto;
 import com.msp.playlist.entity.Playlist;
 import com.msp.playlist.service.PlaylistService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -54,5 +57,14 @@ public class PlaylistController {
     public String deletePlaylist(@PathVariable Long id) {
         playlistService.deletePlaylist(id);
         return "ok";
+    }
+
+    /* 메인 본인 플리 출력 */
+    @GetMapping("/simple_my_playlists")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<List<SimplePlaylistDto>> getMyPlaylists(Principal principal) {
+        String userId = principal.getName();
+        List<SimplePlaylistDto> playlists = playlistService.getPlaylistsByUserId(userId);
+        return ResponseEntity.ok(playlists);
     }
 }

@@ -17,7 +17,7 @@ public class FollowService {
     @Autowired
     MemberService memberService;
 
-    public void save(int login_id, int page_id) { // 팔로우
+    public void save(Long login_id, Long page_id) { // 팔로우
         Follow follow = new Follow();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -27,11 +27,11 @@ public class FollowService {
 
         followRepository.save(follow);
     }
-    public void deleteByFromUserIdAndToUserId(int id1, int id2) { // 언팔로우
+    public void deleteByFromUserIdAndToUserId(Long id1, Long id2) { // 언팔로우
         followRepository.deleteByFromUserIdAndToUserId(id2, id1);
     }
 
-    public boolean find(int id, String userid) { // 팔로우가 되어있는지를 확인하기위해
+    public boolean find(Long id, String userid) { // 팔로우가 되어있는지를 확인하기위해
         if(followRepository.countByFromUserIdAndToUserId(id, userid) == 0)
             return false; // 팔로우 안되어있음
         return true; // 되어있음

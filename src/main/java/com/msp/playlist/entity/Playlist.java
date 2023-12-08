@@ -34,7 +34,7 @@ public class Playlist {
     private LocalDateTime updatedAt;
 
     @Column(name = "userid")
-    private Long userId;
+    private String userId;
 
     @OneToMany(mappedBy = "playlist")
     private List<Song> songs = new ArrayList<>();

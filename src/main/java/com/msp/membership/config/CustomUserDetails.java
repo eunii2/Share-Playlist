@@ -1,4 +1,4 @@
-package com.msp.membership.config.auth;
+package com.msp.membership.config;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

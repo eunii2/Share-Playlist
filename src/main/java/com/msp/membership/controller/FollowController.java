@@ -19,8 +19,8 @@ public class FollowController{
         String from = request.getParameter("from_id");
         String to = request.getParameter("to_id");
 
-        int from_id = Integer.parseInt(from);
-        int to_id = Integer.parseInt(to);
+        Long from_id = Long.parseLong(from);
+        Long to_id = Long.parseLong(to);
 
         followService.save(from_id, to_id);
 
@@ -34,8 +34,8 @@ public class FollowController{
         String from = request.getParameter("from_id");
         String to = request.getParameter("to_id");
 
-        int from_id = Integer.parseInt(from);
-        int to_id = Integer.parseInt(to);
+        Long from_id = Long.parseLong(from);
+        Long to_id = Long.parseLong(to);
 
         followService.deleteByFromUserIdAndToUserId(to_id, from_id);
         String redirect_url = "redirect:/main/user/" + to_id;

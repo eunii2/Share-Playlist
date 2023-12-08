@@ -1,8 +1,10 @@
 package com.msp.playlist.service;
 
 import com.msp.membership.entity.Member;
+import com.msp.membership.repository.MemberRepository;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
+import com.msp.playlist.dto.SimplePlaylistDto;
 import com.msp.playlist.entity.Playlist;
 import com.msp.playlist.entity.PlaylistMember;
 import com.msp.playlist.entity.TagGenre;
@@ -11,11 +13,13 @@ import com.msp.playlist.repository.PlaylistMemberRepository;
 import com.msp.playlist.repository.PlaylistRepository;
 import com.msp.playlist.repository.TagGenreRepository;
 import com.msp.playlist.repository.TagMoodRepository;
-import com.msp.membership.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,8 +41,8 @@ public class PlaylistService {
     }
 
     public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
-        Playlist playlist = playlistRepository.findById(playlistId).orElseThrow(/* 예외 처리 */);
-        Member member = memberRepository.findById(Math.toIntExact(memberId)).orElseThrow(/* 예외 처리 */);
+        Playlist playlist = playlistRepository.findById(playlistId).orElseThrow(() -> new NoSuchElementException("Playlist not found with id: " + playlistId));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("Member not found with id: " + memberId));
 
         PlaylistMember playlistMember = new PlaylistMember();
         playlistMember.setPlaylist(playlist);
@@ -46,6 +50,7 @@ public class PlaylistService {
         playlistMember.setCanEdit(canEdit);
         playlistMemberRepository.save(playlistMember);
     }
+
 
     public boolean canEditPlaylist(Long playlistId, Long memberId) {
         return (boolean) playlistMemberRepository.findByPlaylistIdAndMemberId(playlistId, Math.toIntExact(memberId))
@@ -74,6 +79,17 @@ public class PlaylistService {
     public List<PlaylistRequestDto> getAllPlaylists() {
         return playlistRepository.findAll().stream().map(this::convertEntityToDto).toList();
     }
+
+    /* 선미 */
+    public List<SimplePlaylistDto> getPlaylistsByUserId(String userId) {
+        List<Playlist> playlists = playlistRepository.findByUserId(userId);
+        List<SimplePlaylistDto> playlistDtos = playlists.stream()
+                .map(SimplePlaylistDto::new)
+                .collect(Collectors.toList());
+        return playlistDtos;
+    }
+
+
 
     private PlaylistRequestDto convertEntityToDto(Playlist playlist) {
         return new PlaylistRequestDto(playlist);

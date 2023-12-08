@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -78,9 +79,10 @@ public class MemberService {
         return memberRepository.findByUserid(userid);
     }
 
-    public Member findById(int id) {
-        return memberRepository.findById(id);
+    public Member findById(Long id) {
+        return memberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Member not found with id: " + id));
     }
+
 
     public void img_update(String userid, String profile_photo) {
         Member member = findByUserid(userid); // 유저아이디로 유저찾음
