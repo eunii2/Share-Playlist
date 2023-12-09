@@ -14,6 +14,6 @@ public class GrantAccessRequestDto {
     }
 
     public boolean isCanEdit() {
-        return isCanEdit();
+        return canEdit;
     }
 }

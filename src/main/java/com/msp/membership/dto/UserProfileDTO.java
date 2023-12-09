@@ -22,7 +22,7 @@ public class UserProfileDTO {
     public UserProfileDTO EntityToDto(Member member) {
         return UserProfileDTO.builder()
                 .id(member.getId())
-                .userid(member.getUserid())
+                .userid(member.getUserId())
                 .username(member.getUsername())
                 .profileImage(member.getProfileImage())
                 .build();

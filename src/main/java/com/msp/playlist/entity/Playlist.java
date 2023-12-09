@@ -47,6 +47,9 @@ public class Playlist {
     private List<TagMood> tagMoods = new ArrayList<>();
 
     @OneToMany(mappedBy = "playlist")
+    private List<PlaylistMember> playlistMembers;
+
+    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PlaylistMember> members;
 
     public Playlist(PlaylistRequestDto playlistRequestDto){
@@ -69,5 +72,13 @@ public class Playlist {
 
     public void setTagGenre(TagGenre tagGenre) {
         this.tagGenre = tagGenre;
+    }
+
+    public void setPlaylistMembers(List<PlaylistMember> playlistMembers) {
+        this.playlistMembers = playlistMembers;
+    }
+
+    public void setMembers(Set<PlaylistMember> members) {
+        this.members = members;
     }
 }

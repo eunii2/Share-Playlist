@@ -16,10 +16,10 @@ import java.util.Set;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "user_id", unique = true)
-    private  String userid;
+    private  String userId;
 
     @Column(name = "user_pw", nullable = false)
     private  String userpw;
@@ -46,6 +46,7 @@ public class Member {
         this.profileImage = profileImage;
     }
 
+    // 밑 부분 수정
     @ManyToMany
     @JoinTable(
             name = "user_authority",
@@ -53,7 +54,4 @@ public class Member {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
-    public Member orElseThrow() {
-        return orElseThrow();
-    }
 }

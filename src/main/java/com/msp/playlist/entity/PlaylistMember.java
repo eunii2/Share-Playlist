@@ -26,6 +26,10 @@ public class PlaylistMember {
     @Column(name = "can_edit")
     private boolean canEdit;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "grade")
+    private Grade grade;
+
     public void setPlaylist(Playlist playlist) {
         this.playlist = playlist;
     }
@@ -36,5 +40,9 @@ public class PlaylistMember {
 
     public void setCanEdit(boolean canEdit) {
         this.canEdit = canEdit;
+    }
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
     }
 }

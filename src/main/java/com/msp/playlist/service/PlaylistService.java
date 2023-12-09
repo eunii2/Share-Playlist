@@ -3,10 +3,7 @@ package com.msp.playlist.service;
 import com.msp.membership.entity.Member;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
-import com.msp.playlist.entity.Playlist;
-import com.msp.playlist.entity.PlaylistMember;
-import com.msp.playlist.entity.TagGenre;
-import com.msp.playlist.entity.TagMood;
+import com.msp.playlist.entity.*;
 import com.msp.playlist.repository.PlaylistMemberRepository;
 import com.msp.playlist.repository.PlaylistRepository;
 import com.msp.playlist.repository.TagGenreRepository;
@@ -14,8 +11,14 @@ import com.msp.playlist.repository.TagMoodRepository;
 import com.msp.membership.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -37,9 +40,9 @@ public class PlaylistService {
     }
 
     public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
-        Playlist playlist = playlistRepository.findById(playlistId).orElseThrow(/* 예외 처리 */);
-        Member member = memberRepository.findById(Math.toIntExact(memberId)).orElseThrow(/* 예외 처리 */);
-
+        Playlist playlist = playlistRepository.findById(playlistId).orElseThrow();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow();
         PlaylistMember playlistMember = new PlaylistMember();
         playlistMember.setPlaylist(playlist);
         playlistMember.setMember(member);
@@ -55,7 +58,20 @@ public class PlaylistService {
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
         Playlist playlist = new Playlist(playlistRequestDto);
-        //밑에서부터 tag 기능 추가
+
+        Member owner = memberRepository.findById(playlistRequestDto.getOwnerId())
+                .orElseThrow(() -> new RuntimeException("Owner not found with id: " + playlistRequestDto.getOwnerId()));
+
+        PlaylistMember playlistMember = new PlaylistMember();
+        playlistMember.setPlaylist(playlist);
+        playlistMember.setMember(owner);
+        playlistMember.setGrade(Grade.OWNER);
+
+        Set<PlaylistMember> members = new HashSet<>();
+        members.add(playlistMember);
+
+        playlist.setMembers(members);
+
         if(playlistRequestDto.getTagGenreId() != null){
             TagGenre tagGenre = tagGenreRepository.findById(playlistRequestDto.getTagGenreId()).orElseThrow();
             playlist.setTagGenre(tagGenre);
@@ -72,7 +88,18 @@ public class PlaylistService {
     }
 
     public List<PlaylistRequestDto> getAllPlaylists() {
-        return playlistRepository.findAll().stream().map(this::convertEntityToDto).toList();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getPrincipal().toString();
+        Member member = memberRepository.findByUserid(userId).orElseThrow();
+        List<PlaylistMember> playlistMembers = playlistMemberRepository.findByMember(member);
+
+        List<PlaylistRequestDto> playlists = new ArrayList<>();
+
+        for (PlaylistMember playlistMember : playlistMembers) {
+            Playlist playlist = playlistMember.getPlaylist();
+            playlists.add(this.convertEntityToDto(playlist));
+        }
+        return playlists;
     }
 
     private PlaylistRequestDto convertEntityToDto(Playlist playlist) {
@@ -83,7 +110,6 @@ public class PlaylistService {
         Playlist playlist = playlistRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("this id not exists id: " + id));
         playlist.changeNameAndDescription(updateDto);
-        // 예외 처리 또는 null 반환 등의 처리 필요
         return playlist;
     }
 

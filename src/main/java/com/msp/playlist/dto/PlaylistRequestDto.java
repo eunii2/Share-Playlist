@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @NoArgsConstructor
@@ -22,6 +23,9 @@ public class PlaylistRequestDto {
 
     private Long tagGenreId;
     private List<Long> tagMoodIds;
+
+    private Long memberId;
+
     public PlaylistRequestDto(Playlist playlist){
         this.name = playlist.getName();
         this.description = playlist.getDescription();
@@ -42,5 +46,13 @@ public class PlaylistRequestDto {
 
     public void setTagMoodIds(List<Long> tagMoodIds) {
         this.tagMoodIds = tagMoodIds;
+    }
+
+    public Long getMemberId(){
+        return memberId;
+    }
+
+    public Long getOwnerId() {
+        return userID;
     }
 }

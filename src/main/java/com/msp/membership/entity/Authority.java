@@ -1,10 +1,8 @@
 package com.msp.membership.entity;
-
+import com.msp.playlist.entity.Grade;
+import com.msp.playlist.entity.Playlist;
 import lombok.*;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -16,6 +14,14 @@ import javax.persistence.Table;
 public class Authority {
 
     @Id
-    @Column(name = "authority_name", length = 50)   // 권한명
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "authority_id")
+    private Long id;
+
+    @Column(name = "authority_name", length = 50)
     private String authorityName;
+
+    @ManyToOne
+    @JoinColumn(name = "playlist_id")
+    private Playlist playlist;
 }

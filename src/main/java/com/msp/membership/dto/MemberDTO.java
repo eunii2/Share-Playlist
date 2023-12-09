@@ -22,7 +22,7 @@ public class MemberDTO {
     public static MemberDTO toMemberDTO(Member member){
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setId(member.getId());
-        memberDTO.setUserid(member.getUserid());
+        memberDTO.setUserid(member.getUserId());
         memberDTO.setUserpw(member.getUserpw());
         memberDTO.setUsername(member.getUsername());
         memberDTO.setUserphone(member.getUserphone());
@@ -36,7 +36,7 @@ public class MemberDTO {
         if(member == null) return null;
 
         return MemberDTO.builder()
-                .userid(member.getUserid())
+                .userid(member.getUserId())
                 .username(member.getUsername())
                 .authorityDTOSet(member.getAuthorities().stream()
                         .map(authority -> AuthorityDTO.builder().authorityName(authority.getAuthorityName()).build())

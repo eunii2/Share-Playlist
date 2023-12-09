@@ -2,27 +2,25 @@ package com.msp.membership.service;
 
 import com.msp.membership.controller.MemberController;
 import com.msp.membership.dto.MemberDTO;
-import com.msp.membership.dto.UserProfileDTO;
 import com.msp.membership.entity.Authority;
 import com.msp.membership.entity.Member;
+import com.msp.membership.exception.DuplicateMemberException;
 import com.msp.membership.jwt.util.SecurityUtil;
+import com.msp.membership.repository.AuthorityRepository;
 import com.msp.membership.repository.FollowRepository;
 import com.msp.membership.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class MemberService {
 
@@ -30,19 +28,20 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthorityRepository authorityRepository;
     private FollowRepository followRepository;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
-        this.memberRepository = memberRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+
 
     @Transactional
-    public MemberDTO join(MemberDTO memberDTO) {
+    public Member join(MemberDTO memberDTO) {
+        if (memberRepository.findOneWithAuthoritiesByUserid(memberDTO.getUserid()).orElse(null) != null) {
+            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+        }
 
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_USER")
-                .build();
+        Authority authority = authorityRepository.findByAuthorityName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("ROLE_USER 권한이 존재하지 않습니다."));
+
 
         Member member = Member.builder()
                 .userid(memberDTO.getUserid())
@@ -53,64 +52,49 @@ public class MemberService {
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
-
-        return MemberDTO.from(memberRepository.save(member));
+        return memberRepository.save(member);
     }
 
-    @Transactional(readOnly = true) // 특정 사용자 조회 로직
-    public MemberDTO getUserWithAuthorities(String userid) {
-        return MemberDTO.from(memberRepository.findOneWithAuthoritiesByUserid(userid).orElse(null));
+    @Transactional(readOnly = true)
+    public Optional<Member> getUserWithAuthorities(String userid){
+        return memberRepository.findOneWithAuthoritiesByUserid(userid);
     }
 
-    @Transactional(readOnly = true) // 현재 사용자 조회 로직
-    public MemberDTO getMyUserWithAuthorities() {
-        return MemberDTO.from(
-                SecurityUtil.getCurrentUserid()
-                        .flatMap(memberRepository::findOneWithAuthoritiesByUserid)
-                        .orElseGet(() -> {
-                            // 로깅을 통해 경고 메시지 출력
-                            log.warn("사용자를 찾을 수 없음: {}", SecurityUtil.getCurrentUserid().orElse("알 수 없음"));
-                            return new Member();
-                        })
-        );
+    //현재 인증된 사용자의 회원정보 조회
+    @Transactional(readOnly = true)
+    public Optional<Member> getMyUserWithAuthorities(){
+        log.info(SecurityUtil.getCurrentUserid().toString());
+        return SecurityUtil.getCurrentUserid()
+                .flatMap(memberRepository::findOneWithAuthoritiesByUserid);
     }
 
-    public MemberDTO login(MemberDTO memberDTO) {
 
-        Optional<Member> byUserid = memberRepository.findByUserid(memberDTO.getUserid());
-        if (byUserid.isPresent()) {
-            Member member = byUserid.get();
-            if (member.getUserpw().equals(memberDTO.getUserpw())) {
-                MemberDTO dto = MemberDTO.toMemberDTO(member);
-                return dto;
-            } else {
-                return null;
-            }
-        } else {
-            return null;    //!. 로그인 실패 만들기
-        }
-    }
-
-    public String idCheck(String userid) {
-        Optional<Member> byUserid = memberRepository.findByUserid(userid);
-        if (byUserid.isPresent()) { //이미 존재
-            return null;
-        } else {
-            return "true";
-        }
-    }
-
-    public Member findByUserid(String userid) {
-        Optional<Member> byUserid = memberRepository.findByUserid(userid);
+    public Member findOptionalByUserid(String userid) {
+        Optional<Member> byUserid = memberRepository.findOptionalByUserid(userid);
         return byUserid.orElse(null);
     }
 
-    @Transactional
-    public boolean findUser(String userid) {
-        return memberRepository.existsByUserid(userid);
+
+    public Member findByUserid(String userid) {
+        return memberRepository.findByUserid(userid);
+    }
+
+    public Member findById(Long id) {
+        return memberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Member not found with id: " + id));
     }
 
 
+    public void img_update(String userid, String profile_photo) {
+        Member member = findByUserid(userid); // 유저아이디로 유저찾음
+        member.setProfile_photo(profile_photo);
+        save_user(member);
+    }
+
+    public void save_user(Member member) {
+        memberRepository.save(member);
+    }
+
+    /*
     @Transactional
     public UserProfileDTO findById(int profileUserId, int principalId) {
         Member member = memberRepository.findById(profileUserId);
@@ -120,37 +104,11 @@ public class MemberService {
         return userProfileDTO;
     }
 
-    /* 프로필 업로드 */
+    //@Override
     @Transactional
-    public boolean updateProfileImage(int id, MultipartFile profileImage) {
-
-
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
-        String uploadForder= Paths.get("C:", "insta", "upload").toString();
-        String profileUploadForder = Paths.get("profileImage", today).toString();
-        String uploadPath = Paths.get(uploadForder, profileUploadForder).toString();
-
-        File dir = new File(uploadPath);
-        if (dir.exists() == false) {
-            dir.mkdirs();
-        }
-
-        UUID uuid = UUID.randomUUID();
-        String profileImageName = uuid+"_"+profileImage.getOriginalFilename();
-
-        try {
-            File target = new File(uploadPath, profileImageName);
-            profileImage.transferTo(target);
-
-        } catch (Exception e) {
-            return false;
-        }
-
+    public Member findById(int id) {
         Member member = memberRepository.findById(id);
-
-        member.updateProfileImage(profileUploadForder+"\\"+profileImageName);
-
-
-        return true;
+        return new UserProfileDTO().EntityToDto(member);
     }
+    */
 }
