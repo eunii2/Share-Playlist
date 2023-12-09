@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
@@ -25,7 +26,5 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
         @Transactional
         void deleteByFromUserIdAndToUserId(Long id1, Long id2);
 
-        /* List<Follow> findByFollowingId(int id); */
-
+        List<Follow> findByFromUserUserid(String userid);
 }
-

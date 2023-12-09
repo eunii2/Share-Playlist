@@ -19,7 +19,7 @@ import java.util.List;
 public class PlaylistController {
 
     private final PlaylistService playlistService;
-
+    private PlaylistController followService;
     public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
     }
@@ -65,6 +65,15 @@ public class PlaylistController {
     public ResponseEntity<List<SimplePlaylistDto>> getMyPlaylists(Principal principal) {
         String userId = principal.getName();
         List<SimplePlaylistDto> playlists = playlistService.getPlaylistsByUserId(userId);
+        return ResponseEntity.ok(playlists);
+    }
+
+    /* 로그인한 유저의 친구 플리 출력하기인데 401뜨고 아직 해결X */
+    @GetMapping("/simple_followings_playlists")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<List<SimplePlaylistDto>> getFollowingPlaylists(@RequestParam String userId) {
+
+        List<SimplePlaylistDto> playlists = (List<SimplePlaylistDto>) followService.getFollowingPlaylists(userId);
         return ResponseEntity.ok(playlists);
     }
 }

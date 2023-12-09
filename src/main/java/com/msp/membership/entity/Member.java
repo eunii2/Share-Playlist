@@ -1,8 +1,11 @@
 package com.msp.membership.entity;
 
+import com.msp.playlist.entity.Playlist;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -41,11 +44,21 @@ public class Member{
     @Column
     private String profileImage;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Playlist> playlists = new ArrayList<>();
+
+
+
     public String getProfileImage() {
         return profileImage;
     }
 
-    public void setProfile_photo(String profile_photo) {
+    public String getUserid() {
+        return this.userid;
+    }
+
+    public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
 

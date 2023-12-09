@@ -1,10 +1,12 @@
 package com.msp.playlist.entity;
 
+import com.msp.membership.entity.Member;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.song.entity.Song;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.Set;
 @Table(name="playlist")
 @NoArgsConstructor
 public class Playlist {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,8 +37,9 @@ public class Playlist {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "userid")
-    private String userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userid")
+    private Member member;
 
     @OneToMany(mappedBy = "playlist")
     private List<Song> songs = new ArrayList<>();
@@ -49,13 +54,14 @@ public class Playlist {
     @OneToMany(mappedBy = "playlist")
     private Set<PlaylistMember> members;
 
-    public Playlist(PlaylistRequestDto playlistRequestDto){
+    public Playlist(PlaylistRequestDto playlistRequestDto, Member member){
         this.name = playlistRequestDto.getName();
         this.description = playlistRequestDto.getDescription();
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.userId = playlistRequestDto.getUserID();
+        this.member = member;
     }
+
 
     public void changeNameAndDescription(PlaylistUpdateDto playlistUpdateDto) {
         if (playlistUpdateDto.getName() != null) {

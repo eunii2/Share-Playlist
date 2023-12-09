@@ -1,6 +1,8 @@
 package com.msp.playlist.service;
 
+import com.msp.membership.entity.Follow;
 import com.msp.membership.entity.Member;
+import com.msp.membership.repository.FollowRepository;
 import com.msp.membership.repository.MemberRepository;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
@@ -17,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -30,15 +33,21 @@ public class PlaylistService {
     private final PlaylistMemberRepository playlistMemberRepository;
     private final MemberRepository memberRepository;
 
+    private final FollowRepository followRepository;
+
+
 
     public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository,
-                           TagMoodRepository tagMoodRepository, PlaylistMemberRepository playlistMemberRepository, MemberRepository memberRepository) {
+                           TagMoodRepository tagMoodRepository, PlaylistMemberRepository playlistMemberRepository,
+                           MemberRepository memberRepository, FollowRepository followRepository) {
         this.playlistRepository = playlistRepository;
         this.tagGenreRepository = tagGenreRepository;
         this.tagMoodRepository = tagMoodRepository;
         this.memberRepository = memberRepository;
         this.playlistMemberRepository = playlistMemberRepository;
+        this.followRepository = followRepository; // 추가
     }
+
 
     public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
         Playlist playlist = playlistRepository.findById(playlistId).orElseThrow(() -> new NoSuchElementException("Playlist not found with id: " + playlistId));
@@ -59,7 +68,8 @@ public class PlaylistService {
     }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
-        Playlist playlist = new Playlist(playlistRequestDto);
+        Member member = memberRepository.findByUserid(playlistRequestDto.getUserid());
+        Playlist playlist = new Playlist(playlistRequestDto, member);
         //밑에서부터 tag 기능 추가
         if(playlistRequestDto.getTagGenreId() != null){
             TagGenre tagGenre = tagGenreRepository.findById(playlistRequestDto.getTagGenreId()).orElseThrow();
@@ -82,11 +92,25 @@ public class PlaylistService {
 
     /* 선미 */
     public List<SimplePlaylistDto> getPlaylistsByUserId(String userId) {
-        List<Playlist> playlists = playlistRepository.findByUserId(userId);
-        List<SimplePlaylistDto> playlistDtos = playlists.stream()
+        List<Playlist> playlists = playlistRepository.findByMemberUserid(userId);
+        List<SimplePlaylistDto> playlistDtosNew = playlists.stream()
                 .map(SimplePlaylistDto::new)
                 .collect(Collectors.toList());
-        return playlistDtos;
+        return playlistDtosNew;
+    }
+
+    public List<SimplePlaylistDto> getFollowingPlaylists(String userid) {
+        List<Follow> followings = followRepository.findByFromUserUserid(userid);
+        List<SimplePlaylistDto> follwerplaylists = new ArrayList<>();
+
+        for (Follow follow : followings) {
+            List<Playlist> memberPlaylists = playlistRepository.findByMemberUserid(follow.getToUser().getUserid());
+            for (Playlist playlist : memberPlaylists) {
+                follwerplaylists.add(new SimplePlaylistDto(playlist));
+            }
+        }
+
+        return follwerplaylists;
     }
 
 

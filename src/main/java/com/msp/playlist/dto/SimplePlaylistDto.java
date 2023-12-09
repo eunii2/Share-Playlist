@@ -12,11 +12,11 @@ public class SimplePlaylistDto {
     private String playlistName;
     private String image;
 
-    private String userId;
+    private String userid;
 
     public SimplePlaylistDto(Playlist playlist) {
         // this.image = playlist.getImage(); // Playlist Entity에 image 됐을 때
         this.playlistName = playlist.getName();
-        this.userId = playlist.getUserId();
+        this.userid = playlist.getMember().getUserid();
     }
 }

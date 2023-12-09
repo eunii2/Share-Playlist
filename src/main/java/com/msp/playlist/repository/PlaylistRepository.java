@@ -8,8 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
-
-    List<Playlist> findByUserId(String userId);
-    //필요한 경우 추가 메소드 정의
+    List<Playlist> findByMemberUserid(String userId);
 }
+
 

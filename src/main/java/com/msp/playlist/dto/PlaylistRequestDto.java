@@ -18,15 +18,16 @@ public class PlaylistRequestDto {
     private String description;
     @NotNull
     @Min(value = 1, message = "최소 1 이상하셈 ㅋ")
-    private String userID;
+    private String userid;
 
     private Long tagGenreId;
     private List<Long> tagMoodIds;
     public PlaylistRequestDto(Playlist playlist){
         this.name = playlist.getName();
         this.description = playlist.getDescription();
-        this.userID = playlist.getUserId();
+        this.userid = playlist.getMember().getUserid();
     }
+
 
     public Long getTagGenreId() {
         return tagGenreId;
