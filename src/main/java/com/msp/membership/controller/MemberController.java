@@ -92,4 +92,17 @@ public class MemberController {
         memberService.img_update(userid, mFile.getOriginalFilename()); // 프로필 사진이름 db에 update
         return redirect_url;
     }
+
+    @RequestMapping(value = "main/search")
+    public String search(@RequestParam("word") String word, Model model) throws Exception {
+        if (word == null || word.equals("")) {
+            return "redirect:/main/recommend";
+        }
+
+        model.addAttribute("find_member", memberService.findByUseridContains(word));
+        model.addAttribute("mcnt", memberService.countByUseridContains(word));
+        model.addAttribute("word", word);
+
+        return "main/search";
+    }
 }
