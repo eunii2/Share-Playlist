@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -37,7 +38,7 @@ public class MemberController {
         return "login";
     }
 
-
+    /* 유저 정보 확인용 */
     @GetMapping("/myinfo")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Member> getMyUserInfo(){
@@ -53,17 +54,8 @@ public class MemberController {
 
         return "/main/user";
     }
-/*
-    @RequestMapping("/main/user/{id}")
-    public String main_user(@PathVariable("id") Long id, Model model) throws Exception {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        model.addAttribute("page_id", id); // PathVariable로 넘어온 id - 이 페이지의 id
-        model.addAttribute("follow", followService.find(id, userId)); // false or true
-    }
-    */
-
-    /* 프로필 수정 */
+    /* 프로필 수정 페이지*/
     @RequestMapping(value = "/main/user/update/{id}", method = RequestMethod.GET)
     public String update_user(@PathVariable("id") Long id, Model model) throws Exception {
         String userid = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -72,28 +64,36 @@ public class MemberController {
         return "/main/user/update";
     }
 
-    @RequestMapping(value = "/main/user/image_insert")
+    /* 프로필 이미지 업로드 */
+    @PostMapping("/main/member/update/profileImage")
     public String image_insert(HttpServletRequest request, @RequestParam("filename") MultipartFile mFile, Model model) throws Exception {
-        String upload_path = "D:/OutStagram/Instagram/outstagram/src/main/resources/static/images/profile/"; // 프로필 사진들 모아두는 폴더
+        String upload_path = "C:/Users/ASUS/Desktop/test/ODP/src/main/resources/static/img/profile/";   // 서버 환경에 맞게 저장 경로 바꿔야함
         String userid = SecurityContextHolder.getContext().getAuthentication().getName();
         Member member = memberService.findByUserid(userid);
-        String redirect_url = "redirect:/main/user/update/" + member.getId(); // 사진업로드 이후 redirect될 url
+        String redirect_url = "redirect:/main/user/update/" + member.getId();
 
         try {
             if (member.getProfileImage() != null) { // 이미 프로필 사진이 있을경우
-                File file = new File(upload_path + member.getProfileImage()); // 경로 + 유저 프로필사진 이름을 가져와서
-                file.delete(); // 원래파일 삭제
+                File file = new File(upload_path + member.getProfileImage());
+                file.delete();
             }
-            mFile.transferTo(new File(upload_path + mFile.getOriginalFilename()));  // 경로에 업로드
+
+            String originalFileName = mFile.getOriginalFilename();
+            String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String newFileName = UUID.randomUUID().toString() + extension;
+            mFile.transferTo(new File(upload_path + newFileName));
+            member.setProfileImage(newFileName);
+            memberService.img_update(userid, newFileName);
+
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
-
-        memberService.img_update(userid, mFile.getOriginalFilename()); // 프로필 사진이름 db에 update
         return redirect_url;
     }
 
-    @RequestMapping(value = "main/search")
+
+    /* 유저 검색 */
+    @RequestMapping(value = "main/memberSearch")
     public String search(@RequestParam("word") String word, Model model) throws Exception {
         if (word == null || word.equals("")) {
             return "redirect:/main/recommend";

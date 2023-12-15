@@ -90,15 +90,16 @@ public class PlaylistService {
         return playlistRepository.findAll().stream().map(this::convertEntityToDto).toList();
     }
 
-    /* 선미 */
-    public List<SimplePlaylistDto> getPlaylistsByUserId(String userId) {
-        List<Playlist> playlists = playlistRepository.findByMemberUserid(userId);
+    /* 본인 플리 찾기 */
+    public List<SimplePlaylistDto> getPlaylistsByUserid(String userid) {
+        List<Playlist> playlists = playlistRepository.findByMemberUserid(userid);
         List<SimplePlaylistDto> playlistDtosNew = playlists.stream()
                 .map(SimplePlaylistDto::new)
                 .collect(Collectors.toList());
         return playlistDtosNew;
     }
 
+    /* 친구 플리 찾기 */
     public List<SimplePlaylistDto> getFollowingPlaylists(String userid) {
         List<Follow> followings = followRepository.findByFromUserUserid(userid);
         List<SimplePlaylistDto> follwerplaylists = new ArrayList<>();
@@ -109,7 +110,6 @@ public class PlaylistService {
                 follwerplaylists.add(new SimplePlaylistDto(playlist));
             }
         }
-
         return follwerplaylists;
     }
 

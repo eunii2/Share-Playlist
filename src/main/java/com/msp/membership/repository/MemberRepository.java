@@ -22,4 +22,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByUseridContains(String word); // word가 포함되는 유저id List찾기
     int countByUseridContains(String word); // word가 포함되는 유저id 개수찾기
 
+
 }

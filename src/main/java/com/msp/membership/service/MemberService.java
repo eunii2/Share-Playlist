@@ -103,4 +103,5 @@ public class MemberService {
     public int countByUseridContains(String word) {
         return memberRepository.countByUseridContains(word);
     }
+
 }
