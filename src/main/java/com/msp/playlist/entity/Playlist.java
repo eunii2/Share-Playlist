@@ -58,11 +58,12 @@ public class Playlist {
         return member != null ? member.getId() : null;
     }
 
-    public Playlist(PlaylistRequestDto playlistRequestDto){
+    public Playlist(PlaylistRequestDto playlistRequestDto, Member member){
         this.name = playlistRequestDto.getName();
         this.description = playlistRequestDto.getDescription();
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.member = member;
     }
 
     public void changeNameAndDescription(PlaylistUpdateDto playlistUpdateDto) {

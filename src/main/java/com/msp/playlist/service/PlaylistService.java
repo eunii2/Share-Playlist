@@ -34,7 +34,7 @@ public class PlaylistService {
     private final PlaylistMemberRepository playlistMemberRepository;
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
-
+    private Member member;
 
 
     public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository,
@@ -66,7 +66,7 @@ public class PlaylistService {
     }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
-        Playlist playlist = new Playlist(playlistRequestDto);
+        Playlist playlist = new Playlist(playlistRequestDto, member);
 
         Member owner = memberRepository.findById(playlistRequestDto.getOwnerId())
                 .orElseThrow(() -> new RuntimeException("Owner not found with id: " + playlistRequestDto.getOwnerId()));
