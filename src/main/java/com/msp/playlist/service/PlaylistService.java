@@ -1,9 +1,16 @@
 package com.msp.playlist.service;
 
+import com.msp.membership.entity.Follow;
 import com.msp.membership.entity.Member;
+import com.msp.membership.repository.FollowRepository;
+import com.msp.membership.repository.MemberRepository;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
-import com.msp.playlist.entity.*;
+import com.msp.playlist.dto.SimplePlaylistDto;
+import com.msp.playlist.entity.Playlist;
+import com.msp.playlist.entity.PlaylistMember;
+import com.msp.playlist.entity.TagGenre;
+import com.msp.playlist.entity.TagMood;
 import com.msp.playlist.repository.PlaylistMemberRepository;
 import com.msp.playlist.repository.PlaylistRepository;
 import com.msp.playlist.repository.TagGenreRepository;
@@ -15,6 +22,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,15 +38,21 @@ public class PlaylistService {
     private final PlaylistMemberRepository playlistMemberRepository;
     private final MemberRepository memberRepository;
 
+    private final FollowRepository followRepository;
+
+
 
     public PlaylistService(PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository,
-                           TagMoodRepository tagMoodRepository, PlaylistMemberRepository playlistMemberRepository, MemberRepository memberRepository) {
+                           TagMoodRepository tagMoodRepository, PlaylistMemberRepository playlistMemberRepository,
+                           MemberRepository memberRepository, FollowRepository followRepository) {
         this.playlistRepository = playlistRepository;
         this.tagGenreRepository = tagGenreRepository;
         this.tagMoodRepository = tagMoodRepository;
         this.memberRepository = memberRepository;
         this.playlistMemberRepository = playlistMemberRepository;
+        this.followRepository = followRepository; // 추가
     }
+
 
     public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
         Playlist playlist = playlistRepository.findById(playlistId).orElseThrow();
@@ -101,6 +116,31 @@ public class PlaylistService {
         }
         return playlists;
     }
+
+    /* 본인 플리 찾기 */
+    public List<SimplePlaylistDto> getPlaylistsByUserid(String userid) {
+        List<Playlist> playlists = playlistRepository.findByMemberUserid(userid);
+        List<SimplePlaylistDto> playlistDtosNew = playlists.stream()
+                .map(SimplePlaylistDto::new)
+                .collect(Collectors.toList());
+        return playlistDtosNew;
+    }
+
+    /* 친구 플리 찾기 */
+    public List<SimplePlaylistDto> getFollowingPlaylists(String userid) {
+        List<Follow> followings = followRepository.findByFromUserUserid(userid);
+        List<SimplePlaylistDto> follwerplaylists = new ArrayList<>();
+
+        for (Follow follow : followings) {
+            List<Playlist> memberPlaylists = playlistRepository.findByMemberUserid(follow.getToUser().getUserid());
+            for (Playlist playlist : memberPlaylists) {
+                follwerplaylists.add(new SimplePlaylistDto(playlist));
+            }
+        }
+        return follwerplaylists;
+    }
+
+
 
     private PlaylistRequestDto convertEntityToDto(Playlist playlist) {
         return new PlaylistRequestDto(playlist);

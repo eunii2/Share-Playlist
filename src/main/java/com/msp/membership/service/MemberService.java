@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -94,21 +95,13 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    /*
-    @Transactional
-    public UserProfileDTO findById(int profileUserId, int principalId) {
-        Member member = memberRepository.findById(profileUserId);
-        UserProfileDTO userProfileDTO = new UserProfileDTO().EntityToDto(member);
-        userProfileDTO.setSubscribeCount(followRepository.countByToUserId(profileUserId));
-        userProfileDTO.setSubscribeState(followRepository.existsByToUserIdAndFromUserId(profileUserId, principalId));
-        return userProfileDTO;
+
+    public List<Member> findByUseridContains(String word) {
+        return memberRepository.findByUseridContains(word);
     }
 
-    //@Override
-    @Transactional
-    public Member findById(int id) {
-        Member member = memberRepository.findById(id);
-        return new UserProfileDTO().EntityToDto(member);
+    public int countByUseridContains(String word) {
+        return memberRepository.countByUseridContains(word);
     }
-    */
+
 }
