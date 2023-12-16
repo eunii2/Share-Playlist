@@ -7,22 +7,18 @@ import com.msp.membership.repository.MemberRepository;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.dto.SimplePlaylistDto;
-import com.msp.playlist.entity.Playlist;
-import com.msp.playlist.entity.PlaylistMember;
-import com.msp.playlist.entity.TagGenre;
-import com.msp.playlist.entity.TagMood;
+import com.msp.playlist.entity.*;
 import com.msp.playlist.repository.PlaylistMemberRepository;
 import com.msp.playlist.repository.PlaylistRepository;
 import com.msp.playlist.repository.TagGenreRepository;
 import com.msp.playlist.repository.TagMoodRepository;
-import com.msp.membership.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
+import javax.persistence.EntityNotFoundException;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,7 +33,6 @@ public class PlaylistService {
     private final TagMoodRepository tagMoodRepository;
     private final PlaylistMemberRepository playlistMemberRepository;
     private final MemberRepository memberRepository;
-
     private final FollowRepository followRepository;
 
 
@@ -56,8 +51,7 @@ public class PlaylistService {
 
     public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
         Playlist playlist = playlistRepository.findById(playlistId).orElseThrow();
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow();
         PlaylistMember playlistMember = new PlaylistMember();
         playlistMember.setPlaylist(playlist);
         playlistMember.setMember(member);
@@ -105,9 +99,13 @@ public class PlaylistService {
     public List<PlaylistRequestDto> getAllPlaylists() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getPrincipal().toString();
-        Member member = memberRepository.findByUserid(userId).orElseThrow();
-        List<PlaylistMember> playlistMembers = playlistMemberRepository.findByMember(member);
+        Member member = memberRepository.findByUserid(userId);
 
+        if(member == null){
+            throw new EntityNotFoundException("Member not found with user id : " + userId);
+        }
+
+        List<PlaylistMember> playlistMembers = playlistMemberRepository.findByMember(member);
         List<PlaylistRequestDto> playlists = new ArrayList<>();
 
         for (PlaylistMember playlistMember : playlistMembers) {
@@ -139,8 +137,6 @@ public class PlaylistService {
         }
         return follwerplaylists;
     }
-
-
 
     private PlaylistRequestDto convertEntityToDto(Playlist playlist) {
         return new PlaylistRequestDto(playlist);

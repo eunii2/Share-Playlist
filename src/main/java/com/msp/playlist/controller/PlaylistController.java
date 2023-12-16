@@ -1,10 +1,10 @@
 package com.msp.playlist.controller;
 
+import com.msp.playlist.dto.SimplePlaylistDto;
+import com.msp.playlist.entity.Playlist;
 import com.msp.playlist.dto.GrantAccessRequestDto;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
-import com.msp.playlist.dto.SimplePlaylistDto;
-import com.msp.playlist.entity.Playlist;
 import com.msp.playlist.repository.PlaylistRepository;
 import com.msp.playlist.service.PlaylistService;
 import org.springframework.http.ResponseEntity;

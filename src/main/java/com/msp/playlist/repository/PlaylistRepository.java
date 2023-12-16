@@ -1,7 +1,6 @@
 package com.msp.playlist.repository;
 
 import com.msp.playlist.entity.Playlist;
-import com.msp.playlist.entity.PlaylistMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +18,3 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     @Query("SELECT p FROM Playlist p JOIN p.tagMoods m WHERE m.id IN :moodIds")
     List<Playlist> findByTagMoodIds(@Param("moodIds") List<Long> moodIds);
 }
-
-

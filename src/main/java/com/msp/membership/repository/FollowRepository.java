@@ -1,24 +1,30 @@
 package com.msp.membership.repository;
 
 import com.msp.membership.entity.Follow;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface FollowRepository extends JpaRepository<Follow, Integer> {
+import javax.transaction.Transactional;
+import java.util.List;
+
+public interface FollowRepository extends JpaRepository<Follow, Long> {
+
 
         @Modifying
-        @Query(value = "INSERT INTO Follow(toUserId, fromUserId, createDate) VALUES (:toUserId, :fromUserId, NOW())", nativeQuery = true)
-        void saveFollow(@Param("toUserId") int toUserId, @Param("fromUserId") int fromUserId);
+        @Query(value= "insert into Follow(toUserId, fromUserId, createDate) VALUES(:toUserId, :fromUserId, createDate)", nativeQuery = true)
+        void saveFollow(@Param("toUserId") Long toUserId, @Param("fromUserId") Long fromUserId);
 
         @Modifying
-        @Query("DELETE FROM Follow WHERE toUserId = :toUserId AND fromUserId = :fromUserId")
-        void deleteByToUserIdAndFromUserId(@Param("toUserId") int toUserId, @Param("fromUserId") int fromUserId);
+        @Query("delete from Follow where toUserId = :toUserId and fromUserId = :fromUserId")
+        void deleteFollow(@Param("toUserId") Long toUserId, @Param("fromUserId") Long fromUserId);
 
-        int countByToUserId(int toUserId);
+        Long countByFromUserIdAndToUserId(Long id, String userid);
 
-        boolean existsByToUserIdAndFromUserId(int toUserId, int fromUserId);
+        @Modifying
+        @Transactional
+        void deleteByFromUserIdAndToUserId(Long id1, Long id2);
+
+        List<Follow> findByFromUserUserid(String userid);
 }
-

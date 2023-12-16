@@ -12,8 +12,6 @@ public class SecurityUtil {
 
     private static final Logger log = LoggerFactory.getLogger(SecurityUtil.class);
 
-    private SecurityUtil() {}
-
     public static Optional<String> getCurrentUserid() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

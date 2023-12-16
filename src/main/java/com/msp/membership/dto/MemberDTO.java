@@ -1,8 +1,10 @@
 package com.msp.membership.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.msp.membership.entity.Member;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,23 +14,18 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberDTO {
-    private int id;
+
+    @NotNull
     private String userid;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull
     private String userpw;
+
     private String username;
     private String userphone;
     private String useremail;
 
-    public static MemberDTO toMemberDTO(Member member){
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(member.getId());
-        memberDTO.setUserid(member.getUserId());
-        memberDTO.setUserpw(member.getUserpw());
-        memberDTO.setUsername(member.getUsername());
-        memberDTO.setUserphone(member.getUserphone());
-        memberDTO.setUseremail(member.getUseremail());
-        return memberDTO;
-    }
 
     private Set<AuthorityDTO> authorityDTOSet;
 
@@ -36,7 +33,7 @@ public class MemberDTO {
         if(member == null) return null;
 
         return MemberDTO.builder()
-                .userid(member.getUserId())
+                .userid(member.getUserid())
                 .username(member.getUsername())
                 .authorityDTOSet(member.getAuthorities().stream()
                         .map(authority -> AuthorityDTO.builder().authorityName(authority.getAuthorityName()).build())

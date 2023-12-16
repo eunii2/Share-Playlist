@@ -4,8 +4,6 @@ import com.msp.membership.dto.MemberDTO;
 import com.msp.membership.entity.Member;
 import com.msp.membership.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,9 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RestController
 public class MemberController {
 
     private final MemberService memberService;

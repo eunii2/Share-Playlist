@@ -85,9 +85,9 @@ public class MemberService {
     }
 
 
-    public void img_update(String userid, String profile_photo) {
+    public void img_update(String userid, String profileImage) {
         Member member = findByUserid(userid); // 유저아이디로 유저찾음
-        member.setProfile_photo(profile_photo);
+        member.setProfileImage(profileImage);
         save_user(member);
     }
 

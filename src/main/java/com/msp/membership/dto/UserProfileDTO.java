@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfileDTO {
-    private int id;
+    private Long id;
     private String userid;
     private String username;
     private String profileImage;
@@ -19,12 +19,15 @@ public class UserProfileDTO {
     private boolean subscribeState;
     private int subscribeCount;
 
+    // 플레이 리스트 목록 추가 해야함
+
     public UserProfileDTO EntityToDto(Member member) {
         return UserProfileDTO.builder()
                 .id(member.getId())
-                .userid(member.getUserId())
+                .userid(member.getUserid())
                 .username(member.getUsername())
                 .profileImage(member.getProfileImage())
                 .build();
     }
+
 }

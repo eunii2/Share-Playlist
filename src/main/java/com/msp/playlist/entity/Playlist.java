@@ -1,5 +1,6 @@
 package com.msp.playlist.entity;
 
+import com.msp.membership.entity.Member;
 import com.msp.playlist.dto.PlaylistRequestDto;
 import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.song.entity.Song;
@@ -11,12 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-// GETTER SETTER 다 없애줘라 ~ LOMBOK
 @Entity
-@Getter //member 변수들이 전부 private 밖으로 가져오기 위해
+@Getter
 @Table(name="playlist")
 @NoArgsConstructor
 public class Playlist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,8 +34,9 @@ public class Playlist {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "userid")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userid")
+    private Member member;
 
     @OneToMany(mappedBy = "playlist")
     private List<Song> songs = new ArrayList<>();
@@ -47,17 +49,20 @@ public class Playlist {
     private List<TagMood> tagMoods = new ArrayList<>();
 
     @OneToMany(mappedBy = "playlist")
+    private Set<PlaylistMember> members;
+
+    @OneToMany(mappedBy = "playlist")
     private List<PlaylistMember> playlistMembers;
 
-    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PlaylistMember> members;
+    public Long getUserId() {
+        return member != null ? member.getId() : null;
+    }
 
     public Playlist(PlaylistRequestDto playlistRequestDto){
         this.name = playlistRequestDto.getName();
         this.description = playlistRequestDto.getDescription();
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.userId = playlistRequestDto.getUserID();
     }
 
     public void changeNameAndDescription(PlaylistUpdateDto playlistUpdateDto) {
