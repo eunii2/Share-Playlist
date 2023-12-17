@@ -1,10 +1,468 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>main</title>
+  <meta charset="utf-8">
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>23OPEN Music Share</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Free HTML Templates" name="keywords">
+  <meta content="Free HTML Templates" name="description">
+
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Libraries Stylesheet -->
+  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="./styles/frame-24.css" />
+  <link rel="stylesheet" href="./styles/frame-22.css" />
 </head>
-<body>
-session 값 확인: <p th:text="${session.loginId}"></p>  //로그인 아이디를 세션에 담아줌 (loginId : 사용자 아이디)
+
+<body data-spy="scroll" data-target=".navbar" data-offset="51">
+
+  <div class="frame-24-XxD">
+    <div class="frame-10-emw" style="height:100%;">
+      <div class="auto-group-itut-kpy">
+        <a href="index.html" class="frame-4-yBw" style="margin-top:20px">
+          <img src="./assets/frame-4.png" alt="Description of the image" style="width: 100%; height: 100%;">
+        </a>
+
+        <img class="frame-3-4z5" src="./assets/frame-3.png" />
+      </div>
+      <a href="main.html" class="frame-5-bz1">홈</a>
+      <a href="friends.html" class="frame-6-tiD">친구</a>
+      <a th:href="@{/main/user/update/{userid}(userid=${#authentication.name})}" class="frame-6-f6h">
+        프로필</a>
+
+      <div style="width: 100%;height:40%;align-items: flex-end;display:flex;justify-content:center;">
+        <a href="listcreat.html" class="frame-4-yBw"
+          style="width: 50px;; height:50px; border-radius: 5rem; background-color:#525252;bottom:40%;">
+          <img src="img/+.png"
+            style="width: 50px; height: 50px;border-radius: 5rem;border: solid 0.5rem rgb(255, 255, 255);">
+        </a>
+      </div>
+
+
+
+    </div>
+    <div class="frame-27-YAV">
+
+
+      <div class=e41_2 style="margin-top:20px;">
+        <style>
+          .pressed {
+            background-color: rgb(255, 255, 255);
+            /* 눌린 상태의 배경색 */
+            color: #ffffff;
+            /* 눌린 상태의 글자색 */
+          }
+        </style>
+
+        <button href="index.html" id="toggleButton1" class=e42_123><span class="e42_125">#행복</span></button>
+        <script>
+          var button1 = document.getElementById('toggleButton1');
+          var isPressed1 = false;
+
+          button1.addEventListener('click', function () {
+            isPressed1 = !isPressed1;
+            if (isPressed1) {
+              button1.classList.add('pressed');
+            } else {
+              button1.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton2" class=e42_126><span class="e42_127">#해외팝</span></button>
+        <script>
+          var button2 = document.getElementById('toggleButton2');
+          var isPressed2 = false;
+
+          button2.addEventListener('click', function () {
+            isPressed2 = !isPressed2;
+            if (isPressed2) {
+              button2.classList.add('pressed');
+            } else {
+              button2.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton3" class=e42_152><span class="e42_153">#슬픔</span></button>
+        <script>
+          var button3 = document.getElementById('toggleButton3');
+          var isPressed3 = false;
+
+          button3.addEventListener('click', function () {
+            isPressed3 = !isPressed3;
+            if (isPressed3) {
+              button3.classList.add('pressed');
+            } else {
+              button3.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton4" class=e42_154><span class="e42_155">#국내팝</span></button>
+        <script>
+          var button4 = document.getElementById('toggleButton4');
+          var isPressed4 = false;
+
+          button4.addEventListener('click', function () {
+            isPressed4 = !isPressed4;
+            if (isPressed4) {
+              button4.classList.add('pressed');
+            } else {
+              button4.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton5" class=e42_156><span class="e42_157">#분노</span></button>
+        <script>
+          var button5 = document.getElementById('toggleButton5');
+          var isPressed5 = false;
+
+          button5.addEventListener('click', function () {
+            isPressed5 = !isPressed5;
+            if (isPressed5) {
+              button5.classList.add('pressed');
+            } else {
+              button5.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton6" class=e42_158><span class="e42_159">#발라드</span></button>
+        <script>
+          var button6 = document.getElementById('toggleButton6');
+          var isPressed6 = false;
+
+          button6.addEventListener('click', function () {
+            isPressed6 = !isPressed6;
+            if (isPressed6) {
+              button6.classList.add('pressed');
+            } else {
+              button6.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton7" class=e42_168><span class="e42_169">#평온</span></button>
+        <script>
+          var button7 = document.getElementById('toggleButton7');
+          var isPressed7 = false;
+
+          button7.addEventListener('click', function () {
+            isPressed7 = !isPressed7;
+            if (isPressed7) {
+              button7.classList.add('pressed');
+            } else {
+              button7.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton8" class=e42_170><span class="e42_171">#댄스</span></button>
+        <script>
+          var button8 = document.getElementById('toggleButton8');
+          var isPressed8 = false;
+
+          button8.addEventListener('click', function () {
+            isPressed8 = !isPressed8;
+            if (isPressed8) {
+              button8.classList.add('pressed');
+            } else {
+              button8.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton9" class=e42_172><span class="e42_173">#사랑</span></button>
+        <script>
+          var button9 = document.getElementById('toggleButton9');
+          var isPressed9 = false;
+
+          button9.addEventListener('click', function () {
+            isPressed9 = !isPressed9;
+            if (isPressed9) {
+              button9.classList.add('pressed');
+            } else {
+              button9.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton10" class=e42_174><span class="e42_175">#록</span></button>
+        <script>
+          var button10 = document.getElementById('toggleButton10');
+          var isPressed10 = false;
+
+          button10.addEventListener('click', function () {
+            isPressed10 = !isPressed10;
+            if (isPressed10) {
+              button10.classList.add('pressed');
+            } else {
+              button10.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton11" class=e42_176><span class="e42_177">#감동</span></button>
+        <script>
+          var button11 = document.getElementById('toggleButton11');
+          var isPressed11 = false;
+
+          button11.addEventListener('click', function () {
+            isPressed11 = !isPressed11;
+            if (isPressed11) {
+              button11.classList.add('pressed');
+            } else {
+              button11.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton12" class=e42_178><span class="e42_179">#재즈</span></button>
+        <script>
+          var button12 = document.getElementById('toggleButton12');
+          var isPressed12 = false;
+
+          button12.addEventListener('click', function () {
+            isPressed12 = !isPressed12;
+            if (isPressed12) {
+              button12.classList.add('pressed');
+            } else {
+              button12.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton13" class=e42_180><span class="e42_181">#신나는</span></button>
+        <script>
+          var button13 = document.getElementById('toggleButton13');
+          var isPressed13 = false;
+
+          button13.addEventListener('click', function () {
+            isPressed13 = !isPressed13;
+            if (isPressed13) {
+              button13.classList.add('pressed');
+            } else {
+              button13.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton14" class=e42_182><span class="e42_183">#클래식</span></button>
+        <script>
+          var button14 = document.getElementById('toggleButton14');
+          var isPressed14 = false;
+
+          button14.addEventListener('click', function () {
+            isPressed14 = !isPressed14;
+            if (isPressed14) {
+              button14.classList.add('pressed');
+            } else {
+              button14.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton15" class=e42_184><span class="e42_185">#위로</span></button>
+        <script>
+          var button15 = document.getElementById('toggleButton15');
+          var isPressed15 = false;
+
+          button15.addEventListener('click', function () {
+            isPressed15 = !isPressed15;
+            if (isPressed15) {
+              button15.classList.add('pressed');
+            } else {
+              button15.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton16" class=e42_186><span class="e42_187">#힙합</span></button>
+        <script>
+          var button16 = document.getElementById('toggleButton16');
+          var isPressed16 = false;
+
+          button16.addEventListener('click', function () {
+            isPressed16 = !isPressed16;
+            if (isPressed16) {
+              button16.classList.add('pressed');
+            } else {
+              button16.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton17" class=e42_184 style="left:1060px;"><span
+            class="e42_185">#몽환</span></button>
+        <script>
+          var button17 = document.getElementById('toggleButton17');
+          var isPressed17 = false;
+
+          button17.addEventListener('click', function () {
+            isPressed17 = !isPressed17;
+            if (isPressed17) {
+              button17.classList.add('pressed');
+            } else {
+              button17.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton18" class=e42_186 style="left:1060px;"><span
+            class="e42_187">#블루스</span></button>
+        <script>
+          var button18 = document.getElementById('toggleButton18');
+          var isPressed18 = false;
+
+          button18.addEventListener('click', function () {
+            isPressed18 = !isPressed18;
+            if (isPressed18) {
+              button18.classList.add('pressed');
+            } else {
+              button18.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton19" class=e42_184 style="left:1190px;"><span
+            class="e42_185">#쓸쓸함</span></button>
+        <script>
+          var button19 = document.getElementById('toggleButton19');
+          var isPressed19 = false;
+
+          button19.addEventListener('click', function () {
+            isPressed19 = !isPressed19;
+            if (isPressed19) {
+              button19.classList.add('pressed');
+            } else {
+              button19.classList.remove('pressed');
+            }
+          });
+        </script>
+        <button href="index.html" id="toggleButton20" class=e42_186 style="left:1190px;"><span
+            class="e42_187">#R&B</span></button>
+        <script>
+          var button20 = document.getElementById('toggleButton20');
+          var isPressed20 = false;
+
+          button20.addEventListener('click', function () {
+            isPressed20 = !isPressed20;
+            if (isPressed20) {
+              button20.classList.add('pressed');
+            } else {
+              button20.classList.remove('pressed');
+            }
+          });
+        </script>
+
+      </div>
+      <div class="frame-25-NFB">
+        <div class="frame-21-hoF">
+          <div class="frame-22-1ow" style="width: 300px;">나의 플레이리스트</div>
+          <a href="main.html" class="frame-23-HFf">더보기</a>
+
+        </div>
+        <div class="auto-group-7kpf-Nnu">
+          <div th:each="playlist : ${playlists}">
+            <a href="playlist.html" class="frame-16-tFT">
+              <div class="frame-17-SXs">
+                <img th:src="${playlist.imageUrl}" alt="Playlist Image">
+              </div>
+              <div class="frame-18-C1F">
+                <div class="frame-19-XZK" th:text="${playlist.title}">노래제목</div>
+                <div class="frame-20-Rub" th:text="${playlist.artistName}">가수이름</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div href="main.html" class="frame-26-U7j">
+        <div class="frame-21-by3">
+          <div class="frame-22-uiq" style="width: 300px;">친구의 플레이리스트</div>
+          <a href="main.html" class="frame-23-aKB">더보기</a>
+        </div>
+        <div class="auto-group-qd1s-rnV">
+
+          <a href="playlist.html" class="frame-16-NVw">
+            <div class="frame-17-8V7">
+            </div>
+            <div class="frame-18-V4m">
+              <div class="frame-19-pcq">플리제목 1</div>
+              <div class="frame-20-Y33">친구이름 1</div>
+            </div>
+          </a>
+
+          <a href="playlist.html" class="frame-22-Su7">
+            <div class="frame-17-CdP">
+            </div>
+            <div class="frame-18-Ljb">
+              <div class="frame-19-gYZ">플리제목 1</div>
+              <div class="frame-20-CG1">친구이름 1</div>
+            </div>
+          </a>
+
+          <a href="playlist.html" class="frame-16-hTf">
+            <div class="frame-17-4JD">
+            </div>
+            <div class="frame-18-1DT">
+              <div class="frame-19-YUH">플리제목 1</div>
+              <div class="frame-20-F7o">친구이름 1</div>
+            </div>
+          </a>
+
+          <a href="playlist.html" class="frame-16-x2D">
+            <div class="frame-17-hVb">
+            </div>
+            <div class="frame-18-r7b">
+              <div class="frame-19-Ae5">플리제목 1</div>
+              <div class="frame-20-5m3">친구이름 1</div>
+            </div>
+          </a>
+
+          <a href="playlist.html" class="frame-16-Gj3">
+            <div class="frame-17-7zZ">
+            </div>
+            <div class="frame-18-UaD">
+              <div class="frame-19-cwK">플리제목 1</div>
+              <div class="frame-20-Y4H">친구이름 1</div>
+            </div>
+          </a>
+
+          <a href="playlist.html" class="frame-24-dLd">
+            <div class="frame-17-BN9">
+            </div>
+            <div class="frame-18-LF3">
+              <div class="frame-19-gJu">플리제목 1</div>
+              <div class="frame-20-nsj">친구이름 1</div>
+            </div>
+          </a>
+
+          <a href="playlist.html" class="frame-25-hzh">
+            <div class="frame-17-fRj">
+            </div>
+            <div class="frame-18-CgZ">
+              <div class="frame-19-XD3">플리제목 1</div>
+              <div class="frame-20-2fb">친구이름 1</div>
+            </div>
+          </a>
+
+          <a href="playlist.html" class="frame-27-cnD">
+            <div class="frame-17-ZhT">
+            </div>
+            <div class="frame-18-HdT">
+              <div class="frame-19-CEd">플리제목 1</div>
+              <div class="frame-20-qYV">친구이름 1</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
 </body>
+
 </html>

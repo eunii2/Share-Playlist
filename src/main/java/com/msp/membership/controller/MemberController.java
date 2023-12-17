@@ -23,17 +23,17 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/main/join")
+    @GetMapping("/join")
     public String joinForm(){
-        return "/login/join";
+        return "join";
     }
 
-    @PostMapping("/main/join")
+    @PostMapping("/join")
     public ResponseEntity<Member> join(@Valid @RequestBody MemberDTO memberDTO){
         return ResponseEntity.ok(memberService.join(memberDTO));
     }
 
-    @GetMapping("/main/login")
+    @GetMapping("/login")
     public String loginForm() {
         return "login";
     }
@@ -51,25 +51,11 @@ public class MemberController {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("member", memberService.findByUserid(userid));
 
-        return "/main/user";
+        return "profile";
     }
-
-    /* 프로필 수정 페이지 */
-    @RequestMapping(value = "/main/user/update/{userid}", method = RequestMethod.GET)
-    public String update_user(@PathVariable("userid") String userid, Model model) throws Exception {
-        String loggedInUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if (!userid.equals(loggedInUserId)) {
-            throw new Exception("Unauthorized access");
-        }
-
-        model.addAttribute("member", memberService.findByUserid(userid));
-        return "/main/user/update";
-    }
-
 
     /* 프로필 이미지 업로드 */
-    @PostMapping("/main/user/update/profileImage")
+    @PostMapping("/main/profileImage")
     public String image_insert(HttpServletRequest request, @RequestParam("filename") MultipartFile mFile, Model model) throws Exception {
         String upload_path = "C:/Users/ASUS/Desktop/test/ODP/src/main/resources/static/img/profile/";   // 서버 환경에 맞게 저장 경로 바꿔야함
         String userid = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -97,23 +83,19 @@ public class MemberController {
 
 
     /* 유저 검색 */
-    @RequestMapping(value = "main/userSearch")
+    @RequestMapping(value = "main/friend")
     public String search(@RequestParam("word") String word, Model model) throws Exception {
         if (word == null || word.equals("")) {
-            return "redirect:/main/recommend";
+            return "redirect:/main/friend";
         }
 
-        model.addAttribute("find_member", memberService.findByUseridContains(word));
-        model.addAttribute("mcnt", memberService.countByUseridContains(word));
-        model.addAttribute("word", word);
+        Member member = memberService.findByUserid(word);
 
-        return "main/search";   //프론트에서 연결해야함
-        /*
-        <div th:each="member : ${find_member}">
-    <p th:text="${member.userid}"></p>
-    <img th:src="${member.profileImage}" alt="Profile Image">
-    <!-- 팔로우 버튼 추가 -->
-</div>
-         */
+        if (member != null) {
+            return "redirect:/main/user/" + member.getUserid();
+        } else {
+            return "redirect:/main/friend";
+        }
     }
+
 }

@@ -1,12 +1,15 @@
 package com.msp.membership.service;
 
 import com.msp.membership.entity.Follow;
+import com.msp.membership.entity.Member;
 import com.msp.membership.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -36,9 +39,9 @@ public class FollowService {
             return false; // 팔로우 안되어있음
         return true; // 되어있음
     }
-/*
-    public List<Follow> findByFollowingId(int id) {
-        return followRepository.findByFollowingId(id);
+    public List<Member> getFollowingMembers(Member member) {
+        return followRepository.findByFromUser(member).stream()
+                .map(Follow::getToUser)
+                .collect(Collectors.toList());
     }
-    */
 }
