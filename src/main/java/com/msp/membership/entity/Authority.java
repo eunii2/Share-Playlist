@@ -14,14 +14,7 @@ import javax.persistence.*;
 public class Authority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "authority_id")
-    private Long id;
-
     @Column(name = "authority_name", length = 50)
     private String authorityName;
 
-    @ManyToOne
-    @JoinColumn(name = "playlist_id")
-    private Playlist playlist;
 }
