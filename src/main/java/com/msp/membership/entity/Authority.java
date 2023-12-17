@@ -21,7 +21,7 @@ public class Authority {
     @Column(name = "authority_name", length = 50)
     private String authorityName;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "playlist_id")
-    private Playlist playlist;
+    private Playlist playlist;*/
 }
