@@ -45,27 +45,31 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMyUserWithAuthorities().get());
     }
 
-
     /* 유저페이지 */
-    @RequestMapping("/main/user/{id}")
-    public String main_user(@PathVariable("id") Long id, Model model) throws Exception {
+    @RequestMapping("/main/user/{userid}")
+    public String main_user(@PathVariable("userid") String userid, Model model) throws Exception {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("member", memberService.findById(id));
+        model.addAttribute("member", memberService.findByUserid(userid));
 
         return "/main/user";
     }
 
-    /* 프로필 수정 페이지*/
-    @RequestMapping(value = "/main/user/update/{id}", method = RequestMethod.GET)
-    public String update_user(@PathVariable("id") Long id, Model model) throws Exception {
-        String userid = SecurityContextHolder.getContext().getAuthentication().getName();
+    /* 프로필 수정 페이지 */
+    @RequestMapping(value = "/main/user/update/{userid}", method = RequestMethod.GET)
+    public String update_user(@PathVariable("userid") String userid, Model model) throws Exception {
+        String loggedInUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (!userid.equals(loggedInUserId)) {
+            throw new Exception("Unauthorized access");
+        }
 
         model.addAttribute("member", memberService.findByUserid(userid));
         return "/main/user/update";
     }
 
+
     /* 프로필 이미지 업로드 */
-    @PostMapping("/main/member/update/profileImage")
+    @PostMapping("/main/user/update/profileImage")
     public String image_insert(HttpServletRequest request, @RequestParam("filename") MultipartFile mFile, Model model) throws Exception {
         String upload_path = "C:/Users/ASUS/Desktop/test/ODP/src/main/resources/static/img/profile/";   // 서버 환경에 맞게 저장 경로 바꿔야함
         String userid = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -93,7 +97,7 @@ public class MemberController {
 
 
     /* 유저 검색 */
-    @RequestMapping(value = "main/memberSearch")
+    @RequestMapping(value = "main/userSearch")
     public String search(@RequestParam("word") String word, Model model) throws Exception {
         if (word == null || word.equals("")) {
             return "redirect:/main/recommend";
@@ -103,6 +107,13 @@ public class MemberController {
         model.addAttribute("mcnt", memberService.countByUseridContains(word));
         model.addAttribute("word", word);
 
-        return "main/search";
+        return "main/search";   //프론트에서 연결해야함
+        /*
+        <div th:each="member : ${find_member}">
+    <p th:text="${member.userid}"></p>
+    <img th:src="${member.profileImage}" alt="Profile Image">
+    <!-- 팔로우 버튼 추가 -->
+</div>
+         */
     }
 }
