@@ -107,6 +107,13 @@ public class MemberController {
         model.addAttribute("mcnt", memberService.countByUseridContains(word));
         model.addAttribute("word", word);
 
-        return "main/search";
+        return "main/search";   //프론트에서 연결해야함
+        /*
+        <div th:each="member : ${find_member}">
+    <p th:text="${member.userid}"></p>
+    <img th:src="${member.profileImage}" alt="Profile Image">
+    <!-- 팔로우 버튼 추가 -->
+</div>
+         */
     }
 }
