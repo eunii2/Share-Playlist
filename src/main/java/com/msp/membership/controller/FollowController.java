@@ -1,21 +1,27 @@
 package com.msp.membership.controller;
 
+import com.msp.membership.entity.Member;
+import com.msp.membership.repository.MemberRepository;
 import com.msp.membership.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class FollowController{
 
     @Autowired
     FollowService followService;
+    MemberRepository memberService;
 
     @RequestMapping("/follow")
-    public String follow(HttpServletRequest request, Model model) throws Exception {
+    public ResponseEntity<String> follow(HttpServletRequest request, Model model) throws Exception {
         String from = request.getParameter("from_id");
         String to = request.getParameter("to_id");
 
@@ -24,13 +30,11 @@ public class FollowController{
 
         followService.save(from_id, to_id);
 
-        String redirect_url = "redirect:/main/user/" + to_id;
-
-        return redirect_url;
+        return ResponseEntity.ok().body("팔로우 완료");
     }
 
     @RequestMapping("/unfollow")
-    public String unfollow(HttpServletRequest request, Model model) throws Exception {
+    public ResponseEntity<String> unfollow(HttpServletRequest request, Model model) throws Exception {
         String from = request.getParameter("from_id");
         String to = request.getParameter("to_id");
 
@@ -38,24 +42,18 @@ public class FollowController{
         Long to_id = Long.parseLong(to);
 
         followService.deleteByFromUserIdAndToUserId(to_id, from_id);
-        String redirect_url = "redirect:/main/user/" + to_id;
-
-        return redirect_url;
+        return ResponseEntity.ok().body("팔로우 해제");
     }
 
-    /*
-    @PostMapping("/{toUserId}")
-    public ResponseEntity<String> follow(@PathVariable int toUserId, @AuthenticationPrincipal CustomUserDetails principal){
+    @RequestMapping(value = "/main/following")
+    public String following(Model model, Principal principal) {
 
-        followService.Follow(toUserId, principal.getId());
-        return ResponseEntity.ok().body("친구추가 완료");
+
+        Member member = memberService.findByUserid(principal.getName());
+        List<Member> followingMembers = followService.getFollowingMembers(member);
+
+        model.addAttribute("followingMembers", followingMembers);
+        return "/main/following";
     }
 
-    @DeleteMapping("/{toUserId}")
-    public ResponseEntity<String> unfollow(@PathVariable int toUserId, @AuthenticationPrincipal CustomUserDetails principal){
-
-        followService.unFollow(toUserId, principal.getId());
-        return ResponseEntity.ok().body("친구추가 해제");
-    }
-    */
 }

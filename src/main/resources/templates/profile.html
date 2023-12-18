@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>23OPEN Music Share</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Free HTML Templates" name="keywords">
+  <meta content="Free HTML Templates" name="description">
+
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Libraries Stylesheet -->
+  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="./styles/frame-24.css" />
+  <link rel="stylesheet" href="./styles/frame-22.css" />
+  <link rel="stylesheet" href="./styles/frame-25.css" />
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="51">
+
+
+  <div class="frame-24-XxD">
+    <div class="frame-10-emw">
+      <div class="auto-group-itut-kpy">
+        <a href="index.html" class="frame-4-yBw" style="margin-top:20px">
+          <img src="./assets/frame-4.png" alt="Description of the image" style="width: 100%; height: 100%;">
+        </a>
+
+        <img class="frame-3-4z5" src="./assets/frame-3.png" />
+      </div>
+      <a href="main.html" class="frame-5-bz1">홈</a>
+      <a href="friends.html" class="frame-6-tiD">친구</a>
+      <a th:href="@{/main/user/update/{userid}(userid=${#authentication.name})}" class="frame-6-f6h">
+        프로필</a>
+
+      <div style="width: 100%;height:40%;align-items: flex-end;display:flex;justify-content:center;">
+        <a href="listcreat.html" class="frame-4-yBw"
+          style="width: 50px;; height:50px; border-radius: 5rem; background-color:#525252;bottom:40%;">
+          <img src="img/+.png"
+            style="width: 50px; height: 50px;border-radius: 5rem;border: solid 0.5rem rgb(255, 255, 255);">
+        </a>
+      </div>
+
+
+    </div>
+    <div class="frame-27-YAV">
+
+      <div class="frame-47-SdB">
+        <div class="frame-66-PHX" style="margin-top: 20px;">
+          <img class="frame-8-7jK" src="./assets/frame-3.png" />
+          <div class="frame-62-SWh">
+            <div style="width:80%;height:80%;display: flex;text-align:center;align-items:center;">
+              <!-- 모달 버튼 -->
+              <button onclick="openModal()" style="width:100%;height:100%;background-color: #525252;color:#fff;">아이콘
+                변경</button>
+
+              <script>
+                // 모달 열기
+                function openModal() {
+                  var modal = document.getElementById('myModal');
+                  modal.style.display = 'flex';
+                  document.body.style.overflow = 'hidden'; // 스크롤 방지
+                }
+
+                // 모달 닫기
+                function closeModal() {
+                  var modal = document.getElementById('myModal');
+                  modal.style.display = 'none';
+                  document.body.style.overflow = 'auto'; // 스크롤 다시 허용
+                }
+
+                // 백드롭 클릭 방지
+                document.getElementById('myModal').addEventListener('click', function (event) {
+                  if (event.target === this) {
+                    closeModal(); // 모달 백드롭 클릭 시 모달 닫기
+                  }
+                });
+              </script>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="frame-67-wTT" style="width: 1300px;margin-top: 20px;align-items: flex-start;">
+          <div class="frame-26-hBj" style="width: 1300px;align-items: flex-start;">
+            <div class="frame-21-dbB" style="width:40%;">
+              <div class="frame-22-A5K" style="width:100%;margin: 0.55rem 20rem 0.55rem 0rem;">내가 만든 플레이 리스트</div>
+              <a href="main.html" class="frame-23-qBT">더보기</a>
+            </div>
+            <div class="auto-group-6mtk-VG1">
+              <a href="playlist.html" class="frame-16-DSu">
+                <div class="frame-17-Nah">
+                </div>
+                <div class="frame-18-845" style="height:20%;margin-top:15px">
+                  <div class="frame-19-Ts3">플리제목 1</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-22-sQy">
+                <div class="frame-17-dQ9">
+                </div>
+                <div class="frame-18-yyo" style="height:20%;margin-top:15px">
+                  <div class="frame-19-XkR">플리제목 1</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-16-kt5">
+                <div class="frame-17-KAV">
+                </div>
+                <div class="frame-18-TXb" style="height:20%;margin-top:15px">
+                  <div class="frame-19-Ck5">플리제목 1</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-16-R73">
+                <div class="frame-17-B6D">
+                </div>
+                <div class="frame-18-Jgd" style="height:20%;margin-top:15px">
+                  <div class="frame-19-cxD">플리제목 1</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-16-GJ1">
+                <div class="frame-17-d8Z">
+                </div>
+                <div class="frame-18-mkZ" style="height:20%;margin-top:15px">
+                  <div class="frame-19-urm">플리제목 1</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-24-XdF">
+                <div class="frame-17-V4H">
+                </div>
+                <div class="frame-18-35o" style="height:20%;margin-top:15px">
+                  <div class="frame-19-n3P">플리제목 1</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-25-zQM">
+                <div class="frame-17-9HF">
+                </div>
+                <div class="frame-18-gHB" style="height:20%;margin-top:15px">
+                  <div class="frame-19-CFX">플리제목 1</div>
+                </div>
+              </a>
+
+            </div>
+          </div>
+          <div class="frame-63-mtH" style="width: 1300px;">
+            <div class="frame-21-hmw">
+              <div class="frame-22-dQh" style="width:100%;">공동 작업하는 플레이 리스트</div>
+              <a href="main.html" class="frame-23-JFw">더보기</a>
+            </div>
+            <div class="auto-group-a2ym-az9">
+              <a href="playlist.html" class="frame-16-iaZ">
+                <div class="frame-17-5R7">
+                </div>
+                <div class="frame-18-dSd" style="height:20%;margin-top:15px">
+                  <div class="frame-19-yFb" style="height:100%;text-align:center">플리제목 1</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-22-bGy">
+                <div class="frame-17-Yxu">
+                </div>
+                <div class="frame-18-W93" style="height:20%;margin-top:15px">
+                  <div class="frame-19-FMX" style="height:100%;text-align:center">플리제목 2</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-16-3oB">
+                <div class="frame-17-onM">
+                </div>
+                <div class="frame-18-MYy" style="height:20%;margin-top:15px">
+                  <div class="frame-19-uKb" style="height:100%;text-align:center">플리제목 3</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-16-7wT">
+                <div class="frame-17-svd">
+                </div>
+                <div class="frame-18-22q" style="height:20%;margin-top:15px">
+                  <div class="frame-19-jhw" style="height:100%;text-align:center">플리제목 4</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-16-CtM">
+                <div class="frame-17-AaH">
+                </div>
+                <div class="frame-18-Wu3" style="height:20%;margin-top:15px">
+                  <div class="frame-19-4Qm" style="height:100%;text-align:center">플리제목 5</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-24-HHX">
+                <div class="frame-17-e85">
+                </div>
+                <div class="frame-18-zBw" style="height:20%;margin-top:15px">
+                  <div class="frame-19-itd" style="height:100%;text-align:center">플리제목 6</div>
+                </div>
+              </a>
+              <a href="playlist.html" class="frame-25-VH7">
+                <div class="frame-17-RwT">
+                </div>
+                <div class="frame-18-Znm" style="height:20%;margin-top:15px">
+                  <div class="frame-19-621" style="height:100%;text-align:center">플리제목 7</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <!-- 모달 -->
+      <div id="myModal"
+        style="display: none; position: fixed; top: 0; left: 0%; 
+          width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; pointer-events: none;">
+        <!-- 모달 내용 -->
+        <div
+          style="width:40%;height:50%;background-color: #fff; padding: 0.5%; border-radius: 5px; left:0%;position: relative; pointer-events: auto; ">
+          <div style="width:100%;height:10%;flex-direction:row;display:flex">
+            <div style="width: 100%;height:100%;">
+              <p style="width:100%;height:100%;color:black;font-size:20px;text-align:center; font-style:blond;">
+                아이콘 변경
+              </p>
+            </div>
+            <div style="width: 5%;height:100%;">
+              <span style="width:100%;height:100%; cursor: pointer;color:black;font-size:16px;"
+                onclick="closeModal()">&times;</span>
+            </div>
+          </div>
+          <div style="width:100%;height:90%;flex-direction:column;display:flex;overflow:auto">
+
+
+            <!-- 모달 내용 추가 -->
+            <div class="frame-62-SWh"
+              style="width: 100%;height:100%;align-items: center;flex-direction:column;display:flex;">
+              <div style="width: 100%;height:60%;align-items: center;flex-direction:row;display:flex;">
+                <div style="width: 45%;height:100%;align-items: center;flex-direction:row;display:flex;">
+                  <img id="currentIcon" src="현재_아이콘_경로" alt="현재 아이콘">
+                </div>
+                <div style="width: 10%;height:100%;align-items: center;flex-direction:row;display:flex;">
+                  <img id="currentIcon" src="현재_아이콘_경로" alt="현재 아이콘">
+                </div>
+                <div style="width: 45%;height:100%;align-items: center;flex-direction:row;display:flex;">
+                  <img id="currentIcon" src="미래_아이콘_경로" alt="현재 아이콘">
+                </div>
+
+
+              </div>
+              <div style="width: 100%;height:40%;">
+                <form action="/main/profileImage" method="post" enctype="multipart/form-data"
+                  style="width: 100%;height:100%;align-items: center;flex-direction:row;display:flex;">
+                  <div style="width: 45%;height:100%;align-items: center;flex-direction:row;display:flex;">
+                    <div style="width: 50%; height: 50%; display: flex; align-items: center; justify-content: center;">
+                      <label
+                        style="width: 100%; height: 100%;background-color:blue;display: flex; align-items: center; justify-content: center;">
+                        <input type="file" id="profileIcon" name="filename" accept="image/*"
+                          style="width: 100%; height: 100%; display: none;">
+                      </label>
+
+                    </div>
+                  </div>
+
+                  <div style="width: 10%;height:100%;align-items: center;;display:flex; justify-content: center;">
+
+                  </div>
+
+                  <div style="width: 45%;height:100%;align-items: center;;display:flex; justify-content: center;">
+                    <button type="submit"
+                      style="width: 50%;height:50%;align-items: center;flex-direction:row;display:flex;">아이콘 변경</button>
+                  </div>
+
+                </form>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</body>
+
+</html>

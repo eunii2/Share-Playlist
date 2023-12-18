@@ -1,0 +1,33 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/login/lib/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div id="join_wrap" class="wrap">
+        <div>
+            <a href="index.html" class="frame-4-yBw">
+                <img src="./assets/frame-4.png" alt="Description of the image"
+                    style="width: 50%; height: 7%;margin-bottom:10%;">
+            </a>
+            <h1 id="login-header">회원가입</h1>
+            <form class="login__input" action="/join" method="post">
+                <input type="text" name="userid" placeholder="ID" required="required" />
+                <input type="password" name="userpw" placeholder="Password" required="required" />
+                <input type="text" name="username" placeholder="Name" required="required" />
+                <input type="text" name="userphone" placeholder="Phone Number(not -)" required="required" />
+                <input type="text" name="useremail" placeholder="E-mail" required="required" />
+                <input type="submit" value="Sign Up" class="form_btn">
+            </form>
+        </div>
+    </div>
+    <script src="/login/js/join.js"></script>
+</body>
+
+</html>

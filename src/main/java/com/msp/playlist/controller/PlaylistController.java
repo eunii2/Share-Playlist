@@ -70,7 +70,7 @@ public class PlaylistController {
         return "ok";
     }
 
-    /* 메인 본인 플리 출력 */
+    /* 본인 플리 출력 */
     @GetMapping("/simple_my_playlists")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<SimplePlaylistDto>> getMyPlaylists(Principal principal) {

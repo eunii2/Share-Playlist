@@ -1,6 +1,7 @@
 package com.msp.membership.repository;
 
 import com.msp.membership.entity.Follow;
+import com.msp.membership.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
         void deleteByFromUserIdAndToUserId(Long id1, Long id2);
 
         List<Follow> findByFromUserUserid(String userid);
+
+        List<Follow> findByFromUser(Member member);
 }

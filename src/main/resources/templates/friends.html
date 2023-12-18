@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>23OPEN Music Share</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Free HTML Templates" name="keywords">
+  <meta content="Free HTML Templates" name="description">
+
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Libraries Stylesheet -->
+  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="./styles/frame-24.css" />
+  <link rel="stylesheet" href="./styles/frame-22.css" />
+  <link rel="stylesheet" href="./styles/friends.css" />
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="51">
+
+  <div class="frame-24-XxD">
+    <div class="frame-10-emw">
+      <div class="auto-group-itut-kpy">
+        <a href="index.html" class="frame-4-yBw" style="margin-top:20px">
+          <img src="./assets/frame-4.png" alt="Description of the image" style="width: 100%; height: 100%;">
+        </a>
+        <img class="frame-3-4z5" src="./assets/frame-3.png" />
+      </div>
+      <a href="main.html" class="frame-5-bz1">홈</a>
+      <a href="friends.html" class="frame-6-tiD">친구</a>
+      <a href="profile.html" class="frame-6-f6h">프로필</a>
+    </div>
+
+    <button onclick="goBack()" class="frame-4-yBw"
+      style="border: solid 0.2rem rgba(255, 255, 255); width:50px; height:50px; border-radius: 5rem; background-color:#525252; position:fixed;top:5%;left:200px;">
+      <img src="img/back.png"
+        style="width: 100%; height: 100%;border-radius: 5rem;border: solid 0.5rem rgb(255, 255, 255);">
+    </button>
+    <script>
+      // 이전 페이지로 이동하는 함수
+      function goBack() {
+        // 현재 페이지의 URL을 가져옵니다.
+        var currentUrl = window.location.href;
+
+        // 이전 페이지로 이동
+        window.history.back();
+
+        // 이전 페이지의 URL을 가져옵니다.
+        var previousUrl = document.referrer;
+
+        // 이전 URL이 "songcreat.html"이면 두 페이지 전으로 이동
+        if (previousUrl.includes("songcreat.html")) {
+          window.history.go(-2);
+        }
+      }
+    </script>
+
+    <div style="width: 25%;height:70%;align-items:center;">
+      <p style="width:100%;height:20%;color:rgb(254, 254, 254);font-weight:bold;font-size:30px;text-align:center;">
+        친구 목록
+      </p>
+      <div style="width: 100%;height:80%;display:flex;align-items:center;justify-content:center;">
+        <div style="width:120px;height:60px;display: flex;position:relative;text-align:center;align-items:center;">
+
+          <button onclick="openModal()" style="width:100%;height:100%;background-color: #525252;color:#fff;">
+            <img src="img/friendadd.png" style="width: 100%; height: 100%;border: solid 0.5rem rgb(255, 255, 255);">
+          </button>
+
+
+          <!-- 모달 버튼 -->
+          <script>
+            // 모달 열기
+            function openModal() {
+              var modal = document.getElementById('myModal');
+              modal.style.display = 'flex';
+              document.body.style.overflow = 'hidden'; // 스크롤 방지
+            }
+
+            // 모달 닫기
+            function closeModal() {
+              var modal = document.getElementById('myModal');
+              modal.style.display = 'none';
+              document.body.style.overflow = 'auto'; // 스크롤 다시 허용
+            }
+          </script>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="frame-27-JVK" style="height: 80%; width: 40%; top: 0%; left: 0%; position:relative;">
+      <div class="frame-47-e3P"
+        style="padding-bottom: 0rem;border: solid 0.3rem #ffffff; flex-direction: column; align-items: center; ">
+
+
+
+        <div class="frame-47-e3P" style="overflow: scroll;">
+          <div class="frame-53-qdf">
+
+            <div th:each="member : ${followingMembers}">
+              <a href="profile.html" class="frame-58-zWZ" style="padding:0rem;display:flex;align-items:center;">
+                <div style="width:100%;height:100%;display:flex;flex-direction: row;">
+                  <div style="width:20%;height:100%;display:flex;align-items:center;">
+                    <img th:src="${member.profileImage}"
+                      style="margin-left:10%;width: 80%; height: 80%;object-fit: contain;border-radius: 1rem;border: solid 0.2rem rgb(255, 255, 255);">
+                  </div>
+                  <div style="width: 80%;height:100%;display:flex;flex-direction: column;">
+                    <span class="frame-58-zWZ-sub-1"
+                      style="width:100%;height:100%;font-size:16px;display: flex; align-items: center;color:#fff"
+                      th:text="${member.userid}"></span>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div class="frame-60-ZRF"
+              style="color: #ffffff;align-items:center;height:12%;display:flex;flex-direction: row;">
+              <button href="main.html" id="toggleButton2"
+                style="margin-right: 20%;height:65%;width:20%;background-color:#525252;color:#ffffff"><span>저
+                  장</span></button>
+              <button href="main.html" id="toggleButton2"
+                style="height:65%;width:20%;background-color:#525252;color:#ffffff;"><span>취 소</span></button>
+
+            </div>
+          </div>
+
+
+
+          <!-- 모달 -->
+          <div id="myModal" style="display: none; position: fixed; top: 0; left: 0%; 
+          width: 100%; height: 100%;
+          background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;pointer-events: none;">
+            <!-- 모달 내용 -->
+            <div
+              style="width:20%;height:15%;background-color: #fff; padding: 0.5%; border-radius: 5px; right:30%;position: relative; pointer-events: auto; ">
+
+              <div style="width:98%;height:15%;flex-direction:row;display:flex">
+                <div style="width: 90%;height:100%;">
+                  <p style="width:100%;height:100%;color:black;font-size:16px;text-align:center">
+                    추가할 친구의 ID를 입력하세요 !
+                  </p>
+                </div>
+                <div style="width: 10%;height:100%;">
+                  <span style="width:100%;height:100%; cursor: pointer;color:black;font-size:16px;"
+                    onclick="closeModal()">&times;</span>
+                </div>
+              </div>
+              <div style="width:98%;height:85%;flex-direction:colum;display:flex;overflow:auto">
+                <input type="text" name="word" id="username-field" class="frame-69-zc5" placeholder="검색어"
+                  style="border: solid 0.1rem #000000;height:35%;margin-left:5%; width:70%;margin-top: 30px;font-size:16px;display:flex">
+                <button type="submit" class="frame-4-yBw"
+                  style=" width:50px; height:50px; background-color:#525252; margin-top: 30px;margin-left: 5px;width:20%;height:35%;margin-left:5%;font-size:16px;">
+                  확인
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+</body>
+
+</html>

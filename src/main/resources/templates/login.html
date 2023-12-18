@@ -1,0 +1,55 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/login-style.css">
+</head>
+
+<body>
+    <main id="main-holder">
+        <div id="login_wrap">
+            <a href="index.html" class="frame-4-yBw">
+                <img src="./assets/frame-4.png" alt="Description of the image"
+                    style="width: 50%; height: 7%;margin-bottom:10%;">
+            </a>
+            <h1 id="login-header">Login</h1>
+            <form action="/login" method="POST" id="login_form">
+                <p><input type="text" name="userid" id="userid" placeholder="ID">
+                </p>
+                <p><input type="password" name="userpw" id="userpw" placeholder="Password">
+                </p>
+                <p>
+                    <input type="submit" value="Login" id="form_btn">
+                </p>
+                <p class="join_btn">계정이 없으신가요? &nbsp;<a href="/join">가입하기</a></p>
+
+            </form>
+        </div>
+    </main>
+    <script>
+        document.querySelector('#login_form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const userid = document.querySelector('#userid').value;
+            const userpw = document.querySelector('#userpw').value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userid, userpw })
+            }).then(function (response) {
+                if (response.ok) {
+                    console.log('로그인 성공');
+                    window.location.href = 'main.html';
+                } else {
+                    console.log('로그인 실패');
+                }
+            }).catch(function (error) {
+                console.log('Error:', error);
+            });
+        });
+    </script>
+</body>
