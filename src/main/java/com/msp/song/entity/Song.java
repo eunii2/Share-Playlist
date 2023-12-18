@@ -22,12 +22,16 @@ public class Song {
     @ManyToOne
     @JoinColumn(name = "playlist_id")
     private Playlist playlist;
+
     @Column(name = "image_url")
     private String imageUrl;
+
     @Column(name = "youtube_url")
     private String youtubeUrl;
+
     @Column(name = "title")
     private String title;
+
     @Column(name = "artist_name")
     private String artistName;
 
@@ -36,11 +40,11 @@ public class Song {
     }
 
 
-    public void setImageUrl(String s) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-    public void setYoutubeUrl(String s) {
+    public void setYoutubeUrl(String youtubeUrl) {
         this.youtubeUrl = youtubeUrl;
     }
 
@@ -48,7 +52,7 @@ public class Song {
         this.title = title;
     }
 
-    public void setArtistName(String s) {
+    public void setArtistName(String artistName) {
         this.artistName = artistName;
     }
 }

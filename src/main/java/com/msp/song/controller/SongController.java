@@ -1,6 +1,8 @@
 package com.msp.song.controller;
 
 import com.msp.song.dto.SongRequestDto;
+import com.msp.song.dto.SongResponseDto;
+import com.msp.song.dto.SongUpdateDto;
 import com.msp.song.entity.Song;
 import com.msp.song.service.SongService;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +30,13 @@ public class SongController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateSong(@PathVariable Long id, @RequestBody SongRequestDto dto) {
-        songService.updateSong(id, dto);
-        return ResponseEntity.ok().build();
+    public Long updateSong(@PathVariable Long id, @RequestBody @Valid SongUpdateDto updateDto) {
+        return songService.updateSong(id, updateDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Song> getAllSong(@PathVariable Long id) {
-        Song song = songService.getAllSong(id);
-        return ResponseEntity.ok(song);
+    public List<SongResponseDto> getAllSong(@PathVariable Long id){
+        return songService.getAllSong(id);
     }
 
     @DeleteMapping("/{id}")

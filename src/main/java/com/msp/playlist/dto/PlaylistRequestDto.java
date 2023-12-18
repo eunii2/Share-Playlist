@@ -1,6 +1,7 @@
 package com.msp.playlist.dto;
 
 import com.msp.playlist.entity.Playlist;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PlaylistRequestDto {
     @NotBlank
     private String name;

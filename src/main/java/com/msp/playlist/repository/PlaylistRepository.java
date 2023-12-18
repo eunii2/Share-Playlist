@@ -1,5 +1,6 @@
 package com.msp.playlist.repository;
 
+import com.msp.playlist.entity.Deleted;
 import com.msp.playlist.entity.Playlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
-    List<Playlist> findByMemberUserid(String userid);
+    List<Playlist> findByMemberUseridAndDeleted(String userid, Deleted deleted);
 
     @Query("SELECT p FROM Playlist p WHERE p.tagGenre.id IN :genreIds")
     List<Playlist> findByTagGenreIds(@Param("genreIds") List<Long> genreIds);

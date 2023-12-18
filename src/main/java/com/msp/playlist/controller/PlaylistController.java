@@ -1,10 +1,7 @@
 package com.msp.playlist.controller;
 
-import com.msp.playlist.dto.SimplePlaylistDto;
+import com.msp.playlist.dto.*;
 import com.msp.playlist.entity.Playlist;
-import com.msp.playlist.dto.GrantAccessRequestDto;
-import com.msp.playlist.dto.PlaylistRequestDto;
-import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.playlist.repository.PlaylistRepository;
 import com.msp.playlist.service.PlaylistService;
 import org.springframework.http.ResponseEntity;
@@ -50,13 +47,13 @@ public class PlaylistController {
     }
 
     @GetMapping
-    public List<PlaylistRequestDto> getAllPlaylists() {
+    public List<PlaylistResponseDto> getAllPlaylists() {
         return playlistService.getAllPlaylists();
     }
 
     @PutMapping("/{id}")
-    public Playlist updatePlaylist(@PathVariable Long id, @RequestBody @Valid PlaylistUpdateDto updateDto) {
-        return playlistService.updatePlaylist(id, updateDto);
+    public Long updatePlaylist(@PathVariable Long id, @RequestBody @Valid PlaylistUpdateDto updateDto) {
+        return playlistService.updatePlaylist(id, updateDto).getId();
         // TODO ~ 예외처리 후 코드 작성
     }
 

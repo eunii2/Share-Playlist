@@ -1,8 +1,11 @@
 package com.msp.playlist.entity;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
 @Table(name = "mood")
 public class TagMood {
     @Id
@@ -14,7 +17,7 @@ public class TagMood {
     @JoinColumn(name = "playlist_id")
     private Playlist playlist;
 
-    public void setPlaylsit(Playlist playlist) {
+    public void setPlaylist(Playlist playlist) {
         this.playlist = playlist;
     }
 }

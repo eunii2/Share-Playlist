@@ -6,6 +6,8 @@ import com.msp.playlist.dto.PlaylistUpdateDto;
 import com.msp.song.entity.Song;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,10 +50,15 @@ public class Playlist {
     @OneToMany(mappedBy = "playlist")
     private List<TagMood> tagMoods = new ArrayList<>();
 
-    @OneToMany(mappedBy = "playlist")
+    @Enumerated(EnumType.STRING)
+    private Deleted deleted;
+//    @OneToOne
+//    private TagMood tagMoods;
+
+    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
     private Set<PlaylistMember> members;
 
-    @OneToMany(mappedBy = "playlist")
+    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
     private List<PlaylistMember> playlistMembers;
 
     public Long getUserId() {
@@ -64,14 +71,15 @@ public class Playlist {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.member = member;
+        this.deleted = Deleted.FALSE;
     }
 
-    public void changeNameAndDescription(PlaylistUpdateDto playlistUpdateDto) {
-        if (playlistUpdateDto.getName() != null) {
-            this.name = playlistUpdateDto.getName();
+    public void changeNameAndDescription(PlaylistUpdateDto updateDto) {
+        if (updateDto.getName() != null && !updateDto.getName().trim().isEmpty()) {
+            this.name = updateDto.getName();
         }
-        if (playlistUpdateDto.getDescription() != null) {
-            this.description = playlistUpdateDto.getDescription();
+        if (updateDto.getDescription() != null && !updateDto.getDescription().trim().isEmpty()) {
+            this.description = updateDto.getDescription();
         }
         this.updatedAt = LocalDateTime.now();
     }
@@ -86,5 +94,14 @@ public class Playlist {
 
     public void setMembers(Set<PlaylistMember> members) {
         this.members = members;
+    }
+
+    public void addMood(TagMood mood){
+        mood.setPlaylist(this);
+        this.tagMoods.add(mood);
+    }
+
+    public void toDelete() {
+        this.deleted = Deleted.TRUE;
     }
 }
