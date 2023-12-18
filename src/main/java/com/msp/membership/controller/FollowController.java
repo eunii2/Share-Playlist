@@ -4,6 +4,7 @@ import com.msp.membership.entity.Member;
 import com.msp.membership.repository.MemberRepository;
 import com.msp.membership.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class FollowController{
     MemberRepository memberService;
 
     @RequestMapping("/follow")
-    public String follow(HttpServletRequest request, Model model) throws Exception {
+    public ResponseEntity<String> follow(HttpServletRequest request, Model model) throws Exception {
         String from = request.getParameter("from_id");
         String to = request.getParameter("to_id");
 
@@ -29,13 +30,11 @@ public class FollowController{
 
         followService.save(from_id, to_id);
 
-        String redirect_url = "redirect:/main/user/" + to_id;
-
-        return redirect_url;
+        return ResponseEntity.ok().body("팔로우 완료");
     }
 
     @RequestMapping("/unfollow")
-    public String unfollow(HttpServletRequest request, Model model) throws Exception {
+    public ResponseEntity<String> unfollow(HttpServletRequest request, Model model) throws Exception {
         String from = request.getParameter("from_id");
         String to = request.getParameter("to_id");
 
@@ -43,9 +42,7 @@ public class FollowController{
         Long to_id = Long.parseLong(to);
 
         followService.deleteByFromUserIdAndToUserId(to_id, from_id);
-        String redirect_url = "redirect:/main/user/" + to_id;
-
-        return redirect_url;
+        return ResponseEntity.ok().body("팔로우 해제");
     }
 
     @RequestMapping(value = "/main/following")

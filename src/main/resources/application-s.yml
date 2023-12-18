@@ -28,6 +28,13 @@ spring:
         multipart:
             max-file-size: 1MB
             max-request-size: 100MB
+    resources:
+        static-locations: file:/path/to/your/static/resources/
+        mvc:
+            media-types:
+                json: application/json
+                css: text/css
+                js: application/javascript
 
     # spring data jpa 설정
     jpa:
