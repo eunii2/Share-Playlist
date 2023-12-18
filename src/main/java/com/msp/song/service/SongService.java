@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class SongService {
@@ -32,6 +34,33 @@ public class SongService {
         songEntity.setPlaylist(playlist);
         playlist.getSongs().add(songEntity);
 
-        return  songRepository.save(songEntity).getId();
+        return songRepository.save(songEntity).getId();
+    }
+
+    @Transactional
+    public Long updateSong(Long songId, SongRequestDto dto){
+        Song song = songRepository.findById(songId)
+                .orElseThrow(()-> new IllegalArgumentException("No song found with id: " + songId));
+
+        song.setImageUrl(dto.imageUrl());
+        song.setYoutubeUrl(dto.youtubeUrl());
+        song.setTitle(dto.title());
+        song.setArtistName(dto.artistName());
+
+        return song.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Song getAllSong(Long songId) {
+        return songRepository.findById(songId)
+                .orElseThrow(() -> new IllegalArgumentException("No song found with id: " + songId));
+    }
+
+    @Transactional
+    public void deleteSong(Long songId) {
+        Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new IllegalArgumentException("No song found with id: " + songId));
+
+        songRepository.delete(song);
     }
 }
