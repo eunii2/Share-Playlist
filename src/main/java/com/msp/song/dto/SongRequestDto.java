@@ -7,8 +7,7 @@ public record SongRequestDto(
         String title,
         String youtubeUrl,
         String artistName,
-        Long playlistId
-) {
+        Long playlistId) {
 
     public Song toSongEntity() {
         return Song.builder()

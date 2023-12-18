@@ -104,4 +104,8 @@ public class Playlist {
     public void toDelete() {
         this.deleted = Deleted.TRUE;
     }
+
+    public Member getUser(){
+        return this.member;
+    }
 }

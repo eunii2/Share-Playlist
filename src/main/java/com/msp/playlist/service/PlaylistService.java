@@ -4,12 +4,11 @@ import com.msp.membership.entity.Follow;
 import com.msp.membership.entity.Member;
 import com.msp.membership.repository.FollowRepository;
 import com.msp.membership.repository.MemberRepository;
-import com.msp.playlist.dto.PlaylistRequestDto;
-import com.msp.playlist.dto.PlaylistResponseDto;
-import com.msp.playlist.dto.PlaylistUpdateDto;
-import com.msp.playlist.dto.SimplePlaylistDto;
+import com.msp.playlist.dto.*;
 import com.msp.playlist.entity.*;
 import com.msp.playlist.repository.*;
+import com.msp.song.dto.SongResponseDto;
+import com.msp.song.repository.SongRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
@@ -33,12 +32,13 @@ public class PlaylistService {
     private final PlaylistMemberRepository playlistMemberRepository;
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
+    private final SongRepository songRepository;
     private Member member;
 
-
-    public PlaylistService(PlaylistMapper playlistMapper, PlaylistRepository playlistRepository, TagGenreRepository tagGenreRepository,
+    public PlaylistService(PlaylistMapper playlistMapper, PlaylistRepository playlistRepository,
+                           TagGenreRepository tagGenreRepository,
                            TagMoodRepository tagMoodRepository, PlaylistMemberRepository playlistMemberRepository,
-                           MemberRepository memberRepository, FollowRepository followRepository) {
+                           MemberRepository memberRepository, FollowRepository followRepository, SongRepository songRepository) {
         this.playlistMapper = playlistMapper;
         this.playlistRepository = playlistRepository;
         this.tagGenreRepository = tagGenreRepository;
@@ -46,10 +46,10 @@ public class PlaylistService {
         this.memberRepository = memberRepository;
         this.playlistMemberRepository = playlistMemberRepository;
         this.followRepository = followRepository; // 추가
+        this.songRepository = songRepository;
     }
 
-
-    public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
+/*    public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
         Playlist playlist = playlistRepository.findById(playlistId).orElseThrow();
         Member member = memberRepository.findById(memberId).orElseThrow();
         PlaylistMember playlistMember = new PlaylistMember();
@@ -63,9 +63,9 @@ public class PlaylistService {
         return (boolean) playlistMemberRepository.findByPlaylistIdAndMemberId(playlistId, Math.toIntExact(memberId))
                 .map(PlaylistMember::isCanEdit)
                 .orElse(false);
-    }
+    }*/
 
-    public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto){
+    public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         Member member;
@@ -77,18 +77,19 @@ public class PlaylistService {
         }
 
         Playlist playlist = new Playlist(playlistRequestDto, member);
-        //TODO~ add mood
-        if(playlistRequestDto.getTagMoodIds() != null){
+        // TODO~ add mood
+        if (playlistRequestDto.getTagMoodIds() != null) {
             log.info("start adding moods");
-            for(Long moodId : playlistRequestDto.getTagMoodIds()) {
+            for (Long moodId : playlistRequestDto.getTagMoodIds()) {
                 TagMood tagMood = tagMoodRepository.findById(moodId)
                         .orElseThrow(() -> new RuntimeException("Mood not found with id: " + moodId));
                 playlist.addMood(tagMood);
             }
             log.info("finished adding moods");
         }
-//        Member owner = memberRepository.findById(playlistRequestDto.getOwnerId())
-//                .orElseThrow(() -> new RuntimeException("Owner not found with id: " + playlistRequestDto.getOwnerId()));
+        // Member owner = memberRepository.findById(playlistRequestDto.getOwnerId())
+        // .orElseThrow(() -> new RuntimeException("Owner not found with id: " +
+        // playlistRequestDto.getOwnerId()));
 
         PlaylistMember playlistMember = new PlaylistMember();
         playlistMember.setPlaylist(playlist);
@@ -100,18 +101,18 @@ public class PlaylistService {
 
         playlist.setMembers(members);
 
-        if(playlistRequestDto.getTagGenreId() != null){
+        if (playlistRequestDto.getTagGenreId() != null) {
             log.info("set tag genre");
             TagGenre tagGenre = tagGenreRepository.findById(playlistRequestDto.getTagGenreId()).orElseThrow();
             playlist.setTagGenre(tagGenre);
             log.info("finish tag genre");
         }
 
-        if(playlistRequestDto.getTagMoodIds() != null){
+        if (playlistRequestDto.getTagMoodIds() != null) {
             log.info("start mood start");
-            for(Long moodId : playlistRequestDto.getTagMoodIds()) {
+            for (Long moodId : playlistRequestDto.getTagMoodIds()) {
                 TagMood tagMood = tagMoodRepository.findById(moodId).orElseThrow();
-//                tagMood.setPlaylsit(playlist);
+                // tagMood.setPlaylsit(playlist);
                 playlist.getTagMoods().add(tagMood);
             }
             log.info("finish mood set");
@@ -119,12 +120,38 @@ public class PlaylistService {
         return playlistRepository.save(playlist);
     }
 
+    // 플리 하나 조회
+    public PlaylistCheckDto getPlaylistDetails(Long playlistId){
+        Playlist playlist = playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new EntityNotFoundException("Playlist not found with id : " + playlistId));
+
+        String tagGenreName = playlist.getTagGenre() != null ? playlist.getTagGenre().getName() : null;
+        List<String> tagMoodNames = playlist.getTagMoods().stream()
+                .map(TagMood::getName)
+                .toList();
+
+        List<SongResponseDto> songResponseDtos = playlist.getSongs().stream()
+                .map(song -> new SongResponseDto(song.getTitle(), song.getYoutubeUrl(), song.getImageUrl(),
+                        song.getArtistName(), song.getId()))
+                .collect(Collectors.toList());
+
+        return new PlaylistCheckDto(
+                playlist.getName(),
+                playlist.getId(),
+                playlist.getMember().getUsername(),
+                playlist.getDescription(),
+                playlist.getTagGenre().getName(),
+                playlist.getTagMoods().stream().map(TagMood::getName).toList(),
+                songResponseDtos
+        );
+    }
+
     public List<PlaylistResponseDto> getAllPlaylists() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
         Member member = memberRepository.findByUserid(userId);
 
-        if(member == null){
+        if (member == null) {
             throw new EntityNotFoundException("Member not found with user id : " + userId);
         }
 

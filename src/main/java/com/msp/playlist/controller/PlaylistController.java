@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class PlaylistController {
         this.playlistRepository = playlistRepository;
     }
 
-
+/*
     @PostMapping("/{playlistId}/grant-access")
     public ResponseEntity<?> grantAccess(@PathVariable Long playlistId, @RequestBody GrantAccessRequestDto request) {
         playlistService.grantAccess(playlistId, request.getMemberId(), request.isCanEdit());
@@ -39,9 +40,10 @@ public class PlaylistController {
         boolean canEdit = playlistService.canEditPlaylist(playlistId, memberId);
         return ResponseEntity.ok(canEdit);
     }
+*/
 
     @PostMapping
-    public ResponseEntity<Long> createPlaylist(@RequestBody @Valid PlaylistRequestDto playlistRequestDto){
+    public ResponseEntity<Long> createPlaylist(@RequestBody @Valid PlaylistRequestDto playlistRequestDto) {
         Long id = playlistService.createPlaylist(playlistRequestDto).getId();
         return ResponseEntity.ok(id);
     }
@@ -49,6 +51,11 @@ public class PlaylistController {
     @GetMapping
     public List<PlaylistResponseDto> getAllPlaylists() {
         return playlistService.getAllPlaylists();
+    }
+
+    @GetMapping("/{playlistId}")
+    public List<PlaylistCheckDto> getPlaylistDetails(@PathVariable Long playlistId){
+        return Collections.singletonList(playlistService.getPlaylistDetails(playlistId));
     }
 
     @PutMapping("/{id}")
