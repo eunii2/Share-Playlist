@@ -8,7 +8,7 @@ public record PlaylistResponseDto(
         Long playlistId,
         String userName,
         String tagGenre,
-        List<String> tagMood
-) {
+        List<String> tagMood,
+        String imageUrl) {
 
 }

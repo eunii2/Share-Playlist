@@ -142,6 +142,7 @@ public class PlaylistService {
                 playlist.getDescription(),
                 playlist.getTagGenre().getName(),
                 playlist.getTagMoods().stream().map(TagMood::getName).toList(),
+                playlist.getImageUrl(),
                 songResponseDtos
         );
     }

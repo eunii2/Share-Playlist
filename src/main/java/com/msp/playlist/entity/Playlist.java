@@ -36,6 +36,9 @@ public class Playlist {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid")
     private Member member;
@@ -72,6 +75,7 @@ public class Playlist {
         this.updatedAt = LocalDateTime.now();
         this.member = member;
         this.deleted = Deleted.FALSE;
+        this.imageUrl = playlistRequestDto.getImageUrl();
     }
 
     public void changeNameAndDescription(PlaylistUpdateDto updateDto) {
@@ -80,6 +84,9 @@ public class Playlist {
         }
         if (updateDto.getDescription() != null && !updateDto.getDescription().trim().isEmpty()) {
             this.description = updateDto.getDescription();
+        }
+        if (updateDto.getImageUrl() != null && !updateDto.getImageUrl().trim().isEmpty()) {
+            this.imageUrl = updateDto.getImageUrl();
         }
         this.updatedAt = LocalDateTime.now();
     }

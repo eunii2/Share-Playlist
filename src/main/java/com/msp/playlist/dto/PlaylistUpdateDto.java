@@ -9,8 +9,12 @@ public class PlaylistUpdateDto {
 
     @NotBlank
     private String name;
+
     @NotBlank(message = "빈 설명값을 넣으면 안됩니다.")
     private String description;
+
+    @NotBlank
+    private String imageUrl;
 
 
 /*    public Object getName() {

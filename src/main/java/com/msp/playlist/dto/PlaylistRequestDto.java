@@ -28,10 +28,14 @@ public class PlaylistRequestDto {
 
     private Long memberId;
 
+    @NotBlank
+    private String imageUrl;
+
     public PlaylistRequestDto(Playlist playlist){
         this.name = playlist.getName();
         this.description = playlist.getDescription();
         this.userID = playlist.getUserId();
+        this.imageUrl = playlist.getImageUrl();
     }
 
     public Long getTagGenreId() {

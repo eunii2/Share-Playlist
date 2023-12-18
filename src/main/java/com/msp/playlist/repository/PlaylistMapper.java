@@ -16,7 +16,8 @@ public class PlaylistMapper {
                 playlist.getId(),
                 playlist.getMember().getUsername(),
                 playlist.getTagGenre().getName(),
-                moods
+                moods,
+                playlist.getImageUrl()
         );
     }
 }
