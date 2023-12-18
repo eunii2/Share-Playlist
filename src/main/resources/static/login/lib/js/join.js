@@ -1,11 +1,16 @@
+document.querySelector('.login__input').addEventListener('submit', function (e) {
+    e.preventDefault();
+    sendit();
+});
+
 const sendit = () => {
-    const userid = document.regiform.userid;
-    const userpw = document.regiform.userpw;
-    const userpw_ch = document.regiform.userpw_ch;
-    const username = document.regiform.username;
-    const userphone = document.regiform.userphone;
-    const useremail = document.regiform.useremail;
-    const usertage = document.regiform.usertage;
+    const userid = document.querySelector('input[name="userid"]');
+    const userpw = document.querySelector('input[name="userpw"]');
+    const userpw_ch = document.querySelector('input[name="userpw_ch"]');
+    const username = document.querySelector('input[name="username"]');
+    const userphone = document.querySelector('input[name="userphone"]');
+    const useremail = document.querySelector('input[name="useremail"]');
+    const usertage = document.querySelector('input[name="usertage"]');
 
     if (userid.value == '') {
         alert('아이디를 입력해주세요.');
@@ -90,16 +95,16 @@ const sendit = () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).then(function(response) {
+    }).then(function (response) {
         if (response.ok) {
             console.log('회원가입 성공');
             window.location.href = '/index';
         } else {
             console.log('회원가입 실패');
+            alert('회원가입 실패: ' + data.message);
         }
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log('Error:', error);
     });
-
     return false;
 }

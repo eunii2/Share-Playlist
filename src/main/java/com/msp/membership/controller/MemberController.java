@@ -27,15 +27,15 @@ public class MemberController {
         return ResponseEntity.ok(memberService.join(memberDTO));
     }
 
-    /* 유저페이지
-    @RequestMapping("/main/user/{userid}")
+    /* 유저페이지 */
+    @RequestMapping("/main, /main/user/{userid}")
     public String main_user(@PathVariable("userid") String userid, Model model) throws Exception {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("member", memberService.findByUserid(userid));
 
         return "profile";
     }
-    */
+
 
     /* 프로필 이미지 업로드 */
     @PostMapping("/main/profileImage")
@@ -63,7 +63,7 @@ public class MemberController {
 
 
     /* 유저 검색 */
-    @RequestMapping(value = "main/friend")
+    @RequestMapping(value = "/main/friend")
     public String search(@RequestParam("word") String word, Model model) throws Exception {
         if (word == null || word.equals("")) {
             return "redirect:/main/friend";
@@ -74,7 +74,7 @@ public class MemberController {
         if (member != null) {
             return "redirect:/main/user/" + member.getUserid();
         } else {
-            return "redirect:/main/friend";
+            return "redirect:/main/friend"; //그 유저의 페이지로 이동하도록 수정해야됨
         }
     }
 }
