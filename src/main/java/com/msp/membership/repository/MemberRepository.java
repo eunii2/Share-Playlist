@@ -14,13 +14,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findById(Long id);
 
+    Optional<Member> findById(String userid);
+
     Member findByUserid(String userid);
 
     @EntityGraph(attributePaths = "authorities")
     Optional<Member> findOneWithAuthoritiesByUserid(String userid);
 
-    List<Member> findByUseridContains(String word); // word가 포함되는 유저id List찾기
-    int countByUseridContains(String word); // word가 포함되는 유저id 개수찾기
-
+    List<Member> findByUseridContains(String word);
+    int countByUseridContains(String word);
 
 }

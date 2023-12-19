@@ -24,7 +24,7 @@ public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @PostMapping("/main/login")
+    @PostMapping("/login")
     public ResponseEntity<TokenDTO> authorize(@Valid @RequestBody LoginDTO loginDTO) {
 
         UsernamePasswordAuthenticationToken authenticationToken =

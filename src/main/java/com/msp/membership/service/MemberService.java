@@ -1,8 +1,10 @@
 package com.msp.membership.service;
 
 import com.msp.membership.controller.MemberController;
+import com.msp.membership.dto.FriendListDTO;
 import com.msp.membership.dto.MemberDTO;
 import com.msp.membership.entity.Authority;
+import com.msp.membership.entity.Follow;
 import com.msp.membership.entity.Member;
 import com.msp.membership.exception.DuplicateMemberException;
 import com.msp.membership.jwt.util.SecurityUtil;
@@ -12,14 +14,14 @@ import com.msp.membership.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,8 +32,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
+    @Autowired
     private FollowRepository followRepository;
-
 
 
     @Transactional
@@ -57,24 +59,17 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Member> getUserWithAuthorities(String userid){
+    public Optional<Member> getUserWithAuthorities(String userid) {
         return memberRepository.findOneWithAuthoritiesByUserid(userid);
     }
 
     //현재 인증된 사용자의 회원정보 조회
     @Transactional(readOnly = true)
-    public Optional<Member> getMyUserWithAuthorities(){
+    public Optional<Member> getMyUserWithAuthorities() {
         log.info(SecurityUtil.getCurrentUserid().toString());
         return SecurityUtil.getCurrentUserid()
                 .flatMap(memberRepository::findOneWithAuthoritiesByUserid);
     }
-
-
-    public Member findOptionalByUserid(String userid) {
-        Optional<Member> byUserid = memberRepository.findOptionalByUserid(userid);
-        return byUserid.orElse(null);
-    }
-
 
     public Member findByUserid(String userid) {
         return memberRepository.findByUserid(userid);
@@ -83,7 +78,6 @@ public class MemberService {
     public Member findById(Long id) {
         return memberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Member not found with id: " + id));
     }
-
 
     public void img_update(String userid, String profileImage) {
         Member member = findByUserid(userid); // 유저아이디로 유저찾음
@@ -95,7 +89,6 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-
     public List<Member> findByUseridContains(String word) {
         return memberRepository.findByUseridContains(word);
     }
@@ -104,4 +97,10 @@ public class MemberService {
         return memberRepository.countByUseridContains(word);
     }
 
+    public List<Member> getFriendList(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Member not found with id : " + id));
+        return followRepository.findByToUser(member).stream()
+                .map(Follow::getFollowed)
+                .collect(Collectors.toList());
+    }
 }

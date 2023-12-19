@@ -41,7 +41,6 @@ public class Member{
     @Column(name = "activated")
     private boolean activated;
 
-
     @Column
     private String profileImage;
 

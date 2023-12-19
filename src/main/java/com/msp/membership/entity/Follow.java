@@ -34,11 +34,19 @@ public class Follow {
         this.fromUser = fromUser;
     }
 
-    public void setFollower(Member toUser) {
+    public void setFollowed(Member toUser) {
         this.toUser = toUser;
     }
 
+    public Member getFollowing() {
+        return fromUser;
+    }
+    public Member getFollowed() {
+        return toUser;
+    }
     public void setFollow_date(Timestamp follow_date) {
         this.follow_date = follow_date;
     }
+
+
 }

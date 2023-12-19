@@ -2,6 +2,7 @@ package com.msp.membership.controller;
 
 import com.msp.membership.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,22 +16,18 @@ public class FollowController{
     FollowService followService;
 
     @RequestMapping("/follow")
-    public String follow(HttpServletRequest request, Model model) throws Exception {
-        String from = request.getParameter("from_id");
+    public ResponseEntity<String> follow(HttpServletRequest request, Model model) throws Exception {
         String to = request.getParameter("to_id");
 
-        Long from_id = Long.parseLong(from);
         Long to_id = Long.parseLong(to);
 
-        followService.save(from_id, to_id);
+        followService.save(to_id);
 
-        String redirect_url = "redirect:/main/user/" + to_id;
-
-        return redirect_url;
+        return ResponseEntity.ok().body("팔로우");
     }
 
     @RequestMapping("/unfollow")
-    public String unfollow(HttpServletRequest request, Model model) throws Exception {
+    public ResponseEntity<String> unfollow(HttpServletRequest request, Model model) throws Exception {
         String from = request.getParameter("from_id");
         String to = request.getParameter("to_id");
 
@@ -38,24 +35,7 @@ public class FollowController{
         Long to_id = Long.parseLong(to);
 
         followService.deleteByFromUserIdAndToUserId(to_id, from_id);
-        String redirect_url = "redirect:/main/user/" + to_id;
 
-        return redirect_url;
+        return ResponseEntity.ok().body("언팔로우");
     }
-
-    /*
-    @PostMapping("/{toUserId}")
-    public ResponseEntity<String> follow(@PathVariable int toUserId, @AuthenticationPrincipal CustomUserDetails principal){
-
-        followService.Follow(toUserId, principal.getId());
-        return ResponseEntity.ok().body("친구추가 완료");
-    }
-
-    @DeleteMapping("/{toUserId}")
-    public ResponseEntity<String> unfollow(@PathVariable int toUserId, @AuthenticationPrincipal CustomUserDetails principal){
-
-        followService.unFollow(toUserId, principal.getId());
-        return ResponseEntity.ok().body("친구추가 해제");
-    }
-    */
 }
