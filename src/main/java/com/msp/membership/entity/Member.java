@@ -1,5 +1,7 @@
 package com.msp.membership.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.msp.playlist.entity.Playlist;
 import lombok.*;
 
@@ -60,11 +62,13 @@ public class Member{
         this.profileImage = profileImage;
     }
 
+    @JsonIgnore
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+
     private Set<Authority> authorities;
 
 }

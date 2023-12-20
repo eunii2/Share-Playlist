@@ -18,7 +18,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByUserid(String userid);
 
-    @EntityGraph(attributePaths = "authorities")
     Optional<Member> findOneWithAuthoritiesByUserid(String userid);
 
     List<Member> findByUseridContains(String word);

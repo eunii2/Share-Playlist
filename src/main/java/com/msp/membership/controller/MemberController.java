@@ -1,6 +1,7 @@
 package com.msp.membership.controller;
 
 import com.msp.membership.dto.MemberDTO;
+import com.msp.membership.dto.MemberResponseDTO;
 import com.msp.membership.entity.Follow;
 import com.msp.membership.entity.Member;
 import com.msp.membership.repository.FollowRepository;
@@ -64,6 +65,7 @@ public class MemberController {
     /* 유저페이지 */
     @RequestMapping("/main/user/{userid}")
     public ResponseEntity<Member> main_user(@PathVariable("userid") String userid, Model model) throws Exception {
+        System.out.println("request /main/user/called");
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("member", memberService.findByUserid(userid));
         return ResponseEntity.ok(memberService.getMyUserWithAuthorities().get());
@@ -71,12 +73,14 @@ public class MemberController {
 
     /* 다른 유저 페이지 */
     @GetMapping("/main/user/{userid}")
-    public ResponseEntity<Member> getUserById(@PathVariable String userid) {
-        Member member = memberService.findByUserid(userid);
-        if (member == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(memberService. getUserWithAuthorities(userid).get());
+    public MemberResponseDTO getUserById(@PathVariable String userid) {
+//        Member member = memberService.findByUserid(userid);
+//        System.out.println("get /main/user/called");
+//        if (member == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+        System.out.println("get /main/user/called check2");
+        return memberService.getUserWhenNeedded(userid);
     }
 
     /* 프로필 이미지 업로드 */

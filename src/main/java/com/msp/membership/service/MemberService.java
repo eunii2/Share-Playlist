@@ -3,6 +3,7 @@ package com.msp.membership.service;
 import com.msp.membership.controller.MemberController;
 import com.msp.membership.dto.FriendListDTO;
 import com.msp.membership.dto.MemberDTO;
+import com.msp.membership.dto.MemberResponseDTO;
 import com.msp.membership.entity.Authority;
 import com.msp.membership.entity.Follow;
 import com.msp.membership.entity.Member;
@@ -58,9 +59,14 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Member> getUserWithAuthorities(String userid) {
-        return memberRepository.findOneWithAuthoritiesByUserid(userid);
+    public MemberResponseDTO getUserWhenNeedded(String userid) {
+        Member temp = memberRepository.findByUserid(userid);
+        MemberResponseDTO member = new MemberResponseDTO(
+                temp.getId(),
+                temp.getUserid()
+        );
+        return member;
+
     }
 
     //현재 인증된 사용자의 회원정보 조회
