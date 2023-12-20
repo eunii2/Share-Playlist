@@ -16,11 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -49,7 +46,7 @@ public class PlaylistService {
         this.songRepository = songRepository;
     }
 
-/*    public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
+    public void grantAccess(Long playlistId, Long memberId, boolean canEdit) {
         Playlist playlist = playlistRepository.findById(playlistId).orElseThrow();
         Member member = memberRepository.findById(memberId).orElseThrow();
         PlaylistMember playlistMember = new PlaylistMember();
@@ -63,7 +60,7 @@ public class PlaylistService {
         return (boolean) playlistMemberRepository.findByPlaylistIdAndMemberId(playlistId, Math.toIntExact(memberId))
                 .map(PlaylistMember::isCanEdit)
                 .orElse(false);
-    }*/
+    }
 
     public Playlist createPlaylist(PlaylistRequestDto playlistRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -157,7 +154,30 @@ public class PlaylistService {
         }
 
         List<Playlist> playlistEntities = playlistRepository.findByMemberUseridAndDeleted(userId, Deleted.FALSE);
+
         return playlistEntities.stream()
+                .map(playlistMapper::mapToResponseDto).toList();
+    }
+
+    // 태그 기반 플리 검색
+    public List<PlaylistResponseDto> findPlaylistByTags(Optional<String> tagGenreName, Optional<String> tagMoodName){
+        List<Playlist> playlists = new ArrayList<>();
+
+        tagGenreName.ifPresent(genreName -> {
+            tagGenreRepository.findById(Long.parseLong(genreName)).map(TagGenre::getId)
+                    .ifPresent(genreId ->playlists.addAll(playlistRepository
+                            .findByTagGenreIds(Collections.singletonList(genreId))));
+        });
+
+        tagMoodName.ifPresent(moodName -> {
+            tagMoodRepository.findById(Long.parseLong(moodName)).map(TagMood::getId)
+                    .ifPresent(moodId -> playlists.addAll(playlistRepository
+                            .findByTagMoodIds(Collections.singletonList(moodId))));
+        });
+
+        System.out.println("fucking tag l" + playlists.get(0).getPlaylistMembers());
+
+        return playlists.stream()
                 .map(playlistMapper::mapToResponseDto).toList();
     }
 
@@ -171,19 +191,19 @@ public class PlaylistService {
     }
 
     /* 친구 플리 찾기 */
-    public List<SimplePlaylistDto> getFollowingPlaylists(String userid) {
-        List<Follow> followings = followRepository.findByFromUserUserid(userid);
-        List<SimplePlaylistDto> follwerplaylists = new ArrayList<>();
-
-        for (Follow follow : followings) {
-            List<Playlist> memberPlaylists = playlistRepository
-                    .findByMemberUseridAndDeleted(follow.getToUser().getUserid(), Deleted.FALSE);
-            for (Playlist playlist : memberPlaylists) {
-                follwerplaylists.add(new SimplePlaylistDto(playlist));
-            }
-        }
-        return follwerplaylists;
-    }
+//    public List<SimplePlaylistDto> getFollowingPlaylists(String userid) {
+//        List<Follow> followings = followRepository.findByFromUserId(userid);
+//        List<SimplePlaylistDto> follwerplaylists = new ArrayList<>();
+//
+//        for (Follow follow : followings) {
+//            List<Playlist> memberPlaylists = playlistRepository
+//                    .findByMemberUseridAndDeleted(follow.getToUser().getUserid(), Deleted.FALSE);
+//            for (Playlist playlist : memberPlaylists) {
+//                follwerplaylists.add(new SimplePlaylistDto(playlist));
+//            }
+//        }
+//        return follwerplaylists;
+//    }
 
     private PlaylistRequestDto convertEntityToDto(Playlist playlist) {
         return new PlaylistRequestDto(playlist);
@@ -213,4 +233,61 @@ public class PlaylistService {
             throw new RuntimeException();
         }
     }
+
+    public List<PlaylistResponseDto> getMyFollowingsPlaylist() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        Member member = memberRepository.findByUserid(userId);
+
+        if (member == null) {
+            throw new EntityNotFoundException("Member not found with user id : " + userId);
+        }
+
+        List<Follow> followings = followRepository.findByFromUserId(member.getId());
+        List<PlaylistResponseDto> follwerplaylists = new ArrayList<>();
+
+        for (Follow follow : followings) {
+            List<Playlist> memberPlaylists = playlistRepository
+                    .findByMemberUseridAndDeleted(follow.getToUser().getUserid(), Deleted.FALSE);
+            List<PlaylistResponseDto> parsedPlaylist = memberPlaylists.stream()
+                    .map(playlistMapper::mapToResponseDto).toList();
+            follwerplaylists.addAll(parsedPlaylist);
+        }
+
+        return follwerplaylists;
+    }
+
+    public List<PlaylistResponseDto> getOtherUsersPlaylist(String userId) {
+        Member member = memberRepository.findByUserid(userId);
+        if (member == null) {
+            throw new EntityNotFoundException("Member not found with user id : " + userId);
+        }
+
+        List<Playlist> playlistEntities = playlistRepository.findByMemberUseridAndDeleted(userId, Deleted.FALSE);
+
+        return playlistEntities.stream()
+                .map(playlistMapper::mapToResponseDto).toList();
+    }
+
+    public List<PlaylistResponseDto> getOtherUsersFollowingsPlaylist(String userId) {
+        Member member = memberRepository.findByUserid(userId);
+
+        if (member == null) {
+            throw new EntityNotFoundException("Member not found with user id : " + userId);
+        }
+
+        List<Follow> followings = followRepository.findByFromUserId(member.getId());
+        List<PlaylistResponseDto> follwerplaylists = new ArrayList<>();
+
+        for (Follow follow : followings) {
+            List<Playlist> memberPlaylists = playlistRepository
+                    .findByMemberUseridAndDeleted(follow.getToUser().getUserid(), Deleted.FALSE);
+            List<PlaylistResponseDto> parsedPlaylist = memberPlaylists.stream()
+                    .map(playlistMapper::mapToResponseDto).toList();
+            follwerplaylists.addAll(parsedPlaylist);
+        }
+
+        return follwerplaylists;
+    }
+
 }

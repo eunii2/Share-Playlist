@@ -15,7 +15,7 @@ public class SimplePlaylistDto {
     private String userid;
 
     public SimplePlaylistDto(Playlist playlist) {
-        // this.image = playlist.getImage(); // Playlist Entity에 image 됐을 때
+        this.image = playlist.getImageUrl();
         this.playlistName = playlist.getName();
         this.userid = playlist.getMember().getUserid();
     }

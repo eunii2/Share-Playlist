@@ -13,6 +13,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/playlist")
@@ -28,7 +29,6 @@ public class PlaylistController {
         this.playlistRepository = playlistRepository;
     }
 
-/*
     @PostMapping("/{playlistId}/grant-access")
     public ResponseEntity<?> grantAccess(@PathVariable Long playlistId, @RequestBody GrantAccessRequestDto request) {
         playlistService.grantAccess(playlistId, request.getMemberId(), request.isCanEdit());
@@ -40,7 +40,6 @@ public class PlaylistController {
         boolean canEdit = playlistService.canEditPlaylist(playlistId, memberId);
         return ResponseEntity.ok(canEdit);
     }
-*/
 
     @PostMapping
     public ResponseEntity<Long> createPlaylist(@RequestBody @Valid PlaylistRequestDto playlistRequestDto) {
@@ -70,7 +69,7 @@ public class PlaylistController {
         return "ok";
     }
 
-    /* 메인 본인 플리 출력 */
+    /* 본인 플리 출력 */
     @GetMapping("/simple_my_playlists")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<SimplePlaylistDto>> getMyPlaylists(Principal principal) {
@@ -80,16 +79,16 @@ public class PlaylistController {
     }
 
     /* 현재 사용자의 친구 플리 */
-    @GetMapping("/simple_followings_playlists")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<List<SimplePlaylistDto>> getFollowingPlaylists(@RequestParam String userid) {
-
-        List<SimplePlaylistDto> playlists = (List<SimplePlaylistDto>) playlistService.getFollowingPlaylists(userid);
-        return ResponseEntity.ok(playlists);
-    }
+//    @GetMapping("/simple_followings_playlists")
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    public ResponseEntity<List<SimplePlaylistDto>> getFollowingPlaylists(@RequestParam String userid) {
+//
+//        List<SimplePlaylistDto> playlists = (List<SimplePlaylistDto>) playlistService.getFollowingPlaylists(userid);
+//        return ResponseEntity.ok(playlists);
+//    }
 
     /* 메인 태그 검색(선택) 기능 */
-    @GetMapping("/playlistsTag")
+/*    @GetMapping("/playlistsTag")
     public List<Playlist> getPlaylistsByGenreAndMood(
             @RequestParam(required = false) List<Long> genreIds,
             @RequestParam(required = false) List<Long> moodIds) {
@@ -105,5 +104,27 @@ public class PlaylistController {
         } else {
             return new ArrayList<>();
         }
+    }*/
+
+    @GetMapping("/search")
+    public List<PlaylistResponseDto> getPlaylistByTags(
+            @RequestParam Optional<String> tagGenre,
+            @RequestParam Optional<String> tagMood){
+        return playlistService.findPlaylistByTags(tagGenre, tagMood);
+    }
+
+    @GetMapping("/my_followings_playlist")
+    public List<PlaylistResponseDto> getMyFollowingsPlaylist(){
+        return playlistService.getMyFollowingsPlaylist();
+    }
+
+    @GetMapping("/other_users_playlist")
+    public List<PlaylistResponseDto> getOtherUsersPlaylist(@RequestParam String userId){
+        return playlistService.getOtherUsersPlaylist(userId);
+    }
+
+    @GetMapping("/other_users_followings_playlist")
+    public List<PlaylistResponseDto> getOtherUsersFollowingsPlaylist(@RequestParam String userId){
+        return  playlistService.getOtherUsersFollowingsPlaylist(userId);
     }
 }
